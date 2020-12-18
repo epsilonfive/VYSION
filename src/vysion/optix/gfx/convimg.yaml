@@ -1,0 +1,12 @@
+converts:
+  - name: myimages
+    palette: xlibc
+    images:
+      - cursor_normal.png
+      - cursor_pointer.png
+
+outputs:
+  - type: c
+    include-file: gfx.h
+    converts:
+      - myimages

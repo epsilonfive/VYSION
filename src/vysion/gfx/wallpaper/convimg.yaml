@@ -1,0 +1,14 @@
+converts:
+  - name: myimages
+    palette: xlibc
+    images:
+        - ubuntuwallpaper.png
+
+outputs:
+  - type: appvar
+    name: UBUNTUD
+    header-string: VYSWALFIX
+    converts:
+        - myimages
+    compress: zx7
+    archived: true
