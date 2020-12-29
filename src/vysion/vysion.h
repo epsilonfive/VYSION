@@ -12,16 +12,19 @@
 //#include "optix.h"
 
 //defines
+//name and information
 #define VYSION_NAME "VYSION"
 #define VYSION_VERSION "0.5.0"
 #define VYSION_SETTINGS_VERSION 0
-#define VYSION_FILESYSTEM_VERSION 0
+#define VYSION_FILESYSTEM_VERSION 1
 #define VYSION_STATE_VERSION 0
+//appvars
 #define VYSION_FILESYSTEM_APPVAR "VYSFILE"
 #define VYSION_DATA_APPVAR "VYSDATA"
 #define VYSION_STATE_APPVAR "VYSSTATE"
 #define VYSION_TEMPFILE "VYSTEMP"
 #define VYSION_WALLPAPER_STRING "VYSWALFIX"
+//start menu and program types
 #define VYSION_START_MENU_OPTIONS 8
 #define VYSION_PBASIC_TYPE 0
 #define VYSION_BASIC_TYPE 1
@@ -31,16 +34,23 @@
 #define VYSION_ASM_TYPE 5
 #define VYSION_APPVAR_TYPE 6
 #define VYSION_UNKNOWN_TYPE 7
+//distributions
 #define VYSION_DISTRIBUTION_CORE 0
 #define VYSION_DISTRIBUTION_BASIC 1
 #define VYSION_DISTRIBUTION_ULTIMATE 2
+//folders
+#define VYSION_FOLDER_NUM_CONSTANTS 4
+#define VYSION_FOLDER_ROOT 0
+#define VYSION_FOLDER_DESKTOP 1
+#define VYSION_FOLDER_PROGRAMS 2
+#define VYSION_FOLDER_APPVARS 3
 /*versions:
 -VYSION_VERSION_CORE
 -VYSION_VERSION_BASIC
 -VYSION_VERSION_ULTIMATE
 */
 //distribution 
-#define VYSION_DISTRIBUTION 2
+#define VYSION_DISTRIBUTION 1
 
 #if (VYSION_DISTRIBUTION == VYSION_DISTRIBUTION_CORE)
 #define VYSION_DISTRIBUTION_NAME "Core"
@@ -100,6 +110,8 @@ struct vysion_folder_t {
     int location;
     uint8_t user;
     bool locked;
+    //so that these can actually be sorted
+    int index;
 };
 extern struct vysion_folder_t *vysion_folder;
 
@@ -139,6 +151,7 @@ struct vysion_programdata_t {
     int currmenu;
     bool startreturn;
     uint8_t startreturnvalue;
+    bool returnedfromprogram;
     //for the icons
     gfx_sprite_t **taskbarspr;
 };

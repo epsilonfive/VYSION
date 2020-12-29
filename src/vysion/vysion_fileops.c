@@ -15,7 +15,7 @@
 #include "gfx/gfx.h"
 #include "vysion_fileops.h"
 #include "vysion.h"
-//#include "optix.h"
+#include "optix/optix.h"
 
 //Til I collapse I'm spillin these raps long as you feel em
 //Til the day that I drop you'll never say that I'm not killin em
@@ -73,9 +73,17 @@ void vysion_AddFile(void) {
 void vysion_AddFolder(char name[9], int location) {
     vysion_folder = realloc(vysion_folder, ++vysion_filesysteminfo.numfolders * sizeof(struct vysion_folder_t));
     vysion_folder[vysion_filesysteminfo.numfolders - 1].location = location;
+    //this way the folders can be sorted correctly, since the index will now be stored in the folder rather than be dependent on its index in the dynamic array
+    vysion_folder[vysion_filesysteminfo.numfolders - 1].index = vysion_filesysteminfo.numfolders - 1;
     strcpy(vysion_folder[vysion_filesysteminfo.numfolders - 1].name, name);
 }
 
+//for finding a folder with a given index, returns the index in the dynamic array or -1 on failure
+int vysion_GetFolderByIndex(int index) {
+    int i;
+    for (i = 0; i < vysion_filesysteminfo.numfolders; i++) if (vysion_folder[i].index == index) return i;
+    return -1;
+}
 
 void vysion_AddFileToTempMenu(bool isfolder, int index) {
     vysion_tempfile = realloc(vysion_tempfile, ++vysion_filesysteminfo.numtempfiles * sizeof(struct vysion_tempfile_t));
@@ -130,20 +138,24 @@ void vysion_GetStartMenu(void) {
     vysion_GetTempMenuText();
 }
 
+//folder should be the index of the folder in the folder array that is desired, as before (just fixed now to accomodate for sorting them)
+//use vysion_GetFolderByIndex() to do this if you need to do something like open a specific location
 void vysion_SetTempMenu(int folder, int type, bool showfiles, bool showfolders) {
     int i = 0;
+    //fix this (independent of array placement)
+    if (folder != -1) folder = vysion_folder[folder].index;
     vysion_ClearTempMenu();
-    if (showfiles) {
-        for (i = 0; i < vysion_filesysteminfo.numfiles; i++) {
-            struct vysion_file_t *file = &vysion_file[i];
-            if ((file->location == folder || folder == -1) && (file->type == type || type == -1) && (strlen(file->name) > 0)) vysion_AddFileToTempMenu(false, i);
-        }
-    }
     //get the folders
     if (showfolders) {
         for (i = 0; i < vysion_filesysteminfo.numfolders; i++) {
             struct vysion_folder_t *fold = &vysion_folder[i];
             if (fold->location == folder || (folder == -1 && fold->location != -1)) vysion_AddFileToTempMenu(true, i);
+        }
+    }
+    if (showfiles) {
+        for (i = 0; i < vysion_filesysteminfo.numfiles; i++) {
+            struct vysion_file_t *file = &vysion_file[i];
+            if ((file->location == folder || folder == -1) && (file->type == type || type == -1) && (strlen(file->name) > 0)) vysion_AddFileToTempMenu(false, i);
         }
     }
 }
@@ -201,6 +213,7 @@ void vysion_DetectAllFiles(bool fromstart) {
     datatest = 0;
     loaded = vysion_LoadFilesystem();
     //this could really screw up the whole system
+    for (int i = 0; i < vysion_filesysteminfo.numfiles; i++) vysion_file[i].icon = NULL;
     if (loaded && vysion_settings.filedetection == 0 && !fromstart) return;
     while ((var_name = ti_DetectAny(&search_pos, NULL, &type)) != NULL) {
         //gfx_ZeroScreen();
@@ -219,7 +232,7 @@ void vysion_DetectAllFiles(bool fromstart) {
                                 //test to see if it's the same basic type (asm program, basic program, or appvar)
                                 //if it's ICE source or TI-BASIC
                                 vysiontype = 0;
-                                vysiontype = vysion_GetFileType(currfile->type);
+                                vysiontype = vysion_GetFileType(vysion_file[i].type);
                                 //well I'm a moron
                                 //anyway should work now
                                 if ((strncmp(vysion_file[i].name, var_name, 8) == 0) && (type == vysiontype)) {
@@ -294,6 +307,8 @@ void vysion_DetectAllFiles(bool fromstart) {
                     currfile->size = ti_GetSize(slot);
                     currfile->archived = ti_IsArchived(slot);
                     currfile->icon = NULL;
+                    //for the love of God remove this later
+                    //currfile->location = 1;
                     filesfound++;
                 }
             }
@@ -304,6 +319,11 @@ void vysion_DetectAllFiles(bool fromstart) {
     if (loaded && (vysion_settings.filedetection != 1 || fromstart)) {
         //go through and clear anything that doesn't exist anymore
         for (i = 0; i < vysion_filesysteminfo.numfiles; i++) if (!vysion_file[i].indexed) vysion_DeleteFile(i);
+    }
+    //this won't be done otherwise
+    if (fromstart) {
+        vysion_GetAsmIcons();
+        vysion_GetBasicIcons();
     }
 }
 
@@ -383,7 +403,7 @@ void vysion_GetBasicIcons(void) {
         if (currfile->type == VYSION_PBASIC_TYPE || currfile->type == VYSION_BASIC_TYPE) {
             if (slot = ti_OpenVar(currfile->name, "r", vysion_GetFileType(currfile->type))) {
                 if (!memcmp(search, ti_GetDataPtr(slot), 6)) {
-                    currfile->icon = gfx_MallocSprite(16, 16);
+                    if (currfile->icon != NULL) currfile->icon = gfx_MallocSprite(16, 16);
                     ti_Seek(6, 0, slot);
                     for (loops = 0; loops < 256; loops++) {
                         ti_Read(temp, 1, 1, slot);
@@ -391,7 +411,6 @@ void vysion_GetBasicIcons(void) {
                         else {
                             free(currfile->icon);
                             currfile->icon = NULL;
-                            break;
                         }
                     }
                 }
@@ -415,8 +434,8 @@ int vysion_CompareFileNames(void *a, void *b) {
 }
 
 void vysion_SortFolders(void) {
-    //make sure the first 3 don't get reordered, because that would be bad
-    qsort(&(vysion_folder[3]), vysion_filesysteminfo.numfolders - 3, sizeof(struct vysion_folder_t), vysion_CompareFolderNames);
+    //make sure the first 4 don't get reordered, because that would be bad (Root, Desktop, Programs, Appvars)
+    qsort(&(vysion_folder[VYSION_FOLDER_NUM_CONSTANTS]), vysion_filesysteminfo.numfolders - VYSION_FOLDER_NUM_CONSTANTS, sizeof(struct vysion_folder_t), vysion_CompareFolderNames);
 }
 
 void vysion_SortFiles(void) {
@@ -428,4 +447,82 @@ uint8_t vysion_GetFileType(uint8_t type) {
     else if (type == VYSION_ASM_TYPE || type == VYSION_C_TYPE || type == VYSION_ICE_TYPE || type == VYSION_PBASIC_TYPE) return TI_PPRGM_TYPE;
     else if (type == VYSION_APPVAR_TYPE) return TI_APPVAR_TYPE;
     else return 255;
+}
+
+//returns true if filesystem should be refreshed
+bool vysion_DoFileOperation(uint8_t operation, int main) {
+    bool runrefresh = false;
+    struct optix_menu_t *m = &optix_menu[optix_guidata.currmenu];
+    struct vysion_tempfile_t *v = &vysion_tempfile[optix_menu[main].currselection];
+    switch (operation) {
+        //run
+        case FILE_OPERATIONS_RUN:
+            //clean things up
+            vysion_programdata.startreturn = true;
+            vysion_programdata.startreturnvalue = 2;
+            vysion_programdata.fileexplorerselection = optix_menu[main].currselection;
+            vysion_programdata.fileexplorermenumin = optix_menu[main].menumin;
+            if (vysion_filesysteminfo.numtempfiles > 0) vysion_RunProgram(vysion_file[vysion_tempfile[optix_menu[main].currselection].index].name, vysion_file[vysion_tempfile[optix_menu[main].currselection].index].type);
+            //if it runs correctly we won't get here
+            vysion_programdata.startreturn = false;
+            vysion_programdata.fileexplorerselection = 0;
+            vysion_programdata.fileexplorermenumin = 0;
+            break;
+        //new folder
+        case FILE_OPERATIONS_NEW_FOLDER:
+            vysion_AddFolder(optix_GetStringInput("Name?", 10, 100, 8), vysion_folder[vysion_programdata.currfolder].index);
+            while (kb_AnyKey()) kb_Scan();
+            runrefresh = true;
+            break;
+        //cut
+        case FILE_OPERATIONS_CUT:
+            vysion_programdata.clipboardisfolder = vysion_tempfile[optix_menu[main].currselection].isfolder;
+            vysion_programdata.clipboard = vysion_tempfile[optix_menu[main].currselection].index;
+            runrefresh = true;
+            break;
+        case FILE_OPERATIONS_PASTE:
+            if (vysion_programdata.clipboard != -1) {
+                if (vysion_programdata.clipboardisfolder) {
+                    if (vysion_programdata.clipboard != vysion_programdata.currfolder) vysion_folder[vysion_programdata.clipboard].location = vysion_programdata.currfolder;
+                    else optix_Message("ERROR", "Pasting a folder within itself is not allowed.", 12, 120, 8);
+                } else vysion_file[vysion_programdata.clipboard].location = vysion_programdata.currfolder;
+                vysion_programdata.clipboard = -1;
+                runrefresh = true;
+            }
+            break;
+        //pin it to the taskbar
+        case FILE_OPERATIONS_EDIT:
+            //if it's basic
+            if (vysion_file[vysion_tempfile[optix_menu[main].currselection].index].type == VYSION_BASIC_TYPE) {
+                if (!vysion_file[vysion_tempfile[optix_menu[main].currselection].index].archived)
+                    vysion_EditProgram(vysion_file[vysion_tempfile[optix_menu[main].currselection].index].name);
+                else optix_Message("ERROR", "Please unarchive this file to edit it.", 12, 120, 8);
+            }
+            break;
+        case FILE_OPERATIONS_DELETE:
+            //fix this later
+            //if (!vysion_tempfile[m->currselection].isfolder) currfile->taskbarpinned = true;
+            if (!optix_Menu("Delete?", "Yes`No`", 12, 120, 3)) if (!vysion_Delete(v->isfolder, v->index)) optix_Message("ERROR", "Deletion failed...", 12, 120, 8);
+            optix_guidata.currmenu = main;
+            runrefresh = true;
+            vysion_GetAsmIcons();
+            vysion_GetBasicIcons();
+            break;
+        case FILE_OPERATIONS_PROPERTIES:
+            if (!vysion_tempfile[m->currselection].isfolder && vysion_filesysteminfo.numtempfiles > 0) vysion_PropertiesMenu(vysion_tempfile[optix_menu[main].currselection].index);
+            runrefresh = true;
+            vysion_GetAsmIcons();
+            vysion_GetBasicIcons();
+            break;
+        //is passed if need to quit
+        case 255:
+            break;
+        default:
+            break;
+    }
+    return runrefresh;
+}
+
+bool vysion_HandleFileOperations(uint8_t filetype) {
+    return vysion_DoFileOperation(vysion_FileOperationsMenu(filetype), optix_guidata.currmenu);
 }

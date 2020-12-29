@@ -36,3 +36,4 @@ void vysion_SelectWallpaper(void);
 void vysion_CheckStartMenu(void);
 void vysion_CheckAlphaJump(void);
 void vysion_LockScreen(void);
+int vysion_Search(void);

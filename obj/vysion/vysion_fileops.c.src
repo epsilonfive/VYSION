@@ -1,0 +1,2420 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_vysion_DeleteFolder
+_vysion_DeleteFolder:
+	ld	hl, -9
+	call	__frameset
+	ld	iy, 0
+	ld	de, (_vysion_filesysteminfo+6)
+	ld	bc, 1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB0_2
+	ld	iy, (_vysion_folder)
+	dec	de
+	ld	hl, (ix + 6)
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	hl, iy + 0
+	add	hl, bc
+	ld	(ix + -3), hl
+	ex	de, hl
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, 20
+	push	hl
+	push	iy
+	ld	hl, (ix + -3)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, (_vysion_folder)
+	ld	hl, (_vysion_filesysteminfo+6)
+	dec	hl
+	ld	(_vysion_filesysteminfo+6), hl
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	push	de
+	call	_realloc
+	ld	iy, 0
+	pop	de
+	pop	de
+	ld	(_vysion_folder), hl
+BB0_2:
+	ld	hl, 13
+	ld	(ix + -6), hl
+	dec	hl
+	ld	(ix + -3), hl
+	lea	bc, iy + 0
+BB0_3:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB0_4
+	ld	(ix + -9), bc
+	ld	iy, (_vysion_file)
+	ld	de, (ix + -6)
+	lea	hl, iy + 0
+	add	hl, de
+	ld	de, (hl)
+	push	de
+	pop	hl
+	ld	bc, (ix + 6)
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB0_7
+	ld	hl, (ix + -9)
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_vysion_Delete
+	pop	hl
+	pop	hl
+	ld	bc, 28
+	jq	BB0_9
+BB0_7:
+	ld	bc, (_vysion_filesysteminfo+6)
+	ex	de, hl
+	or	a, a
+	sbc	hl, bc
+	ld	bc, 28
+	jq	nz, BB0_9
+	ld	de, (ix + -6)
+	add	iy, de
+	ld	hl, (ix + 6)
+	ld	(iy), hl
+BB0_9:
+	ld	de, (ix + -9)
+	inc	de
+	ld	hl, (ix + -6)
+	add	hl, bc
+	push	de
+	pop	bc
+	ld	(ix + -6), hl
+	ld	iy, 0
+	jq	BB0_3
+BB0_4:
+BB0_10:
+	ld	bc, (_vysion_filesysteminfo+6)
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	p, BB0_16
+	ld	(ix + -6), iy
+	ld	hl, (_vysion_folder)
+	ld	de, (ix + -3)
+	ld	(ix + -9), hl
+	add	hl, de
+	ld	iy, (hl)
+	lea	hl, iy + 0
+	ld	de, (ix + 6)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB0_13
+	ld	hl, (ix + -6)
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_vysion_Delete
+	ld	iy, (ix + -6)
+	pop	hl
+	pop	hl
+	jq	BB0_15
+BB0_13:
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, bc
+	ld	iy, (ix + -6)
+	jq	nz, BB0_15
+	ld	de, (ix + -3)
+	ld	hl, (ix + -9)
+	add	hl, de
+	ex	de, hl
+	ld	hl, (ix + 6)
+	lea	bc, iy + 0
+	push	de
+	pop	iy
+	ld	(iy), hl
+	push	bc
+	pop	iy
+BB0_15:
+	inc	iy
+	ld	de, 20
+	ld	hl, (ix + -3)
+	add	hl, de
+	ld	(ix + -3), hl
+	jq	BB0_10
+BB0_16:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_DeleteFile
+_vysion_DeleteFile:
+	ld	hl, -3
+	call	__frameset
+	ld	de, (_vysion_filesysteminfo+3)
+	ld	bc, 1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB1_2
+	ld	hl, (ix + 6)
+	ld	iy, (_vysion_file)
+	dec	de
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	hl, iy + 0
+	add	hl, bc
+	ld	(ix + -3), hl
+	ex	de, hl
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, 28
+	push	hl
+	push	iy
+	ld	hl, (ix + -3)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, (_vysion_file)
+	ld	hl, (_vysion_filesysteminfo+3)
+	dec	hl
+	ld	(_vysion_filesysteminfo+3), hl
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	push	de
+	call	_realloc
+	pop	de
+	pop	de
+	ld	(_vysion_file), hl
+BB1_2:
+	pop	hl
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_AddFile
+_vysion_AddFile:
+	ld	hl, -3
+	call	__frameset
+	ld	bc, 28
+	ld	de, (_vysion_file)
+	ld	hl, (_vysion_filesysteminfo+3)
+	inc	hl
+	ld	(_vysion_filesysteminfo+3), hl
+	call	__imulu
+	push	hl
+	push	de
+	call	_realloc
+	push	hl
+	pop	de
+	pop	hl
+	pop	hl
+	ld	(_vysion_file), de
+	ld	hl, (_vysion_filesysteminfo+3)
+	dec	hl
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	(ix + -3), iy
+	ld	hl, 5
+	push	hl
+	ld	hl, L_.str
+	push	hl
+	push	iy
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -3)
+	ld	hl, (iy + 9)
+	ld	de, 5
+	push	de
+	ld	de, L_.str
+	push	de
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	ld	iy, (ix + -3)
+	ld	(iy + 13), hl
+	pop	hl
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_AddFolder
+_vysion_AddFolder:
+	ld	hl, -9
+	call	__frameset
+	ld	hl, (ix + 6)
+	ld	(ix + -3), hl
+	ld	hl, (ix + 9)
+	ld	(ix + -6), hl
+	ld	bc, 20
+	ld	de, (_vysion_folder)
+	ld	hl, (_vysion_filesysteminfo+6)
+	inc	hl
+	ld	(_vysion_filesysteminfo+6), hl
+	call	__imulu
+	push	hl
+	push	de
+	call	_realloc
+	push	hl
+	pop	iy
+	pop	hl
+	pop	hl
+	ld	(_vysion_folder), iy
+	ld	de, (_vysion_filesysteminfo+6)
+	dec	de
+	ld	bc, 20
+	push	de
+	pop	hl
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	(ix + -9), iy
+	lea	bc, iy + 0
+	ld	hl, (ix + -6)
+	push	bc
+	pop	iy
+	ld	(iy + 12), hl
+	ld	(iy + 17), de
+	ld	hl, (ix + -9)
+	ld	(ix + 6), hl
+	ld	hl, (ix + -3)
+	ld	(ix + 9), hl
+	ld	sp, ix
+	pop	ix
+	jp	_strcpy
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetFolderByIndex
+_vysion_GetFolderByIndex:
+	ld	hl, -3
+	call	__frameset
+	ld	de, (_vysion_filesysteminfo+6)
+	ld	iy, (_vysion_folder)
+	push	de
+	pop	hl
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	dec	bc
+	call	__setflag
+	jq	p, BB4_2
+	push	bc
+	pop	de
+BB4_2:
+	lea	iy, iy + 17
+BB4_3:
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB4_7
+	ld	(ix + -3), de
+	push	bc
+	pop	de
+	ld	hl, (iy)
+	ld	bc, (ix + 6)
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB4_8
+	push	de
+	pop	bc
+	inc	bc
+	lea	iy, iy + 20
+	ld	de, (ix + -3)
+	jq	BB4_3
+BB4_7:
+	ld	hl, -1
+	jq	BB4_6
+BB4_8:
+	ex	de, hl
+BB4_6:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_AddFileToTempMenu
+_vysion_AddFileToTempMenu:
+	ld	hl, -1
+	call	__frameset
+	ld	a, (ix + 6)
+	and	a, 1
+	ld	(ix + -1), a
+	ld	de, (_vysion_tempfile)
+	ld	hl, (_vysion_filesysteminfo+9)
+	inc	hl
+	ld	(_vysion_filesysteminfo+9), hl
+	ld	c, 2
+	call	__ishl
+	push	hl
+	push	de
+	call	_realloc
+	push	hl
+	pop	iy
+	pop	hl
+	pop	hl
+	ld	(_vysion_tempfile), iy
+	ld	hl, (_vysion_filesysteminfo+9)
+	dec	hl
+	ld	c, 2
+	call	__ishl
+	push	hl
+	pop	de
+	add	iy, de
+	ld	a, (ix + -1)
+	ld	(iy), a
+	ld	hl, (ix + 9)
+	ld	(iy + 1), hl
+	inc	sp
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_ClearTempMenu
+_vysion_ClearTempMenu:
+	or	a, a
+	sbc	hl, hl
+	ld	(_vysion_filesysteminfo+9), hl
+	ld	de, (_vysion_tempfile)
+	push	hl
+	push	de
+	call	_realloc
+	pop	de
+	pop	de
+	ld	(_vysion_tempfile), hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetTaskbar
+_vysion_GetTaskbar:
+	ld	hl, -15
+	call	__frameset
+	ld	hl, 1
+	ld	(ix + -6), hl
+	call	_vysion_ClearTempMenu
+	ld	iy, 26
+	ld	c, 1
+	or	a, a
+	sbc	hl, hl
+	ld	(ix + -3), hl
+BB7_1:
+	ld	de, (_vysion_filesysteminfo+3)
+	ld	(ix + -9), hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB7_2
+	ld	hl, (_vysion_file)
+	lea	de, iy + 0
+	add	hl, de
+	ld	a, (hl)
+	xor	a, c
+	bit	0, a
+	jq	nz, BB7_5
+	ld	hl, (ix + -9)
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	(ix + -12), iy
+	call	_vysion_AddFileToTempMenu
+	ld	c, 1
+	ld	iy, (ix + -12)
+	pop	hl
+	pop	hl
+BB7_5:
+	ld	hl, (ix + -9)
+	inc	hl
+	ld	de, 28
+	add	iy, de
+	jq	BB7_1
+BB7_2:
+	ld	bc, 0
+BB7_6:
+	ld	de, (_vysion_filesysteminfo+9)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB7_8
+	inc	bc
+	ld	(ix + -9), bc
+	ld	de, (_vysion_programdata+2039)
+	ld	hl, (ix + -3)
+	ld	bc, 3
+	add	hl, bc
+	push	hl
+	push	de
+	call	_realloc
+	ld	(ix + -12), hl
+	pop	de
+	pop	de
+	ld	(_vysion_programdata+2039), hl
+	ld	hl, (_vysion_file)
+	ld	(ix + -15), hl
+	ld	hl, (_vysion_tempfile)
+	ld	de, (ix + -6)
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 28
+	call	__imulu
+	ld	bc, (ix + -9)
+	push	hl
+	pop	de
+	ld	iy, (ix + -15)
+	add	iy, de
+	ld	iy, (iy + 16)
+	ld	de, (ix + -3)
+	ld	hl, (ix + -12)
+	add	hl, de
+	ld	(hl), iy
+	ld	de, 4
+	ld	hl, (ix + -6)
+	add	hl, de
+	ld	(ix + -6), hl
+	dec	de
+	ld	hl, (ix + -3)
+	add	hl, de
+	ld	(ix + -3), hl
+	jq	BB7_6
+BB7_8:
+	ld	sp, ix
+	pop	ix
+	jp	_vysion_GetTempMenuText
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetTempMenuText
+_vysion_GetTempMenuText:
+	ld	hl, -15
+	call	__frameset
+	xor	a, a
+	ld	(_vysion_programdata), a
+	ld	de, (_vysion_filesysteminfo+9)
+	ld	iy, (_vysion_tempfile)
+	ld	hl, (_vysion_folder)
+	ld	(ix + -9), hl
+	ld	hl, (_vysion_file)
+	ld	(ix + -12), hl
+	ld	bc, 1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	ex	de, hl
+	call	__setflag
+	jq	p, BB8_2
+	or	a, a
+	sbc	hl, hl
+BB8_2:
+	inc	iy
+BB8_3:
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB8_9
+	ld	(ix + -6), hl
+	ld	a, (iy + -1)
+	ld	l, 1
+	xor	a, l
+	ld	de, (iy)
+	push	de
+	pop	hl
+	ld	bc, 28
+	call	__imulu
+	ld	(ix + -15), hl
+	ex	de, hl
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	pop	de
+	bit	0, a
+	ld	(ix + -3), iy
+	jq	nz, BB8_6
+	ld	hl, (ix + -9)
+	jq	BB8_7
+BB8_6:
+	ld	hl, (ix + -12)
+	ld	de, (ix + -15)
+BB8_7:
+	add	hl, de
+	push	hl
+	ld	hl, _vysion_programdata
+	push	hl
+	call	_strcat
+	pop	hl
+	pop	hl
+	ld	hl, _vysion_programdata
+	push	hl
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, _vysion_programdata
+	add	hl, de
+	ld.sis	de, 96
+	ld	(hl), e
+	inc	hl
+	ld	(hl), d
+	ld	hl, (ix + -6)
+	dec	hl
+	ld	iy, (ix + -3)
+	lea	iy, iy + 4
+	jq	BB8_3
+BB8_9:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetStartMenu
+_vysion_GetStartMenu:
+	ld	hl, -6
+	call	__frameset
+	call	_vysion_ClearTempMenu
+	ld	bc, 0
+	ld	iy, 27
+BB9_1:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB9_5
+	ld	hl, (_vysion_file)
+	lea	de, iy + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB9_4
+	push	bc
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	(ix + -3), iy
+	ld	(ix + -6), bc
+	call	_vysion_AddFileToTempMenu
+	ld	bc, (ix + -6)
+	ld	iy, (ix + -3)
+	pop	hl
+	pop	hl
+BB9_4:
+	inc	bc
+	ld	de, 28
+	add	iy, de
+	jq	BB9_1
+BB9_5:
+	call	_vysion_GetTempMenuIcons
+	ld	sp, ix
+	pop	ix
+	jp	_vysion_GetTempMenuText
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetTempMenuIcons
+_vysion_GetTempMenuIcons:
+	ld	hl, -18
+	call	__frameset
+	ld	iy, 0
+	ld	(ix + -3), iy
+	lea	bc, iy + 0
+BB10_1:
+	ld	de, (_vysion_filesysteminfo+9)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB10_5
+	ld	(ix + -9), bc
+	ld	bc, (_vysion_programdata+2011)
+	ld	hl, (ix + -3)
+	ld	de, 3
+	add	hl, de
+	ld	(ix + -12), hl
+	push	hl
+	push	bc
+	ld	(ix + -6), iy
+	call	_realloc
+	pop	de
+	pop	de
+	ld	(ix + -15), hl
+	ld	(_vysion_programdata+2011), hl
+	ld	iy, (_vysion_tempfile)
+	ld	de, (ix + -6)
+	lea	hl, iy + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	ld	hl, _foldericon_data
+	jq	nz, BB10_4
+	ld	hl, (_vysion_file)
+	ld	(ix + -18), hl
+	ld	de, (ix + -6)
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -18)
+	add	iy, de
+	ld	hl, (iy + 16)
+BB10_4:
+	ld	bc, (ix + -9)
+	inc	bc
+	ld	de, (ix + -3)
+	push	hl
+	pop	iy
+	ld	hl, (ix + -15)
+	add	hl, de
+	ld	(hl), iy
+	ld	de, 4
+	ld	iy, (ix + -6)
+	add	iy, de
+	ld	hl, (ix + -12)
+	ld	(ix + -3), hl
+	jq	BB10_1
+BB10_5:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SetTempMenu
+_vysion_SetTempMenu:
+	ld	hl, -12
+	call	__frameset
+	ld	de, (ix + 6)
+	or	a, a
+	sbc	hl, hl
+	ld	(ix + -3), hl
+	ld	bc, -1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB11_2
+	ld	hl, -1
+	jq	BB11_3
+BB11_2:
+	ld	iy, (_vysion_folder)
+	ld	bc, 20
+	ex	de, hl
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 17)
+BB11_3:
+	ld	(ix + -6), hl
+	call	_vysion_ClearTempMenu
+	ld	iyl, 1
+	ld	a, (ix + 15)
+	xor	a, iyl
+	bit	0, a
+	jq	nz, BB11_12
+	ld	hl, 12
+	ld	(ix + -9), hl
+	ld	bc, 0
+BB11_6:
+	ld	de, (_vysion_filesysteminfo+6)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB11_12
+	ld	(ix + -12), bc
+	ld	hl, (_vysion_folder)
+	ld	de, (ix + -9)
+	add	hl, de
+	ld	de, (hl)
+	push	de
+	pop	hl
+	ld	bc, (ix + -6)
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB11_10
+	ld	hl, (ix + -6)
+	ld	bc, -1
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB11_11
+	ex	de, hl
+	ld	de, -1
+	or	a, a
+	sbc	hl, de
+	jq	z, BB11_11
+BB11_10:
+	ld	hl, (ix + -12)
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_vysion_AddFileToTempMenu
+	ld	iyl, 1
+	pop	hl
+	pop	hl
+BB11_11:
+	ld	bc, (ix + -12)
+	inc	bc
+	ld	de, 20
+	ld	hl, (ix + -9)
+	add	hl, de
+	ld	(ix + -9), hl
+	jq	BB11_6
+BB11_12:
+	ld	a, (ix + 12)
+	xor	a, iyl
+	bit	0, a
+	jq	nz, BB11_22
+	ld	bc, 0
+BB11_14:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB11_22
+	ld	(ix + -9), bc
+	ld	iy, (_vysion_file)
+	ld	hl, (ix + -6)
+	ld	de, -1
+	or	a, a
+	sbc	hl, de
+	jq	z, BB11_17
+	ld	de, (ix + -3)
+	lea	bc, iy + 0
+	add	iy, de
+	ld	hl, (iy + 13)
+	push	bc
+	pop	iy
+	ld	de, (ix + -6)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB11_21
+BB11_17:
+	ld	bc, 0
+	ld	hl, (ix + 9)
+	ld	de, -1
+	or	a, a
+	sbc	hl, de
+	jq	z, BB11_19
+	ld	de, (ix + -3)
+	lea	hl, iy + 0
+	add	iy, de
+	ld	a, (iy + 12)
+	push	hl
+	pop	iy
+	push	bc
+	pop	hl
+	ld	l, a
+	ld	de, (ix + 9)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB11_21
+BB11_19:
+	ld	de, (ix + -3)
+	add	iy, de
+	push	iy
+	call	_strlen
+	ld	bc, 0
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB11_21
+	ld	hl, (ix + -9)
+	push	hl
+	push	bc
+	call	_vysion_AddFileToTempMenu
+	pop	hl
+	pop	hl
+BB11_21:
+	ld	bc, (ix + -9)
+	inc	bc
+	ld	hl, (ix + -3)
+	ld	de, 28
+	add	hl, de
+	ld	(ix + -3), hl
+	jq	BB11_14
+BB11_22:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SetOP1
+_vysion_SetOP1:
+	ld	hl, -13
+	call	__frameset
+	ld	hl, L___const.vysion_SetOP1.temp
+	ld	de, 10
+	lea	bc, ix + -10
+	ld	(ix + -13), bc
+	push	de
+	push	hl
+	push	bc
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + 6)
+	ld	(ix + -10), a
+	ld	hl, (ix + 9)
+	push	hl
+	ld	hl, (ix + -13)
+	push	hl
+	call	_strcat
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -13)
+	push	hl
+	ld	hl, -3144200
+	push	hl
+	call	_strcpy
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_DetectAllFiles
+_vysion_DetectAllFiles:
+	ld	hl, -26
+	call	__frameset
+	ld	hl, 0
+	ld	(ix + -3), hl
+	call	_ti_CloseAll
+	call	_vysion_LoadFilesystem
+	ld	(ix + -7), a
+	ld	de, (_vysion_filesysteminfo+3)
+	ld	bc, 1
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	p, BB13_2
+	ld	de, 0
+BB13_2:
+	ld	iy, 16
+	ld	hl, 25
+	ld	(ix + -13), hl
+BB13_3:
+	push	de
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_5
+	ld	hl, (_vysion_file)
+	lea	bc, iy + 0
+	add	hl, bc
+	ld	bc, 0
+	ld	(hl), bc
+	dec	de
+	ld	bc, 28
+	add	iy, bc
+	jq	BB13_3
+BB13_5:
+	ld	a, (_vysion_settings+9)
+	or	a, a
+	jq	z, BB13_7
+	ld	l, 0
+	jq	BB13_8
+BB13_7:
+	ld	l, 1
+BB13_8:
+	ld	a, (ix + -7)
+	and	a, l
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	ld	(ix + -10), de
+	jq	nz, BB13_10
+	ld	a, (ix + 6)
+	xor	a, l
+	bit	0, a
+	ld	(ix + -10), hl
+	jq	nz, BB13_47
+BB13_10:
+	pea	ix + -4
+	ld	hl, 0
+	push	hl
+	pea	ix + -3
+	call	_ti_DetectAny
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_39
+	ld	e, (ix + -4)
+	ld	a, e
+	sub	a, 5
+	cp	a, 2
+	jq	c, BB13_13
+	ld	a, e
+	cp	a, 21
+	jq	nz, BB13_10
+BB13_13:
+	ld	a, (hl)
+	cp	a, 33
+	jq	z, BB13_10
+	cp	a, 35
+	jq	z, BB13_10
+	ld	de, (ix + -10)
+	push	de
+	ld	(ix + -19), hl
+	call	_ti_Close
+	pop	hl
+	ld	a, (ix + -4)
+	ld	l, a
+	push	hl
+	ld	hl, L_.str.4
+	push	hl
+	ld	hl, (ix + -19)
+	push	hl
+	call	_ti_OpenVar
+	ld	e, a
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	ld	a, 0
+	ld	l, a
+	ld	(ix + -10), hl
+	jq	z, BB13_10
+	ld	a, (ix + -7)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	ld	(ix + -22), de
+	jq	nz, BB13_25
+	or	a, a
+	sbc	hl, hl
+	ld	(ix + -10), hl
+	ld	iy, (ix + -16)
+BB13_18:
+	ld	de, (_vysion_filesysteminfo+3)
+	ld	(ix + -25), hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB13_26
+	ld	iy, (_vysion_file)
+	ld	de, (ix + -10)
+	add	iy, de
+	ld	a, (iy + 25)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB13_24
+	ld	a, (iy + 12)
+	cp	a, 7
+	ld	l, -1
+	jq	nc, BB13_22
+	ld	l, a
+	rlc	l
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, a
+	ld	hl, L_switch.table.vysion_GetAsmIcons
+	add	hl, de
+	ld	l, (hl)
+BB13_22:
+	ld	(ix + -26), l
+	ld	hl, 8
+	push	hl
+	ld	hl, (ix + -19)
+	push	hl
+	push	iy
+	call	_strncmp
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	de, (ix + -10)
+	jq	nz, BB13_24
+	ld	a, (ix + -4)
+	ld	l, (ix + -26)
+	cp	a, l
+	jq	z, BB13_38
+BB13_24:
+	ld	bc, (ix + -25)
+	inc	bc
+	ex	de, hl
+	ld	de, 28
+	add	hl, de
+	ld	(ix + -10), hl
+	push	bc
+	pop	hl
+	ld	iy, (ix + -16)
+	jq	BB13_18
+BB13_25:
+	call	_vysion_AddFile
+	ld	de, (_vysion_file)
+	ld	hl, (_vysion_filesysteminfo+3)
+	dec	hl
+	ld	bc, 28
+	ld	(ix + -25), hl
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	(ix + -10), de
+	ex	de, hl
+	add	hl, bc
+	ld	de, (ix + -19)
+	push	de
+	ld	(ix + -16), hl
+	push	hl
+	call	_strcpy
+	pop	hl
+	pop	hl
+	jq	BB13_29
+BB13_26:
+	ld	a, (_vysion_settings+9)
+	cp	a, 2
+	jq	nz, BB13_28
+	ld	a, (ix + 6)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB13_34
+BB13_28:
+	call	_vysion_AddFile
+	ld	de, (_vysion_file)
+	ld	hl, (_vysion_filesysteminfo+3)
+	dec	hl
+	ld	bc, 28
+	ld	(ix + -25), hl
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	(ix + -10), de
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	(ix + -16), iy
+	ld	hl, (ix + -19)
+	push	hl
+	push	iy
+	call	_strcpy
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -16)
+	ld	(iy + 25), 1
+BB13_29:
+	ld	a, (ix + -4)
+	cp	a, 5
+	ld	l, 1
+	ld	de, 2
+	jq	z, BB13_33
+	cp	a, 6
+	ld	l, 5
+	ld	de, 2
+	jq	z, BB13_33
+	cp	a, 21
+	ld	a, 6
+	ld	l, a
+	ld	de, 3
+	jq	z, BB13_33
+	ld	a, 7
+	ld	l, a
+	ld	de, 1
+BB13_33:
+	ld	bc, 28
+	ld	a, l
+	ld	hl, (ix + -25)
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -10)
+	add	iy, bc
+	ld	(iy + 12), a
+	ld	(iy + 13), de
+	ld	(iy + 26), 0
+	ld	(iy + 24), 0
+	ld	iy, (ix + -16)
+BB13_34:
+	ld	(ix + -16), iy
+	ld	hl, L_.str.3
+	ld	(iy + 9), hl
+	ld	hl, (ix + -22)
+	push	hl
+	call	_ti_GetSize
+	pop	de
+	ld	de, 0
+	ld	e, l
+	ld	d, h
+	ld	iy, (ix + -16)
+	ld	(iy + 19), de
+	ld	hl, (ix + -22)
+	push	hl
+	call	_ti_IsArchived
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB13_36
+	ld	a, 0
+	jq	BB13_37
+BB13_36:
+	ld	a, 1
+BB13_37:
+	ld	hl, 0
+	ld	iy, (ix + -16)
+	and	a, 1
+	ld	(iy + 23), a
+	ld	(iy + 16), hl
+	ld	hl, (ix + -22)
+	ld	(ix + -10), hl
+	jq	BB13_10
+BB13_38:
+	ld	iy, (_vysion_file)
+	add	iy, de
+	ld	(iy + 25), 1
+	jq	BB13_34
+BB13_39:
+	ld	a, (ix + -7)
+	ld	c, 1
+	xor	a, c
+	bit	0, a
+	jq	nz, BB13_45
+	ld	a, (_vysion_settings+9)
+	cp	a, 1
+	jq	nz, BB13_42
+	ld	a, (ix + 6)
+	xor	a, c
+	bit	0, a
+	jq	nz, BB13_45
+BB13_42:
+	or	a, a
+	sbc	hl, hl
+BB13_43:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	hl
+	pop	iy
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB13_45
+	ld	hl, (_vysion_file)
+	ld	de, (ix + -13)
+	add	hl, de
+	ld	a, (hl)
+	xor	a, c
+	xor	a, c
+	bit	0, a
+	ld	(ix + -7), iy
+	push	iy
+	call	z, _vysion_DeleteFile
+	pop	hl
+	ld	bc, (ix + -7)
+	inc	bc
+	ld	de, 28
+	ld	hl, (ix + -13)
+	add	hl, de
+	ld	(ix + -13), hl
+	push	bc
+	pop	hl
+	ld	c, 1
+	jq	BB13_43
+BB13_45:
+	ld	a, (ix + 6)
+	xor	a, c
+	bit	0, a
+	jq	nz, BB13_47
+	call	_vysion_GetAsmIcons
+	call	_vysion_GetBasicIcons
+BB13_47:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetFileType
+_vysion_GetFileType:
+	call	__frameset0
+	ld	a, (ix + 6)
+	cp	a, 7
+	jq	nc, BB14_2
+	ld	iy, L_switch.table.vysion_GetAsmIcons
+	ld	l, a
+	rlc	l
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, a
+	add	iy, de
+	ld	a, (iy)
+	pop	ix
+	ret
+BB14_2:
+	ld	a, -1
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetAsmIcons
+_vysion_GetAsmIcons:
+	ld	hl, -22
+	call	__frameset
+	ld	bc, 0
+	lea	de, ix + -1
+	ld	(ix + -16), de
+BB15_1:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB15_26
+	ld	hl, (_vysion_file)
+	ld	(ix + -4), hl
+	ld	(ix + -7), bc
+	call	_ti_CloseAll
+	ld	hl, (ix + -7)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -4)
+	add	iy, de
+	ld	(ix + -10), iy
+	ld	a, (iy + 12)
+	cp	a, 7
+	ld	l, -1
+	jq	nc, BB15_4
+	ld	l, a
+	rlc	l
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, a
+	ld	hl, L_switch.table.vysion_GetAsmIcons
+	add	hl, de
+	ld	a, (hl)
+	ld	l, a
+BB15_4:
+	push	hl
+	ld	hl, L_.str.4
+	push	hl
+	ld	hl, (ix + -10)
+	push	hl
+	call	_ti_OpenVar
+	ld	l, a
+	ld	(ix + -13), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -10)
+	ld	l, (iy + 12)
+	ld	a, l
+	or	a, a
+	ld	iy, (ix + -7)
+	jq	z, BB15_6
+	ld	a, l
+	sub	a, 3
+	cp	a, 3
+	jq	nc, BB15_23
+BB15_6:
+	lea	hl, iy + 0
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, (ix + -4)
+	add	hl, de
+	ld	(ix + -22), hl
+	ld	bc, 0
+BB15_7:
+	push	bc
+	pop	hl
+	ld	de, 20
+	or	a, a
+	sbc	hl, de
+	jq	z, BB15_23
+	ld	hl, (ix + -13)
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, (ix + -16)
+	push	hl
+	ld	(ix + -19), bc
+	call	_ti_Read
+	ld	bc, (ix + -19)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + -1)
+	push	bc
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB15_12
+	cp	a, -17
+	jq	nz, BB15_10
+BB15_12:
+	push	bc
+	pop	hl
+	ld	de, 2
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB15_27
+	cp	a, 127
+	ld	l, 3
+	ld	de, (ix + -7)
+	jq	z, BB15_15
+	ld	l, 5
+BB15_15:
+	or	a, a
+	ld	a, 4
+	jq	z, BB15_17
+	ld	a, l
+BB15_17:
+	ld	iy, (ix + -10)
+	ld	(iy + 12), a
+	push	de
+	pop	iy
+	jq	BB15_18
+BB15_27:
+	ld	iy, (ix + -7)
+	jq	BB15_19
+BB15_10:
+	ld	hl, (ix + -13)
+	push	hl
+	call	_ti_GetDataPtr
+	ld	bc, (ix + -19)
+	push	hl
+	pop	iy
+	pop	hl
+	ld	a, (iy + 1)
+	cp	a, 123
+	ld	iy, (ix + -7)
+	jq	nz, BB15_11
+BB15_18:
+	ld	a, (ix + -1)
+BB15_19:
+	cp	a, 16
+	jq	nz, BB15_22
+	ld	hl, (ix + -13)
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, (ix + -16)
+	push	hl
+	call	_ti_Read
+	ld	bc, (ix + -19)
+	ld	iy, (ix + -7)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + -1)
+	cp	a, 16
+	jq	nz, BB15_22
+	ld	hl, (ix + -13)
+	push	hl
+	call	_ti_GetDataPtr
+	ld	bc, (ix + -19)
+	push	hl
+	pop	iy
+	pop	hl
+	lea	hl, iy + -2
+	lea	de, iy + 0
+	ld	iy, (ix + -22)
+	ld	(iy + 16), hl
+	ex	de, hl
+	ld	de, 256
+	add	hl, de
+	ld	iy, (ix + -22)
+	ld	(iy + 9), hl
+	ld	iy, (ix + -7)
+BB15_22:
+	inc	bc
+	jq	BB15_7
+BB15_11:
+	lea	hl, iy + 0
+	ld	iy, (ix + -10)
+	ld	(iy + 12), 0
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -4)
+	add	iy, de
+	ld	(iy + 24), 1
+	ld	iy, (ix + -7)
+BB15_23:
+	lea	hl, iy + 0
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	de, iy + 0
+	ld	iy, (ix + -4)
+	add	iy, bc
+	ld	(ix + -4), iy
+	ld	hl, (iy + 16)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB15_25
+	ld	iy, (ix + -10)
+	ld	a, (iy + 12)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, _vysion_alticon
+	add	hl, bc
+	ld	hl, (hl)
+	ld	iy, (ix + -4)
+	ld	(iy + 16), hl
+BB15_25:
+	inc	de
+	push	de
+	pop	bc
+	jq	BB15_1
+BB15_26:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_GetBasicIcons
+_vysion_GetBasicIcons:
+	ld	hl, -32
+	call	__frameset
+	ld.sis	de, 32
+	ld	iy, L___const.vysion_GetBasicIcons.search
+	ld	bc, 6
+	lea	hl, ix + -2
+	ld	(ix + -20), hl
+	lea	hl, ix + -8
+	ld	(ix + -2), e
+	ld	(ix + -1), d
+	push	bc
+	push	iy
+	ld	(ix + -17), hl
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, 0
+BB16_1:
+	ld	de, (_vysion_filesysteminfo+3)
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB16_19
+	ld	(ix + -14), iy
+	call	_ti_CloseAll
+	ld	bc, 28
+	ld	iy, (_vysion_file)
+	ld	hl, (ix + -14)
+	call	__imulu
+	ld	(ix + -11), iy
+	ex	de, hl
+	add	iy, de
+	ld	e, (iy + 12)
+	ld	a, e
+	cp	a, 2
+	jq	nc, BB16_20
+	ld	(ix + -23), iy
+	ld	hl, (ix + -14)
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	a, e
+	or	a, a
+	ld	l, 6
+	ld	c, l
+	jq	z, BB16_5
+	ld	l, -1
+	ld	c, l
+BB16_5:
+	ld	a, e
+	cp	a, 1
+	ld	a, 5
+	ld	e, a
+	ld	hl, (ix + -11)
+	jq	z, BB16_7
+	ld	e, c
+BB16_7:
+	lea	bc, iy + 0
+	add	hl, bc
+	push	de
+	ld	de, L_.str.4
+	push	de
+	push	hl
+	call	_ti_OpenVar
+	ld	e, a
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	z, BB16_14
+	push	de
+	ld	(ix + -26), de
+	call	_ti_GetDataPtr
+	pop	de
+	ld	de, 6
+	push	de
+	push	hl
+	ld	hl, (ix + -17)
+	push	hl
+	call	_memcmp
+	ld	bc, (ix + -26)
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB16_14
+	ld	hl, (ix + -14)
+	push	bc
+	pop	de
+	ld	bc, 28
+	call	__imulu
+	push	de
+	pop	bc
+	push	hl
+	pop	de
+	ld	iy, (ix + -11)
+	add	iy, de
+	ld	(ix + -32), iy
+	ld	hl, (iy + 16)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB16_11
+	ld	hl, _malloc
+	push	hl
+	ld	hl, 16
+	push	hl
+	push	hl
+	call	_gfx_AllocSprite
+	ld	bc, (ix + -26)
+	pop	de
+	pop	de
+	pop	de
+	ld	iy, (ix + -32)
+	ld	(iy + 16), hl
+BB16_11:
+	push	bc
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, 6
+	push	hl
+	call	_ti_Seek
+	ld	bc, (ix + -26)
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	ex	de, hl
+BB16_12:
+	ld	(ix + -29), de
+	ex	de, hl
+	ld	de, 258
+	or	a, a
+	sbc	hl, de
+	jq	z, BB16_14
+	push	bc
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, (ix + -20)
+	push	hl
+	call	_ti_Read
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 16
+	push	hl
+	ld	hl, 0
+	push	hl
+	ld	hl, (ix + -20)
+	push	hl
+	call	_strtol
+	ld	bc, (ix + -26)
+	push	hl
+	pop	de
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, L___const.vysion_GetBasicIcons.palette
+	add	hl, de
+	ld	a, (hl)
+	ld	iy, (ix + -32)
+	ld	hl, (iy + 16)
+	ld	de, (ix + -29)
+	add	hl, de
+	ld	(hl), a
+	inc	de
+	jq	BB16_12
+BB16_20:
+	ld	iy, (ix + -14)
+	jq	BB16_16
+BB16_14:
+	ld	iy, (ix + -23)
+	ld	e, (iy + 12)
+	ld	a, e
+	cp	a, 1
+	ld	bc, 28
+	ld	iy, (ix + -14)
+	jq	nz, BB16_16
+	lea	hl, iy + 0
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -11)
+	add	iy, de
+	ld	(iy + 24), 0
+	ld	iy, (ix + -14)
+	ld	bc, 28
+	ld	e, 1
+BB16_16:
+	ld	a, e
+	lea	hl, iy + 0
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	de, iy + 0
+	ld	iy, (ix + -11)
+	add	iy, bc
+	ld	(ix + -11), iy
+	ld	hl, (iy + 16)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB16_18
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, _vysion_alticon
+	add	hl, bc
+	ld	hl, (hl)
+	ld	iy, (ix + -11)
+	ld	(iy + 16), hl
+BB16_18:
+	inc	de
+	push	de
+	pop	iy
+	jq	BB16_1
+BB16_19:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_CompareFolderNames
+_vysion_CompareFolderNames:
+	call	__frameset0
+	ld	hl, (ix + 6)
+	ld	de, (ix + 9)
+	ld	(ix + 6), hl
+	ld	(ix + 9), de
+	pop	ix
+	jp	_strcmp
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_CompareFileNames
+_vysion_CompareFileNames:
+	call	__frameset0
+	ld	hl, (ix + 6)
+	ld	de, (ix + 9)
+	ld	(ix + 6), hl
+	ld	(ix + 9), de
+	pop	ix
+	jp	_strcmp
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SortFolders
+_vysion_SortFolders:
+	ld	de, -4
+	ld	bc, _vysion_CompareFolderNames
+	ld	iy, (_vysion_folder)
+	ld	hl, (_vysion_filesysteminfo+6)
+	add	hl, de
+	push	bc
+	ld	de, 20
+	push	de
+	push	hl
+	pea	iy + 80
+	call	_qsort
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SortFiles
+_vysion_SortFiles:
+	ld	iy, 28
+	ld	de, _vysion_CompareFileNames
+	ld	bc, (_vysion_file)
+	ld	hl, (_vysion_filesysteminfo+3)
+	push	de
+	push	iy
+	push	hl
+	push	bc
+	call	_qsort
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_DoFileOperation
+_vysion_DoFileOperation:
+	ld	hl, -9
+	call	__frameset
+	ld	hl, (ix + 9)
+	ld	a, 2
+	ld	iy, (_optix_menu)
+	ld	de, (_vysion_tempfile)
+	ld	(ix + -3), de
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	(ix + -6), iy
+	add	iy, bc
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	c, a
+	call	__ishl
+	push	hl
+	pop	bc
+	ld	a, (ix + 6)
+	cp	a, 7
+	jq	c, BB21_3
+	xor	a, a
+	jq	BB21_2
+BB21_3:
+	ld	(ix + -9), de
+	ld	de, (ix + -3)
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	bc, 0
+	ld	c, a
+	ld	hl, LJTI21_0
+	add	hl, bc
+	add	hl, bc
+	add	hl, bc
+	ld	hl, (hl)
+	jp	(hl)
+BB21_4:
+	ld	a, 1
+	ld	(_vysion_programdata+2036), a
+	inc	a
+	ld	(_vysion_programdata+2037), a
+	ld	hl, (ix + -9)
+	ld	(_vysion_programdata+2027), hl
+	ld	bc, 35
+	ld	hl, (ix + 9)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -6)
+	add	iy, de
+	ld	a, (iy + 20)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(_vysion_programdata+2030), hl
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB21_6
+	ld	iy, (ix + -3)
+	ld	hl, (_vysion_file)
+	ld	(ix + -6), hl
+	ld	c, 2
+	ld	hl, (ix + -9)
+	call	__ishl
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -6)
+	add	iy, de
+	ld	a, (iy + 12)
+	ld	l, a
+	push	hl
+	push	iy
+	call	_vysion_RunProgram
+	pop	hl
+	pop	hl
+BB21_6:
+	xor	a, a
+	ld	(_vysion_programdata+2036), a
+	or	a, a
+	sbc	hl, hl
+	ld	(_vysion_programdata+2027), hl
+	ld	(_vysion_programdata+2030), hl
+	jq	BB21_27
+BB21_7:
+	ld	(ix + -6), iy
+	ld	hl, L_.str.9
+	ld	de, L_.str.10
+	ld	bc, 3
+	push	bc
+	ld	bc, 120
+	push	bc
+	ld	bc, 12
+	push	bc
+	push	de
+	push	hl
+	call	_optix_Menu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	nz, BB21_10
+	ld	hl, (ix + -6)
+	ld	a, (hl)
+	ld	c, 2
+	ld	hl, (ix + -9)
+	call	__ishl
+	push	hl
+	pop	de
+	ld	iy, (ix + -3)
+	add	iy, de
+	ld	hl, (iy + 1)
+	push	hl
+	ld	l, a
+	push	hl
+	call	_vysion_Delete
+	pop	hl
+	pop	hl
+	bit	0, a
+	ld	hl, 8
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.11
+	push	hl
+	ld	hl, L_.str.6
+	push	hl
+	call	z, _optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB21_10:
+	ld	hl, (ix + 9)
+	ld	(_optix_guidata+15), hl
+	jq	BB21_25
+BB21_11:
+	ld	a, (iy)
+	ld	(_vysion_programdata+2000), a
+	ld	c, 2
+	ld	hl, (ix + -9)
+	call	__ishl
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	hl, (iy + 1)
+	jq	BB21_33
+BB21_12:
+	ld	iy, (_vysion_programdata+2001)
+	ld	bc, -1
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, bc
+	ld	d, 0
+	ld	a, d
+	jq	z, BB21_2
+	ld	a, (_vysion_programdata+2000)
+	ld	l, 1
+	xor	a, l
+	ld	de, (_vysion_programdata+2004)
+	bit	0, a
+	jq	z, BB21_28
+	ld	hl, (_vysion_file)
+	ld	(ix + -3), hl
+	ld	bc, 28
+	lea	hl, iy + 0
+	call	__imulu
+	push	de
+	pop	bc
+	push	hl
+	pop	de
+	ld	iy, (ix + -3)
+	add	iy, de
+	ld	(iy + 13), bc
+	jq	BB21_32
+BB21_15:
+	ld	hl, (_vysion_file)
+	ld	(ix + -6), hl
+	ld	c, 2
+	ld	hl, (ix + -9)
+	call	__ishl
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	de, (iy + 1)
+	ld	bc, 28
+	push	de
+	pop	hl
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -6)
+	add	iy, bc
+	ld	a, (iy + 12)
+	cp	a, 1
+	jq	nz, BB21_27
+	ld	bc, 28
+	push	de
+	pop	hl
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -6)
+	add	iy, bc
+	ld	a, (iy + 23)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB21_30
+	ld	bc, 28
+	ex	de, hl
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, (ix + -6)
+	add	hl, de
+	push	hl
+	call	_vysion_EditProgram
+	jq	BB21_18
+BB21_19:
+	ld	hl, L_.str.5
+	ld	de, 8
+	push	de
+	ld	de, 100
+	push	de
+	ld	de, 10
+	push	de
+	push	hl
+	call	_optix_GetStringInput
+	push	hl
+	pop	de
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_vysion_folder)
+	ld	hl, (_vysion_programdata+2004)
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 17)
+	push	hl
+	push	de
+	call	_vysion_AddFolder
+	pop	hl
+	pop	hl
+BB21_20:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB21_26
+	call	_kb_Scan
+	jq	BB21_20
+BB21_22:
+	ld	hl, (_optix_guidata+15)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -6)
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	c, 2
+	call	__ishl
+	push	hl
+	pop	bc
+	push	de
+	pop	hl
+	add	hl, bc
+	ld	a, (hl)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	push	de
+	pop	iy
+	jq	nz, BB21_25
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB21_25
+	ld	c, 2
+	ld	hl, (ix + -9)
+	call	__ishl
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 1)
+	push	hl
+	call	_vysion_PropertiesMenu
+	pop	hl
+BB21_25:
+	call	_vysion_GetAsmIcons
+	call	_vysion_GetBasicIcons
+	jq	BB21_26
+BB21_28:
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB21_31
+	ld	hl, L_.str.7
+	ld	de, 8
+	push	de
+	ld	de, 120
+	push	de
+	ld	de, 12
+	push	de
+	push	hl
+	ld	hl, L_.str.6
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	jq	BB21_32
+BB21_30:
+	ld	hl, L_.str.8
+	ld	de, 8
+	push	de
+	ld	de, 120
+	push	de
+	ld	de, 12
+	push	de
+	push	hl
+	ld	hl, L_.str.6
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB21_18:
+	pop	hl
+BB21_27:
+	ld	d, 0
+	ld	a, d
+	jq	BB21_2
+BB21_31:
+	ld	hl, (_vysion_folder)
+	ld	(ix + -3), hl
+	ld	bc, 20
+	lea	hl, iy + 0
+	call	__imulu
+	push	de
+	pop	bc
+	push	hl
+	pop	de
+	ld	iy, (ix + -3)
+	add	iy, de
+	ld	(iy + 12), bc
+BB21_32:
+	ld	hl, -1
+BB21_33:
+	ld	(_vysion_programdata+2001), hl
+BB21_26:
+	ld	a, 1
+BB21_2:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+	section	.rodata,"a",@progbits
+lJTI21_0:
+	private	LJTI21_0
+LJTI21_0:
+	dl	BB21_4
+	dl	BB21_11
+	dl	BB21_12
+	dl	BB21_15
+	dl	BB21_7
+	dl	BB21_19
+	dl	BB21_22
+
+	section	.text,"ax",@progbits
+	public	_vysion_HandleFileOperations
+_vysion_HandleFileOperations:
+	call	__frameset0
+	ld	a, (ix + 6)
+	ld	l, a
+	push	hl
+	call	_vysion_FileOperationsMenu
+	ld	l, a
+	pop	de
+	ld	de, (_optix_guidata+15)
+	push	de
+	push	hl
+	call	_vysion_DoFileOperation
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.data,"aw",@progbits
+	public	_vysion_alticon
+_vysion_alticon:
+	dl	_basic_data
+	dl	_basic_data
+	dl	_ices_data
+	dl	_ice_data
+	dl	_cprog_data
+	dl	_ez80_data
+	dl	_appvar_data
+	dl	_unknown_data
+
+	section	.rodata,"a",@progbits
+	private	L_.str
+L_.str:
+	db	"NULL",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SetOP1.temp
+L___const.vysion_SetOP1.temp:
+	db	" ",000o,000o,000o,000o,000o,000o,000o,000o,000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.3
+L_.str.3:
+	db	"No description...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.4
+L_.str.4:
+	db	"r",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_GetBasicIcons.palette
+L___const.vysion_GetBasicIcons.palette:
+	db	"",337o,030o,340o,000o,370o,006o,344o,"`",020o,035o,347o,377o,336o,275o,224o,"J"
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_GetBasicIcons.search
+L___const.vysion_GetBasicIcons.search:
+	db	">DCS?*"
+
+	section	.rodata,"a",@progbits
+	private	L_.str.5
+L_.str.5:
+	db	"Name?",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.6
+L_.str.6:
+	db	"ERROR",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.7
+L_.str.7:
+	db	"Pasting a folder within itself is not allowed.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.8
+L_.str.8:
+	db	"Please unarchive this file to edit it.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.9
+L_.str.9:
+	db	"Delete?",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.10
+L_.str.10:
+	db	"Yes`No`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.11
+L_.str.11:
+	db	"Deletion failed...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_switch.table.vysion_GetAsmIcons
+L_switch.table.vysion_GetAsmIcons:
+	db	"",006o,005o,377o,006o,006o,006o,025o
+
+	ident	"clang version 12.0.0 (https://github.com/jacobly0/llvm-project a4fd568b012f0b193e341952bf10624f559064fd)"
+	extern	__Unwind_SjLj_Register
+	extern	_vysion_RunProgram
+	extern	_malloc
+	extern	_vysion_programdata
+	extern	_optix_guidata
+	extern	_ti_Close
+	extern	_ti_OpenVar
+	extern	_memcpy
+	extern	__ishl
+	extern	_strlen
+	extern	_ti_Read
+	extern	__setflag
+	extern	_gfx_AllocSprite
+	extern	_vysion_LoadFilesystem
+	extern	_ti_GetSize
+	extern	_vysion_filesysteminfo
+	extern	_ti_DetectAny
+	extern	_optix_Menu
+	extern	_foldericon_data
+	extern	_realloc
+	extern	_vysion_EditProgram
+	extern	_optix_menu
+	extern	__frameset
+	extern	_vysion_settings
+	extern	_vysion_Delete
+	extern	_kb_AnyKey
+	extern	_strcmp
+	extern	_optix_GetStringInput
+	extern	_kb_Scan
+	extern	_vysion_PropertiesMenu
+	extern	_basic_data
+	extern	_vysion_folder
+	extern	_ti_Seek
+	extern	_optix_Message
+	extern	_unknown_data
+	extern	_ti_CloseAll
+	extern	_ice_data
+	extern	__Unwind_SjLj_Unregister
+	extern	_qsort
+	extern	_strcpy
+	extern	_vysion_file
+	extern	__imulu
+	extern	_strcat
+	extern	_cprog_data
+	extern	_vysion_tempfile
+	extern	_appvar_data
+	extern	_strtol
+	extern	_ti_GetDataPtr
+	extern	_ices_data
+	extern	_ti_IsArchived
+	extern	_vysion_FileOperationsMenu
+	extern	__frameset0
+	extern	_strncmp
+	extern	_memcmp
+	extern	_ez80_data

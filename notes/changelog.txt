@@ -1,0 +1,51 @@
+[VYSION CHANGELOG]
+
+[2020-10-26]:
+   [added] you can now set a custom background from an appvar for the shell
+[2020-10-27]:
+   [added] new icons for the start menu
+[2020-10-28]:
+   [improved] you can now access the start menu from within the file explorer
+   [improved] filesystem appvar is now archived when it is saved
+   [improved] filesystem is always saved on running a program
+   [fixed] memory leak could occur on running programs
+   [fixed] you now can't paste a folder inside itself
+   [fixed] you can now no longer scroll past the edge of a menu with the right arrow key
+   [fixed] you can no longer run appvars or folders
+[2020-10-29]
+   [added] option to make the taskbar centered, transparent, or both
+   [added] the beginnings of the settings backend
+   [improved] generally cleaned up code, removed magic numbers
+   [improved] file operations menu now no longer redraws the desktop on exit (so no flickering anymore)
+   [improved] start menu now no longer redraws the desktop on exit (so no more flickering there either)
+   [improved] you can no longer run VYSION from within itself
+   [fixed] clock no longer displays 12:00 as 0:00
+   [fixed] you can no longer move the cursor within a menu while holding the selection key
+   [fixed] you can no longer select "edit" for appvars (which isn't a feature, it wouldn't work anyway)
+[2020-10-31]
+   [added] new file type (protected TI-BASIC)
+   [improved] clipboard is now independent from file explorer (meaning it's saved after the file explorer exits)
+   [fixed] VYSION no longer thinks protected TI-BASIC programs are ASM
+   [fixed] the Stop token no longer breaks the reloader when it is used in a run TI-BASIC program
+   [fixed] properties of protected TI-BASIC programs now save as intended
+[2020-11-01]
+   [improved] cursor now does not move to the start of a menu after accessing file operations menu
+   [fixed] Stop token fix hook is now cleared if it exists on program start
+[2020-11-02]
+   [fixed] folder cutting/pasting now works correctly again
+[2020-11-03]
+   [added] you can now change the colors of the shell from within the settings menu
+   [added] new setting, to change whether VYSION detects new files, deleted files, both, or just loads the old filesystem from the save
+   [added] taskbar can now be set to be centered or transparent from within 
+   [added] filesystem can now be manually refreshed
+   [improved] battery icon color is now set to the text color, for improved visibility
+   [fixed] taskbar menu would shrink in size after updating
+   [fixed] centered taskbar could overlap with the clock
+[2020-11-11]
+   [added] new program running routines, speeding up program starting and exiting
+   [improved] program running is no longer dependent on VYSTEMP
+   [fixed] color picker stays on screen after completion
+   [fixed] wallpaper picker stays on screen after completion
+   [fixed] file explorer side menu selection could jump to "Exit" after selecting an option in that menu
+   [fixed] [2nd] clicks repeatedly in many places throughout the shell
+   [fixed] opening the file explorer, exiting it, and then clicking [enter] or [2nd] runs the first program in the temp menu

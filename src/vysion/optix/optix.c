@@ -62,7 +62,6 @@ void optix_RestoreActiveMenus(void) {
 void optix_HandleGUI(void) {
     if (optix_guisettings.cursoron) {
         kb_Scan();
-        optix_guidata.skkey = os_GetCSC();
         //so apparently keypresses don't work 111anymore
         if (!kb_AnyKey()) optix_guidata.keypress = true;
         //gfx_FillScreen(optix_guicolors.bgcolor);
@@ -74,7 +73,7 @@ void optix_HandleGUI(void) {
 
 void optix_HandleCursor(void) {
     //just going to take this out for now, it doesn't really work
-    optix_HandleTrackPad();
+    if (optix_cursor.trackpadactive) optix_HandleTrackPad();
     if (optix_guisettings.cursoron) {
         optix_UpdateCursor();
         optix_RenderCursor();
@@ -719,7 +718,6 @@ void optix_UpdateCurrMenu(void) {
     int atty;
     if (optix_guisettings.cursoron) {
         kb_Scan();
-        if (!kb_AnyKey()) optix_guidata.keypress = true;
         optix_guidata.currmenu = OPTIX_MENU_INVALID;
         for (i = 0; i < optix_guidata.numactivemenus; i++) {
             m = &optix_menu[optix_guidata.activemenus[i]];
@@ -759,26 +757,27 @@ void optix_UpdateCurrMenu(void) {
         }
     } else {
         kb_Scan();
-        if (!kb_AnyKey()) optix_guidata.keypress = true;
+        if (!kb_AnyKey()) timer_1_Counter = 0;
         //fix this in case we have to later
         if (m->currselection >= m->numoptions) m->currselection = m->numoptions - 1;
-        if (kb_Data[7] & kb_Up && optix_guidata.keypress && m->height > 1) {
+        if (kb_Data[7] & kb_Up && ((optix_guidata.keypress && m->height > 1) || timer_1_Counter > OPTIX_TICKS_SCROLL)) {
             attoption = m->currselection - m->width;
             optix_guidata.keypress = false;
         }
-        if (kb_Data[7] & kb_Down && optix_guidata.keypress && m->height > 1) {
+        if (kb_Data[7] & kb_Down && ((optix_guidata.keypress && m->height > 1) || timer_1_Counter > OPTIX_TICKS_SCROLL)) {
             attoption = m->currselection + m->width;
             optix_guidata.keypress = false;
         }
-        if (kb_Data[7] & kb_Left && optix_guidata.keypress) {
+        if (kb_Data[7] & kb_Left && (optix_guidata.keypress || timer_1_Counter > OPTIX_TICKS_SCROLL)) {
             if ((m->currselection) % m->width > 0 || m->height == 1) attoption = m->currselection - 1;
             optix_guidata.keypress = false;
         }
-        if (kb_Data[7] & kb_Right && optix_guidata.keypress) {
+        if (kb_Data[7] & kb_Right && (optix_guidata.keypress || timer_1_Counter > OPTIX_TICKS_SCROLL)) {
             //check if it's not one of the two ones on the edge
             if (m->currselection % m->width < m->width - 1 || m->height == 1) attoption = m->currselection + 1;
             optix_guidata.keypress = false;
         }
+        if (timer_1_Counter > OPTIX_TICKS_SCROLL) timer_1_Counter = 0;
         //else m->enterpressed = false;
         if (attoption >= 0) m->currselection = attoption;
         //if you're trying to get on an option that's not on the menu
@@ -802,6 +801,9 @@ void optix_UpdateCurrMenu(void) {
         optix_guidata.keypress = false;
     }
     if (optix_guidata.currmenu == OPTIX_MENU_INVALID) m->enterpressed = false;
+    //start the timer again
+    //we're assuming that updatecurrmenu() will be called before rendermenu()
+    if (!kb_AnyKey()) optix_guidata.keypress = true;
 }
 
 void optix_RenderMenu(uint8_t menu) {
@@ -1205,6 +1207,7 @@ void optix_HandleTrackPad(void) {
     uint16_t x;
     uint8_t y;
     kb_key_t key;
+    optix_guidata.skkey = os_GetCSC();
     x = 0;
     y = 0;
     //thanks Michael2_3B (maybe will optimize)

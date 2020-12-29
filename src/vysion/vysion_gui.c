@@ -37,10 +37,11 @@ void vysion_RenderToolbar(void) {
         gfx_SetColor(vysion_settings.taskbarcolor);
         //gfx_SetColor(0);
         gfx_FillRectangle(0, 220, 320, 20);
+        optix_RenderMenu(vysion_programdata.taskbar);
         gfx_SetColor(vysion_settings.taskbarbordercolor);
-        gfx_HorizLine(0, 219, 320);
+        gfx_HorizLine(0, 220, 320);
         gfx_VertLine(5 + taskbaricon->width + 5, 220, 20);
-    }
+    } else optix_RenderMenu(vysion_programdata.taskbar);
     gfx_SetTransparentColor(0);
     gfx_TransparentSprite(taskbaricon, 5, 222);
     /*
@@ -83,7 +84,6 @@ void vysion_RenderToolbar(void) {
     gfx_Rectangle(317, 228, 1, 4);
     gfx_Rectangle(301, 226, 15, 8);
     for (i = 0; i < vysion_programdata.batterystatus; i++) gfx_FillRectangle(303 + i * 3, 228, 2, 4);
-    optix_RenderMenu(vysion_programdata.taskbar);
 }
 
 void vysion_CenterTaskbar(void) {
@@ -96,25 +96,18 @@ void vysion_FileExplorer(int folder) {
     uint8_t main;
     int currfolder;
     char *sidebartext = "< Back`Root`Desktop`Exit`";
-    uint8_t rows;
-    uint8_t columns;
-    bool runrefresh;
+    uint8_t rows = 9;
+    uint8_t columns = 2;
+    bool runrefresh = false;
     //just will store a number and whether or not it's a program or folder
     bool clipboardisfolder;
     //default state is -1, or with nothing on it
-    int clipboard;
-    int temp;
+    int clipboard = -1;
+    int temp = 0;
     uint8_t filetype;
     int currmenus[2];
     //because apparently OPTIX can't do this properly
     gfx_sprite_t *arrowback = gfx_MallocSprite(84, 12);
-    //optix_SaveActiveMenus();
-    //gfx_Blit(0);
-    rows = 9;
-    columns = 2;
-    runrefresh = false;
-    //clipboard = -1;
-    //maybe add icons later
     //set the default folder state (which in this case is the root)
     vysion_SetTempMenu(folder, -1, true, true);
     vysion_GetTempMenuIcons();
@@ -123,7 +116,7 @@ void vysion_FileExplorer(int folder) {
     optix_AddMenu(optix_GetWindowXCentering(0, 100 + 100 * columns, columns, 93), optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, 1, rows, 92, 20, sidebartext, NULL);
     sidebar = optix_guidata.nummenus - 1;
     if (vysion_filesysteminfo.numtempfiles > 0) optix_AddMenu(optix_GetWindowXCentering(2, 100 + 100 * columns, columns, 100) - 7, optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, columns, rows, 100, 20, vysion_programdata.str1, vysion_programdata.icon);
-    else optix_AddMenu(optix_GetWindowXCentering(2, 100 + 100 * columns, columns, 100) - 8, optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, columns, rows, 100, 20, "No files...`", NULL);
+    else optix_AddMenu(optix_GetWindowXCentering(2, 100 + 100 * columns, columns, 100) - 7, optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, columns, rows, 100, 20, "No files...`", NULL);
     main = optix_guidata.nummenus - 1;
     //optix_AddMenu(0, 0, 0, 0, 1, 8, 100, 20, str1, icon);
     //optix_AddMenu(0, 0, 0, 0, 16, 11, 20, 20, str1, icon);
@@ -137,9 +130,6 @@ void vysion_FileExplorer(int folder) {
     currmenus[0] = main;
     currmenus[1] = sidebar;
     optix_SetActiveMenus(currmenus, 2);
-    //gfx_Blit(1);
-    //optix_cursor.x = 160;
-    //optix_cursor.y = 120;
     optix_menu[main].enterpressed = false;
     gfx_GetSprite(arrowback, 214, 228);
     while (!(kb_Data[6] & kb_Clear)) {
@@ -147,8 +137,8 @@ void vysion_FileExplorer(int folder) {
         struct vysion_tempfile_t *v = &vysion_tempfile[optix_menu[main].currselection];
         currfile = &vysion_file[v->index];
         kb_Scan();
-        //make sure we're at the left edge of the menu
-        if (kb_Data[7] & kb_Left && (optix_menu[main].currselection + 1) % columns == 1 && optix_guidata.keypress && optix_guidata.currmenu == main) {
+        //make sure we're at the left edge of the menu, the current selection will be a multiple of 2 (0, 2, 4, etc.), and so the mod will be 0
+        if (kb_Data[7] & kb_Left && !(optix_menu[main].currselection % columns) && optix_guidata.keypress && optix_guidata.currmenu == main) {
             optix_guidata.currmenu = sidebar;
             optix_guidata.keypress = false;
         }
@@ -156,7 +146,7 @@ void vysion_FileExplorer(int folder) {
             optix_guidata.currmenu = main;
             optix_guidata.keypress = false;
         }
-        if (optix_guidata.currmenu == main && vysion_programdata.currfolder != 0) vysion_CheckAlphaJump();
+        if (optix_guidata.currmenu == main && vysion_programdata.currfolder != VYSION_FOLDER_ROOT) vysion_CheckAlphaJump();
         //maybe the file operations menu?
         //you're now not allowed to do anything to root
         if (kb_Data[1] & kb_Mode && optix_guidata.keypress && optix_guidata.currmenu == main && vysion_programdata.currfolder != 0) {
@@ -172,87 +162,24 @@ void vysion_FileExplorer(int folder) {
             //gfx_SwapDraw();
             //gfx_Blit(0);
             //gfx_BlitRectangle(0, optix_cursor.x - 6, optix_cursor.y - 6, 12, 12);
-            switch (vysion_FileOperationsMenu(filetype)) {
-                //run
-                case FILE_OPERATIONS_RUN:
-                    //clean things up
-                    vysion_programdata.startreturn = true;
-                    vysion_programdata.startreturnvalue = 2;
-                    vysion_programdata.fileexplorerselection = optix_menu[main].currselection;
-                    vysion_programdata.fileexplorermenumin = optix_menu[main].menumin;
-                    if (vysion_filesysteminfo.numtempfiles > 0) vysion_RunProgram(vysion_file[vysion_tempfile[optix_menu[main].currselection].index].name, vysion_file[vysion_tempfile[optix_menu[main].currselection].index].type);
-                    //if it runs correctly we won't get here
-                    vysion_programdata.startreturn = false;
-                    vysion_programdata.fileexplorerselection = 0;
-                    vysion_programdata.fileexplorermenumin = 0;
-                    break;
-                //new folder
-                case FILE_OPERATIONS_NEW_FOLDER:
-                    vysion_AddFolder(optix_GetStringInput("Name?", 10, 100, 8), vysion_programdata.currfolder);
-                    while (kb_AnyKey()) kb_Scan();
-                    runrefresh = true;
-                    break;
-                //cut
-                case FILE_OPERATIONS_CUT:
-                    vysion_programdata.clipboardisfolder = vysion_tempfile[optix_menu[main].currselection].isfolder;
-                    vysion_programdata.clipboard = vysion_tempfile[optix_menu[main].currselection].index;
-                    runrefresh = true;
-                    break;
-                case FILE_OPERATIONS_PASTE:
-                    if (vysion_programdata.clipboard != -1) {
-                        if (vysion_programdata.clipboardisfolder) {
-                            if (vysion_programdata.clipboard != vysion_programdata.currfolder) vysion_folder[vysion_programdata.clipboard].location = vysion_programdata.currfolder;
-                            else optix_Message("ERROR", "Pasting a folder within itself is not allowed.", 12, 120, 8);
-                        } else vysion_file[vysion_programdata.clipboard].location = vysion_programdata.currfolder;
-                        vysion_programdata.clipboard = -1;
-                        runrefresh = true;
-                    }
-                    break;
-                //pin it to the taskbar
-                case FILE_OPERATIONS_EDIT:
-                    //if it's basic
-                    if (vysion_file[vysion_tempfile[optix_menu[main].currselection].index].type == VYSION_BASIC_TYPE) {
-                        if (!vysion_file[vysion_tempfile[optix_menu[main].currselection].index].archived)
-                            vysion_EditProgram(vysion_file[vysion_tempfile[optix_menu[main].currselection].index].name);
-                        else optix_Message("ERROR", "Please unarchive this file to edit it.", 12, 120, 8);
-                    }
-                    break;
-                case FILE_OPERATIONS_DELETE:
-                    //fix this later
-                    //if (!vysion_tempfile[m->currselection].isfolder) currfile->taskbarpinned = true;
-                    if (!optix_Menu("Delete?", "Yes`No`", 12, 120, 3)) if (!vysion_Delete(v->isfolder, v->index)) optix_Message("ERROR", "Deletion failed...", 12, 120, 8);
-                    optix_guidata.currmenu = main;
-                    runrefresh = true;
-                    vysion_GetAsmIcons();
-                    vysion_GetBasicIcons();
-                    break;
-                case FILE_OPERATIONS_PROPERTIES:
-                    if (!vysion_tempfile[m->currselection].isfolder && vysion_filesysteminfo.numtempfiles > 0) vysion_PropertiesMenu(vysion_tempfile[optix_menu[main].currselection].index);
-                    runrefresh = true;
-                    vysion_GetAsmIcons();
-                    vysion_GetBasicIcons();
-                    break;
-                //is passed if need to quit
-                case 255:
-                    break;
-                default:
-                    break;
-            }
+            runrefresh = vysion_HandleFileOperations(filetype);
             optix_SetActiveMenus(currmenus, 2);
         }
         //actual code
         //refresh it to open a new folder if needed
-        if ((m->enterpressed && optix_guidata.currmenu != OPTIX_MENU_INVALID && !((kb_Data[6] & kb_Enter) || (kb_Data[1] & kb_2nd))) || runrefresh) {
+        if ((m->enterpressed && optix_guidata.currmenu != OPTIX_MENU_INVALID && (!((kb_Data[6] & kb_Enter) || (kb_Data[1] & kb_2nd)))) || runrefresh) {
             //do something if it's a folder
-            if ((vysion_tempfile[optix_menu[main].currselection].isfolder && optix_guidata.currmenu == main) || (optix_guidata.currmenu == sidebar && m->currselection < 3) || (runrefresh)) {
+            if ((v->isfolder && optix_guidata.currmenu == main) || (optix_guidata.currmenu == sidebar && m->currselection < 3) || (runrefresh)) {
                 //delete it
                 if (!runrefresh) {
+                    //we know that the current selection is a folder
                     if (optix_guidata.currmenu == main) {
-                        vysion_programdata.currfolder = vysion_tempfile[m->currselection].index;
+                        vysion_programdata.currfolder = v->index;
                         vysion_SetTempMenu(vysion_programdata.currfolder, -1, true, true);
-                    //if it's the root we can't go back
-                    } else if (m->currselection == 0 && vysion_folder[vysion_programdata.currfolder].location != -1) {
-                        vysion_programdata.currfolder = vysion_folder[vysion_programdata.currfolder].location;
+                        //if it's the root we can't go back
+                    //we know we're on the sidebar
+                    } else if (m->currselection == 0 && vysion_folder[vysion_programdata.currfolder].location != -1) { //Root's location is -1
+                        vysion_programdata.currfolder = vysion_GetFolderByIndex(vysion_folder[vysion_programdata.currfolder].location);
                         vysion_SetTempMenu(vysion_programdata.currfolder, -1, true, true);
                     } else if (m->currselection == 1 || m->currselection == 2) {
                         //since root is 0 and desktop is 1
@@ -267,9 +194,11 @@ void vysion_FileExplorer(int folder) {
                 //we don't need to do anything otherwise
                 vysion_GetTempMenuIcons();
                 vysion_GetTempMenuText();
+                temp = optix_menu[main].currselection;
                 optix_DeleteLastMenu();
                 if (vysion_filesysteminfo.numtempfiles > 0) optix_AddMenu(optix_GetWindowXCentering(2, 100 + 100 * columns, columns, 100) - 7, optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, columns, rows, 100, 20, vysion_programdata.str1, vysion_programdata.icon);
                 else optix_AddMenu(optix_GetWindowXCentering(2, 100 + 100 * columns, columns, 100) - 7, optix_GetWindowYCentering(1, rows * 20, rows, 20), 0, 0, columns, rows, 100, 20, "No files...", NULL);
+                //main = optix_guidata.currmenu = optix_guidata.nummenus - 1;
                 optix_SetAdvancedMenuCentering(main, 0, 1, 0, 1, 22, 0, 2, 0);
                 //this could probably get messed up
                 m = &optix_menu[optix_guidata.currmenu];
@@ -313,8 +242,8 @@ void vysion_FileExplorer(int folder) {
         //I don't want to write all this out
         m = &optix_menu[main];
         optix_VertScrollbar(m->x + m->xspacing * m->width, m->y - 1, m->menumin / m->width, (m->numoptions > m->width * m->height) * ((m->numoptions + 1) / m->width - m->height), 8, rows * 20 + 2, false);
-        optix_RenderMenu(main);
         optix_RenderMenu(sidebar);
+        optix_RenderMenu(main);
         gfx_Sprite(arrowback, 214, 228);
         //vysion_RenderToolbar();
         gfx_SwapDraw();
@@ -326,12 +255,12 @@ void vysion_FileExplorer(int folder) {
     optix_DeleteLastMenu();
     vysion_programdata.fileexplorerselection = 0;
     vysion_programdata.fileexplorermenumin = 0;
+    vysion_programdata.currfolder = 0;
     //save for later
     vysion_SaveFilesystem();
     vysion_RenderDesktop();
     gfx_Blit(1);
     free(arrowback);
-    //optix_RestoreActiveMenus();
 }
 
 uint8_t vysion_FileOperationsMenu(uint8_t filetype) {
@@ -402,12 +331,13 @@ uint8_t vysion_FileOperationsMenu(uint8_t filetype) {
 }
 
 uint8_t vysion_StartMenu(void) {
-    const char *menutext = "Programs`Appvars`Files`Search`Settings`Refresh`Power`Exit";
+    const char *menutext = "Programs`Appvars`Files`Search`Settings`Refresh`About`Exit";
     struct optix_menu_t *m;
     uint8_t returnvalue;
     gfx_sprite_t *background;
+    int menusave = optix_guidata.currmenu;
     //sprites, cool
-    gfx_sprite_t *spr[] = {startprogram, startappvar, startfile, startsearch, startsettings, startrefresh, startpower, startexit};
+    gfx_sprite_t *spr[] = {startprogram, startappvar, startfile, startsearch, startsettings, startrefresh, startabout, startexit};
     //it's going to be on the top of the screen, at 0, 0
     //because it's easy to do that
     //may as well put this here
@@ -450,7 +380,7 @@ uint8_t vysion_StartMenu(void) {
     gfx_Blit(1);
     free(background);
     optix_DeleteLastMenu();
-    optix_guidata.currmenu--;
+    optix_guidata.currmenu = menusave;
     while (kb_AnyKey()) kb_Scan();
     return returnvalue;
 }
@@ -861,6 +791,73 @@ void vysion_SettingsMenu(void) {
     optix_DeleteLastMenu();
 }
 
+void vysion_About(void) {
+    struct optix_menu_t *m;
+    struct optix_menu_t *n;
+    const char *description[4] = {
+    //introduction
+    "VYSION CE is the ultimate CE shell, aiming to become the best and most feature-rich shell for the TI-84 Plus CE and "
+    "TI-83 Premium CE calculators. Containing a variety of features never seen before on this model, such as a Windows-like GUI, a working cursor, a full filesystem "
+    "with folders, a password lock, the ability to pin programs to the taskbar or move them to the desktop, and the ability to set custom backgrounds and colors, VYSION brings "
+    "your desktop computer experience to the palm of your hand. It also features all of the other features you'd expect from a shell of this caliber: running, "
+    "(un)archiving, editing, (un)hiding, deleting, and (un)locking, programs and appvars, all within a responsive and easy-to-use GUI.",
+    //features
+    "VYSION's features include, but are not limited to, these listed: ` -running programs ` -editing programs ` -(un)archiving files ` -(un)hiding programs, ` -(un)locking programs",
+    "` -a working cursor ` -full filesystem with folders ` -password lock ` -pinning programs to the taskbar ` -cutting/pasting folders and files ` -custom backgrounds/color scheme"
+    "` -password lock",
+    //controls
+    "The controls of VYSION are very user-friendly and intuitive: `Global: ` [arrows] move cursor ` [enter/2nd] select option"
+    "`Desktop: ` [f1] open start menu ` [f2-f5] snap cursor to taskbar ` [arrows] move cursor ` [enter/2nd] select option"
+    "`File explorer: ` [arrows] move cursor ` [enter/2nd] select option ` [alpha] alpha jump ` [mode] open file operations menu",
+    //credits
+    "VYSION would not have been possible without the help and support of members of the Cemetech community, especially: `Programming help: ` -MateoConLechuga ` -jacobly `"
+    " -beckadamtheinventor ` -fghsgh `Feedback: ` -King Dub Dub ` -EverydayCode ` -Roccolox Programs `To the many who played a smaller role but still helped in some way throughout "
+    "the development of the project, thank you to you as well."};
+    uint8_t i;
+    uint8_t scrollpos;
+    bool keypress;
+    int currmenu[] = {optix_guidata.nummenus};
+    optix_AddMenu(60, 75, 0, 0, 2, 1, 100, 12, "Introduction`Features`Controls`Credits`", NULL);
+    optix_guidata.currmenu = optix_guidata.nummenus - 1;
+    //turns out realloc could relocate the dynamic array somewhere else, messing up the first menu
+    //anyway it's fixed
+    m = &optix_menu[optix_guidata.currmenu];
+    m->currselection = 0;
+    scrollpos = 0;
+    keypress = false;
+    optix_SetActiveMenus(currmenu, 1);
+    while (!(kb_Data[6] & kb_Clear)) {
+        kb_Scan();
+        m->enterpressed = false;
+        //height = 72 + 16
+        optix_UpdateCurrMenu();
+        optix_RenderWindow("About", 202, 104);
+        i = optix_WordWrap(description[m->currselection - (m->currselection == 4)], 190);
+        if (kb_Data[7] & kb_Up && keypress) {
+            if (scrollpos > 0) scrollpos--;
+            keypress = false;
+        }
+        if (kb_Data[7] & kb_Down && keypress) {
+            if (scrollpos < i - 6 && i > 6) scrollpos++;
+            keypress = false;
+        }
+        if (scrollpos + 6 > i) scrollpos = 0;
+        if (!kb_AnyKey()) keypress = true;
+        optix_PrintWordWrap(190, 64, 98, 11, scrollpos, (6 * (i >= 6)) + (i * (i < 6)));
+        gfx_PrintStringXY("[clear] : exit", 160 - gfx_GetStringWidth("[clear] : exit") / 2, 167);
+        optix_RenderMenu(currmenu[0]);
+        gfx_SetColor(255);
+        gfx_HorizLine(60, 164, 200);
+        optix_HorizScrollbar(59, 87, m->menumin, 2, 202, 8, false);
+        optix_VertScrollbar(253, 94, (i >= 6) * scrollpos, (i >= 6) * (i - 6), 8, 71, false);
+        gfx_SwapDraw();
+        optix_HandleGUI();
+    }
+    optix_DeleteLastMenu();
+}
+
+
+
 void vysion_SelectWallpaper(void) {
     uint8_t search[] = {0x56, 0x00, 0x59, 0x53, 0x57, 0x41, 0x4c, 0x46, 0x49, 0x58};
     ti_var_t slot;
@@ -918,7 +915,7 @@ void vysion_SelectWallpaper(void) {
     //delay(100);
     if (filesfound == 0) strcpy(files, "NONE`");
     //let's make this in a window with 100 px on the side for the appvar names and 160 for the actual sprite so 160 x 120, showing 12 appvars at a time
-    optix_AddMenu(optix_GetWindowXCentering(0, windowwidth, 1, 100), optix_GetWindowYCentering(0, 120, 10, 12), 0, 0, 1, 12, 99, 12, files, NULL);
+    optix_AddMenu(optix_GetWindowXCentering(0, windowwidth, 1, 100), optix_GetWindowYCentering(0, 120, 10, 12), 0, 0, 1, 12, 99 - 7 * (filesfound > 10), 10, files, NULL);
     m = &optix_menu[optix_guidata.nummenus - 1];
     optix_guidata.currmenu = optix_guidata.nummenus - 1;
     currmenu[0] = optix_guidata.nummenus - 1;
@@ -938,6 +935,7 @@ void vysion_SelectWallpaper(void) {
         }
         gfx_SetColor(optix_guicolors.colorb);
         gfx_VertLine(optix_GetWindowXCentering(0, windowwidth, 0, 0) + 99, optix_GetWindowYCentering(0, 120, 0, 0), 120);
+        if (m->numoptions > 10) optix_VertScrollbar(optix_GetWindowXCentering(0, windowwidth, 0, 0) + 92, optix_GetWindowYCentering(0, 120, 0, 0) - 1, m->menumin, m->numoptions - m->height, 8, 122, false);
         gfx_SwapDraw();
         optix_HandleGUI();
     }
@@ -984,8 +982,16 @@ void vysion_LockScreen(void) {
     uint16_t year;
     //day will be used for seconds, and months for hours
     char str1[50];
+    char str2[50];
     uint8_t i;
     uint8_t cursorblink = 0;
+    //for the width of the box that will go around the time and stuff
+    uint16_t boxwidth;
+    //probably not a great idea because people could bypass the password by creating an appvar called VYSSTATE with the correct data, but it'll work for now (don't yell at me Mateo)
+    if (vysion_programdata.returnedfromprogram) {
+        vysion_programdata.returnedfromprogram = false;
+        return;
+    }
     optix_CusText(false);
     if (vysion_settings.displaylockscreen) {
         while (!os_GetCSC()) {
@@ -1012,11 +1018,22 @@ void vysion_LockScreen(void) {
                 }
             }
             gfx_SetTextScale(2, 2);
-            gfx_PrintStringXY(str1, 160 - gfx_GetStringWidth(str1) / 2, 105);
+            boxwidth = gfx_GetStringWidth(str1);
             gfx_SetTextScale(1, 1);
             boot_GetDate(&day, &month, &year);
-            sprintf(str1, "%s %d, %d", text[month - 1], day, year);
-            gfx_PrintStringXY(str1, 160 - gfx_GetStringWidth(str1) / 2, 127);
+            sprintf(str2, "%s %d, %d", text[month - 1], day, year);
+            if (gfx_GetStringWidth(str2) > boxwidth) boxwidth = gfx_GetStringWidth(str2);
+            //more graphics stuff
+            //make the box that goes around everything (from y 100 to 140)
+            gfx_SetColor(optix_guicolors.colora);
+            gfx_FillRectangle(160 - (boxwidth + 10) / 2, 100, boxwidth + 10, 40);
+            gfx_SetColor(optix_guicolors.colorb);
+            gfx_Rectangle(160 - (boxwidth + 10) / 2, 100, boxwidth + 10, 40);
+            //actually print the strings
+            gfx_SetTextScale(2, 2);
+            gfx_PrintStringXY(str1, 160 - gfx_GetStringWidth(str1) / 2, 105);
+            gfx_SetTextScale(1, 1);
+            gfx_PrintStringXY(str2, 160 - gfx_GetStringWidth(str2) / 2, 127);
             gfx_SwapDraw();
         }
     }
@@ -1028,25 +1045,122 @@ void vysion_LockScreen(void) {
             optix_ResetStringInput();
             while (!(kb_Data[6] & kb_Enter)) {
                 kb_Scan();
+                if (kb_Data[6] & kb_Clear) {
+                    gfx_End();
+                    exit(0);
+                }
                 optix_UpdateStringInput(optix_stringinput.numchars < 20);
-                strcpy(str1, "");
-                for (i = 0; i < strlen(optix_stringinput.text); i++) strcat(str1, "*");
+                strcpy(str2, "");
+                for (i = 0; i < strlen(optix_stringinput.text); i++) strcat(str2, "*");
                 cursorblink++;
                 if (cursorblink > 20) cursorblink = 0;
-                if (cursorblink < 10) strcat(str1, "_");
+                if (cursorblink < 10) strcat(str2, "_");
                 optix_CusText(false);
                 gfx_FillScreen(optix_guicolors.bgcolor);
                 //background cool
                 if (vysion_programdata.wallpaper != NULL && vysion_programdata.wallpapervalid && vysion_settings.showdesktopwallpaper) gfx_ScaledSprite_NoClip(vysion_programdata.wallpaper, 0, 0, 2, 2);
+                strcpy(str1, "LOCKED");
                 gfx_SetTextScale(2, 2);
-                gfx_PrintStringXY("LOCKED", 160 - gfx_GetStringWidth("LOCKED") / 2, 105);
+                boxwidth = gfx_GetStringWidth(str1);
                 gfx_SetTextScale(1, 1);
-                gfx_PrintStringXY(str1, 160 - (gfx_GetStringWidth(str1) + (cursorblink > 9) * 9) / 2, 127);
+                if (gfx_GetStringWidth(str2) + (cursorblink > 9) * 8 > boxwidth) boxwidth = gfx_GetStringWidth(str2) + (cursorblink > 9) * 8;
+                //the box
+                gfx_SetColor(optix_guicolors.colora);
+                gfx_FillRectangle(160 - (boxwidth + 10) / 2, 100, boxwidth + 10, 40);
+                gfx_SetColor(optix_guicolors.colorb);
+                gfx_Rectangle(160 - (boxwidth + 10) / 2, 100, boxwidth + 10, 40);
+                //the actual strings printed
+                gfx_SetTextScale(2, 2);
+                gfx_PrintStringXY(str1, 160 - gfx_GetStringWidth(str1) / 2, 105);
+                gfx_SetTextScale(1, 1);
+                gfx_PrintStringXY(str2, 160 - (gfx_GetStringWidth(str2) + (cursorblink > 9) * 8) / 2, 127);
                 gfx_SwapDraw();
             }
             if (strcmp(optix_stringinput.text, vysion_settings.password) != 0) optix_Message("INCORRECT", "Incorrect password.", 12, 160, 4);
         }
     }
+}
+
+int vysion_Search(void) {
+    uint8_t cursorblink = 0;
+    //the window will have a 2 x 7 grid of results and a 20 px window at the top that shows the current search and maybe some more options
+    uint16_t windowwidth = 200;
+    uint8_t windowheight = 160;
+    int i;
+    int currmenu[] = {optix_guidata.nummenus};
+    bool trackpadactivetemp = optix_cursor.trackpadactive;
+    struct optix_menu_t *m;
+    //this messes up the searching when you're using the trackpad
+    optix_cursor.trackpadactive = false;
+    //initialize it because why not
+    vysion_SetTempMenu(-1, -1, true, false);
+    vysion_GetTempMenuIcons();
+    vysion_GetTempMenuText();
+    optix_AddMenu(optix_GetWindowXCentering(0, windowwidth, 0, 0), optix_GetWindowYCentering(0, windowheight, 0, 0) + 20, 0, 0, 2, 7, 100 - 4 * (vysion_filesysteminfo.numtempfiles > 2 * 7), 20, vysion_programdata.str1, vysion_programdata.icon);
+    optix_SetAdvancedMenuCentering(currmenu[0], 0, 1, 0, 1, 22, 0, 2, 0);
+    optix_guidata.currmenu = optix_guidata.nummenus - 1;
+    optix_ResetStringInput();
+    optix_SetActiveMenus(currmenu, 1);
+    //so we don't have to write out optix_menu[optix_guidata.nummenus - 1] every time
+    m = &optix_menu[optix_guidata.nummenus - 1];
+    //let's try an alternate approach, this doesn't seem to be working
+    //while (!(kb_Data[6] & kb_Clear)) {
+    while (true) {
+        struct vysion_file_t *t = &vysion_file[vysion_tempfile[m->currselection].index];
+        kb_Scan();
+        optix_UpdateCurrMenu();
+        //if a new character was entered, the function returns true, in which case we should update the menu
+        if (optix_UpdateStringInput(optix_stringinput.numchars < 9)) {
+            //refresh the temp menu
+            vysion_ClearTempMenu();
+            //check if each of the names contains the input string
+            for (int i = 0; i < vysion_filesysteminfo.numfiles; i++) if (strstr(vysion_file[i].name, optix_stringinput.text) != NULL) vysion_AddFileToTempMenu(false, i);
+            if (vysion_filesysteminfo.numtempfiles > 0) {
+                //there are some temp files, get the text and icons
+                vysion_GetTempMenuText();
+                vysion_GetTempMenuIcons();
+            } else {
+                //default state (no files)
+                free(vysion_programdata.icon);
+                vysion_programdata.icon = NULL;
+                strcpy(vysion_programdata.str1, "No files...`");
+            }
+            optix_DeleteLastMenu();
+            optix_AddMenu(optix_GetWindowXCentering(0, windowwidth, 0, 0), optix_GetWindowYCentering(0, windowheight, 0, 0) + 20, 0, 0, 2, 7, 100 - 4 * (vysion_filesysteminfo.numtempfiles > 2 * 7), 20, vysion_programdata.str1, vysion_programdata.icon);
+            optix_SetAdvancedMenuCentering(currmenu[0], 0, 1, 0, 1, 22, 0, 2, 0);
+            optix_guidata.currmenu = optix_guidata.nummenus - 1;
+            //this could get broken otherwise
+            m = &optix_menu[optix_guidata.nummenus - 1];
+        }
+        if (kb_Data[6] & kb_Clear) break;
+        if (m->enterpressed && !(kb_Data[6] & kb_Enter || kb_Data[1] & kb_2nd)) {
+            m->enterpressed = false;
+            //it's a program, either TI-BASIC or asm
+            if (vysion_filesysteminfo.numtempfiles > 0 && t->type != VYSION_APPVAR_TYPE) vysion_RunProgram(t->name, t->type);
+        }
+        cursorblink++;
+        if (cursorblink > 20) cursorblink = 0;
+        //graphics
+        optix_RenderWindow("Search", windowwidth + 2, windowheight + 2);
+        optix_RenderMenu(optix_guidata.nummenus - 1);
+        optix_CusText(false);
+        //a line
+        gfx_SetColor(optix_guicolors.colorb);
+        gfx_HorizLine(m->x, m->y - 1, windowwidth);
+        gfx_PrintStringXY(optix_stringinput.text, m->x + 5, m->y - 14);
+        //the blinking cursor
+        if (cursorblink < 10) {
+            gfx_VertLine(m->x + gfx_GetStringWidth(optix_stringinput.text) + 7, m->y - 16, 11);
+            gfx_VertLine(m->x + gfx_GetStringWidth(optix_stringinput.text) + 8, m->y - 16, 11);
+        }
+        //make a scroll bar if it's needed
+        if (m->numoptions > 2 * 7) 
+            optix_VertScrollbar(m->x + m->width * m->xspacing, m->y - 1, m->menumin / m->width, ((m->numoptions) / m->width - m->height), 8, m->height * m->yspacing + 2, false);        
+        gfx_SwapDraw();
+        optix_HandleGUI();
+    }
+    optix_DeleteLastMenu();
+    optix_cursor.trackpadactive = trackpadactivetemp;
 }
 
 

@@ -1,0 +1,301 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_vysion_RunProgram
+_vysion_RunProgram:
+	ld	hl, -3
+	call	__frameset
+	call	_ti_CloseAll
+	ld	b, (ix + 9)
+	ld	a, b
+	cp	a, 6
+	jq	nc, BB0_8
+	ld	a, 59
+	ld	l, 1
+	call	__bshru
+	and	a, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB0_8
+	ld	de, (ix + 6)
+	ld	iy, L_.str
+	ld	a, b
+	rlc	a
+	sbc	hl, hl
+	ld	(ix + -3), hl
+	push	iy
+	push	de
+	call	_strcmp
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB0_4
+	ld	hl, L_.str.1
+	ld	de, L_.str.2
+	ld	bc, 8
+	push	bc
+	ld	bc, 120
+	push	bc
+	ld	bc, 12
+	push	bc
+	push	de
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	jq	BB0_8
+BB0_4:
+	ld	hl, L_switch.table.vysion_Delete
+	ld	a, (ix + 9)
+	ld	de, (ix + -3)
+	ld	e, a
+	add	hl, de
+	ld	a, (hl)
+	ld	(ix + -3), a
+	call	_ti_CloseAll
+	ld	a, (ix + -3)
+	ld	l, a
+	push	hl
+	ld	hl, L_.str.3
+	push	hl
+	ld	hl, (ix + 6)
+	push	hl
+	call	_ti_OpenVar
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	ld	a, 1
+	jq	z, BB0_8
+	ld	(_vysion_programdata+2038), a
+	call	_vysion_SaveFilesystem
+	call	_vysion_SaveData
+	call	_optix_DeleteAllMenus
+	call	_ti_CloseAll
+	call	_gfx_End
+	ld	iy, -3145600
+	call	_os_ClrLCD
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
+	ld	hl, (ix + 6)
+	push	hl
+	ld	a, (ix + -3)
+	ld	l, a
+	push	hl
+	call	_vysion_SetOP1
+	pop	hl
+	pop	hl
+	ld	a, (ix + 9)
+	cp	a, 2
+	jq	nc, BB0_6
+	call	_InstallFixStopHook
+	call	_RunPrgm
+	jq	BB0_8
+BB0_6:
+	call	_RunAsmPrgm
+BB0_8:
+	pop	hl
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_EditProgram
+_vysion_EditProgram:
+	call	__frameset0
+	ld	bc, (ix + 6)
+	ld	hl, L_.str.3
+	ld	de, 5
+	push	de
+	push	hl
+	push	bc
+	call	_ti_OpenVar
+	ld	l, a
+	pop	de
+	pop	de
+	pop	de
+	push	hl
+	call	_ti_IsArchived
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB1_2
+	call	_vysion_SaveFilesystem
+	call	_vysion_SaveData
+	call	_optix_DeleteAllMenus
+	call	_ti_CloseAll
+	call	_gfx_End
+	ld	iy, -3145600
+	call	_os_ClrLCDFull
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
+	call	_os_ClrLCD
+	call	_os_HomeUp
+	call	_os_DrawStatusBar
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, (ix + 6)
+	push	hl
+	call	_EditPrgm
+	pop	hl
+	pop	hl
+BB1_2:
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_Delete
+_vysion_Delete:
+	call	__frameset0
+	ld	a, (ix + 6)
+	ld	hl, (ix + 9)
+	ld	d, 0
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	jq	nz, BB2_2
+	push	hl
+	call	_vysion_DeleteFolder
+BB2_8:
+	pop	hl
+	ld	d, 1
+	jq	BB2_9
+BB2_2:
+	ld	iy, (_vysion_file)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	hl, iy + 0
+	add	iy, bc
+	ld	b, (iy + 12)
+	ld	a, b
+	cp	a, 6
+	jq	nc, BB2_9
+	push	hl
+	pop	iy
+	ld	a, 59
+	call	__bshru
+	and	a, 1
+	xor	a, e
+	bit	0, a
+	jq	nz, BB2_9
+	ld	a, b
+	rlc	a
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, b
+	ld	hl, L_switch.table.vysion_Delete
+	add	hl, de
+	ld	a, (hl)
+	ld	bc, 28
+	ld	hl, (ix + 9)
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	l, a
+	push	hl
+	push	iy
+	call	_ti_DeleteVar
+	pop	de
+	pop	de
+	ld	d, 0
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB2_7
+BB2_9:
+	ld	a, d
+	pop	ix
+	ret
+BB2_7:
+	ld	hl, (ix + 9)
+	push	hl
+	call	_vysion_DeleteFile
+	jq	BB2_8
+	section	.text,"ax",@progbits
+
+	section	.data,"aw",@progbits
+	public	_vysion_alticon
+_vysion_alticon:
+	dl	_basic_data
+	dl	_basic_data
+	dl	_ices_data
+	dl	_ice_data
+	dl	_cprog_data
+	dl	_ez80_data
+	dl	_appvar_data
+	dl	_unknown_data
+
+	section	.rodata,"a",@progbits
+	private	L_.str
+L_.str:
+	db	"VYSION",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.1
+L_.str.1:
+	db	"ERROR",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.2
+L_.str.2:
+	db	"Running VYSION within VYSION is not allowed.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.3
+L_.str.3:
+	db	"r",000o
+
+	section	.rodata,"a",@progbits
+	private	L_switch.table.vysion_Delete
+L_switch.table.vysion_Delete:
+	db	"",006o,005o,005o,006o,006o,006o
+
+	ident	"clang version 12.0.0 (https://github.com/jacobly0/llvm-project a4fd568b012f0b193e341952bf10624f559064fd)"
+	extern	_ez80_data
+	extern	__Unwind_SjLj_Register
+	extern	_RunAsmPrgm
+	extern	__frameset
+	extern	_vysion_programdata
+	extern	_vysion_DeleteFile
+	extern	_vysion_SetOP1
+	extern	_ti_DeleteVar
+	extern	_strcmp
+	extern	_vysion_SaveFilesystem
+	extern	_RunPrgm
+	extern	_os_ClrLCD
+	extern	_ti_OpenVar
+	extern	_basic_data
+	extern	_os_DrawStatusBar
+	extern	_optix_DeleteAllMenus
+	extern	_InstallFixStopHook
+	extern	_optix_Message
+	extern	_unknown_data
+	extern	_ice_data
+	extern	_ti_CloseAll
+	extern	__Unwind_SjLj_Unregister
+	extern	_vysion_DeleteFolder
+	extern	_vysion_file
+	extern	__imulu
+	extern	_cprog_data
+	extern	_appvar_data
+	extern	_gfx_End
+	extern	_EditPrgm
+	extern	_ti_IsArchived
+	extern	_ices_data
+	extern	__bshru
+	extern	__frameset0
+	extern	_os_ClrLCDFull
+	extern	_os_HomeUp
+	extern	_vysion_SaveData

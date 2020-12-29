@@ -48,6 +48,7 @@ void vysion_RunProgram(const char *progname, uint8_t type) {
     ti_CloseAll();
     if (slotb = ti_OpenVar(progname, "r", progtype)) {
         //clean up VYSION stuff
+        vysion_programdata.returnedfromprogram = true;
         vysion_SaveFilesystem();
         vysion_SaveData();
         optix_DeleteAllMenus();

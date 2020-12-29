@@ -1,0 +1,1140 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_vysion_InitializeGraphics
+_vysion_InitializeGraphics:
+	call	_gfx_Begin
+	ld	hl, 1
+	push	hl
+	call	_gfx_SetDraw
+	pop	hl
+	call	_optix_SetDefaultColors
+	ld	a, (_optix_guicolors)
+	ld	l, a
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_InitializeShell
+_vysion_InitializeShell:
+	ld	iy, -3145600
+	call	_boot_GetBatteryStatus
+	ld	(_vysion_programdata+2018), a
+	or	a, a
+	sbc	hl, hl
+	ld	(_vysion_programdata+2014), hl
+	xor	a, a
+	ld	(_vysion_programdata+2017), a
+	ld	hl, _malloc
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, -96
+	push	hl
+	call	_gfx_AllocSprite
+	pop	de
+	pop	de
+	pop	de
+	ld	(_vysion_programdata+2008), hl
+	xor	a, a
+	ld	(_vysion_programdata+2038), a
+	call	_ClearFixStopHook
+	ld.sis	hl, 160
+	ld	iy, _optix_cursor
+	ld	(iy), l
+	ld	(iy + 1), h
+	ld	a, 120
+	ld	(_optix_cursor+2), a
+	call	_vysion_InitializeSettings
+	call	_vysion_LoadData
+	ld	a, (_vysion_settings+3)
+	ld	(_optix_guisettings), a
+	ld	a, (_optix_guicolors)
+	ld	l, a
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, _vysion_settings+10
+	push	hl
+	call	_vysion_SetWallpaper
+	pop	hl
+	ld	hl, (_vysion_programdata+2008)
+	ld	a, (_vysion_programdata+2007)
+	ld	c, a
+	ld	a, (_vysion_settings+8)
+	ld	e, a
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB1_4
+	ld	a, c
+	or	a, a
+	jq	z, BB1_4
+	ld	a, e
+	or	a, a
+	jq	z, BB1_4
+	ld	de, 2
+	push	de
+	push	de
+	ld	de, 0
+	push	de
+	push	de
+	push	hl
+	call	_gfx_ScaledSprite_NoClip
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB1_4:
+	ld	hl, 4
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L_.str.1
+	push	hl
+	ld	hl, L_.str
+	push	hl
+	call	_optix_Dialogue
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_vysion_DetectAllFiles
+	pop	hl
+	call	_vysion_SortFiles
+	call	_vysion_SortFolders
+	call	_vysion_LockScreen
+	ld	hl, -1
+	ld	(_vysion_programdata+2001), hl
+	inc	hl
+	ld	(_vysion_settings), hl
+	inc	hl
+	ld	(_vysion_filesysteminfo), hl
+	call	_vysion_GetAsmIcons
+	jp	_vysion_GetBasicIcons
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_End
+_vysion_End:
+	call	_optix_DeleteAllMenus
+	call	_vysion_SaveFilesystem
+	call	_vysion_SaveData
+	call	_gfx_End
+	ld	hl, (_vysion_programdata+2008)
+	push	hl
+	call	_free
+	pop	hl
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_Desktop
+_vysion_Desktop:
+	ld	hl, -22
+	call	__frameset
+	ld	hl, L___const.vysion_Desktop.currmenu
+	ld	de, 6
+	lea	bc, ix + -6
+	push	de
+	push	hl
+	ld	(ix + -9), bc
+	push	bc
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_vysion_GetTaskbar
+	ld	a, (_vysion_settings+35)
+	ld	l, a
+	ld	a, 8
+	sub	a, l
+	ld	l, a
+	ld	de, (_vysion_programdata+2039)
+	push	de
+	ld	de, _vysion_programdata
+	push	de
+	ld	de, 20
+	push	de
+	ld	de, 24
+	push	de
+	ld	de, 1
+	push	de
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ld	hl, -36
+	push	hl
+	ld	hl, 43
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	dec	a
+	ld	(_vysion_programdata+2019), a
+	ld	iy, (_optix_menu)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	(iy + 34), 0
+	ld	a, (_vysion_settings+35)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	call	z, _vysion_CenterTaskbar
+	ld	a, (_vysion_settings+6)
+	ld	l, a
+	ld	a, (_vysion_settings+7)
+	ld	e, a
+	push	de
+	push	hl
+	ld	hl, -1
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_vysion_GetTempMenuText
+	call	_vysion_GetTempMenuIcons
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 17
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	a, 78
+	ld	l, a
+	jq	p, BB3_4
+	ld	a, 80
+	ld	l, a
+BB3_4:
+	ld	de, (_vysion_programdata+2011)
+	push	de
+	ld	de, _vysion_programdata
+	push	de
+	ld	de, 55
+	push	de
+	push	hl
+	ld	hl, 4
+	push	hl
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	hl
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	a, l
+	ld	(_vysion_programdata+2020), a
+	ld	de, 2
+	push	de
+	push	de
+	push	hl
+	call	_optix_SetMenuSprScale
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_vysion_programdata+2020)
+	ld	l, a
+	ld	de, 0
+	ld	e, l
+	ld	(_optix_guidata+15), de
+	ld	de, 4
+	push	de
+	ld	bc, 0
+	push	bc
+	ld	de, 18
+	push	de
+	push	bc
+	push	bc
+	ld	de, 1
+	push	de
+	push	de
+	push	de
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, (_vysion_programdata+2024)
+	ld	(ix + -12), hl
+	ld	de, (_optix_menu)
+	ld	a, (_vysion_programdata+2020)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	hl, (ix + -12)
+	ld	(iy + 12), hl
+	ld	hl, (_vysion_programdata+2021)
+	ld	(ix + -12), hl
+	ld	a, (_vysion_programdata+2019)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	hl, (ix + -12)
+	ld	(iy + 12), hl
+	call	_vysion_RenderDesktop
+	ld	a, (_vysion_programdata+2020)
+	ld	l, a
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	hl, 2
+	push	hl
+	ld	hl, (ix + -9)
+	push	hl
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	c, 2
+	ld	d, 1
+BB3_5:
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, d
+	and	a, 1
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	jq	nz, BB3_63
+	ld	a, l
+	bit	6, a
+	jq	nz, BB3_63
+	ld	(ix + -13), d
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	a, c
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (_vysion_file)
+	ld	(ix + -19), hl
+	ld	hl, (_vysion_tempfile)
+	ld	(ix + -16), hl
+	ld	(ix + -12), iy
+	ld	hl, (iy + 12)
+	ld	c, a
+	call	__ishl
+	push	hl
+	pop	de
+	ld	iy, (ix + -16)
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	(ix + -22), hl
+	call	_kb_Scan
+	call	_optix_UpdateCurrMenu
+	ld	hl, -720872
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	z, BB3_9
+	ld	a, 1
+	ld	(_vysion_programdata+2036), a
+	xor	a, a
+	ld	(_vysion_programdata+2037), a
+BB3_9:
+	ld	hl, -720874
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB3_11
+	ld	a, (_vysion_programdata+2036)
+	jq	BB3_12
+BB3_11:
+	ld	a, 1
+	ld	(_vysion_programdata+2036), a
+	ld	(_vysion_programdata+2037), a
+BB3_12:
+	ld	c, a
+	ld	hl, -720878
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	a, c
+	or	a, a
+	jq	nz, BB3_16
+	ld	a, e
+	bit	4, a
+	jq	z, BB3_29
+BB3_16:
+	ld	a, c
+	or	a, a
+	jq	nz, BB3_18
+	call	_vysion_StartMenu
+	ld	(_vysion_programdata+2037), a
+	jq	BB3_19
+BB3_18:
+	xor	a, a
+	ld	(_vysion_programdata+2036), a
+	ld	a, (_vysion_programdata+2037)
+BB3_19:
+	cp	a, 8
+	jq	nc, BB3_21
+	ld	de, 0
+	ld	e, a
+	ld	hl, LJTI3_0
+	add	hl, de
+	add	hl, de
+	add	hl, de
+	ld	hl, (hl)
+	jp	(hl)
+BB3_41:
+	ld	hl, 2
+	jq	BB3_42
+BB3_56:
+	ld	hl, (_vysion_programdata+2004)
+	jq	BB3_42
+BB3_57:
+	call	_vysion_Search
+	jq	BB3_21
+BB3_58:
+	call	_vysion_SettingsMenu
+	jq	BB3_21
+BB3_59:
+	ld	hl, 3
+BB3_42:
+	push	hl
+	call	_vysion_FileExplorer
+	jq	BB3_43
+BB3_60:
+	ld	hl, 4
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L_.str.1
+	push	hl
+	ld	hl, L_.str
+	push	hl
+	call	_optix_Dialogue
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 1
+	push	hl
+	call	_vysion_DetectAllFiles
+BB3_43:
+	pop	hl
+BB3_21:
+	call	_optix_DeleteLastMenu
+	call	_optix_DeleteLastMenu
+	call	_vysion_GetTaskbar
+	ld	a, (_vysion_settings+35)
+	ld	l, a
+	ld	a, 8
+	sub	a, l
+	ld	l, a
+	ld	de, (_vysion_programdata+2039)
+	push	de
+	ld	de, _vysion_programdata
+	push	de
+	ld	de, 20
+	push	de
+	ld	de, 24
+	push	de
+	ld	de, 1
+	push	de
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ld	hl, -36
+	push	hl
+	ld	hl, 43
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	dec	a
+	ld	(_vysion_programdata+2019), a
+	ld	iy, (_optix_menu)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	(iy + 34), 0
+	ld	a, (_vysion_settings+35)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	call	z, _vysion_CenterTaskbar
+	ld	a, (_vysion_settings+6)
+	ld	l, a
+	ld	a, (_vysion_settings+7)
+	ld	e, a
+	push	de
+	push	hl
+	ld	hl, -1
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_vysion_GetTempMenuText
+	call	_vysion_GetTempMenuIcons
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 17
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	a, 78
+	ld	l, a
+	jq	p, BB3_25
+	ld	a, 80
+	ld	l, a
+BB3_25:
+	ld	de, (_vysion_programdata+2011)
+	push	de
+	ld	de, _vysion_programdata
+	push	de
+	ld	de, 55
+	push	de
+	push	hl
+	ld	hl, 4
+	push	hl
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	hl
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	a, l
+	ld	(_vysion_programdata+2020), a
+	ld	de, 2
+	push	de
+	push	de
+	push	hl
+	call	_optix_SetMenuSprScale
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_vysion_programdata+2020)
+	ld	l, a
+	ld	de, 0
+	ld	e, l
+	ld	(_optix_guidata+15), de
+	ld	de, 4
+	push	de
+	ld	bc, 0
+	push	bc
+	ld	de, 18
+	push	de
+	push	bc
+	push	bc
+	ld	de, 1
+	push	de
+	push	de
+	push	de
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	(ix + -16), hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -12), iy
+	add	iy, de
+	ld	(iy + 19), 0
+BB3_26:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB3_28
+	call	_kb_Scan
+	jq	BB3_26
+BB3_28:
+	ld	hl, (ix + -16)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, (ix + -12)
+	add	hl, de
+	ld	(ix + -12), hl
+	ld	hl, 2
+	push	hl
+	ld	hl, (ix + -9)
+	push	hl
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+BB3_29:
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	3, a
+	jq	z, BB3_31
+	ld	a, (_vysion_programdata+2019)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(_optix_guidata+15), hl
+	call	_vysion_GetTaskbar
+BB3_31:
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	3, a
+	jq	z, BB3_34
+	ld	a, (_vysion_programdata+2019)
+	ld	de, 0
+	ld	e, a
+	ld	hl, (_optix_guidata+15)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB3_34
+	ld	a, (_vysion_programdata+2020)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(_optix_guidata+15), hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	de, -1
+	push	de
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB3_34:
+	ld	hl, -720874
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	z, BB3_45
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	1, a
+	jq	z, BB3_45
+	ld	hl, -720872
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	2, a
+	jq	z, BB3_45
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_SetDraw
+	pop	hl
+BB3_38:
+	call	_os_GetCSC
+	or	a, a
+	jq	nz, BB3_44
+	call	_random
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	call	_random
+	ld	bc, 321
+	call	__iremu
+	ld	(ix + -16), hl
+	call	_random
+	ld	bc, 241
+	call	__iremu
+	ld	de, 2
+	push	de
+	push	de
+	push	hl
+	ld	hl, (ix + -16)
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	jq	BB3_38
+BB3_44:
+	ld	hl, 1
+	push	hl
+	call	_gfx_SetDraw
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.3
+	push	hl
+	ld	hl, L_.str.2
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB3_45:
+	ld	de, (_optix_guidata+15)
+	push	de
+	pop	hl
+	ld	bc, -1
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB3_53
+	ld	iy, (ix + -12)
+	ld	a, (iy + 19)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB3_53
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB3_53
+	ld	bc, (_vysion_tempfile)
+	ld	iy, (ix + -12)
+	ld	hl, (iy + 12)
+	push	bc
+	pop	iy
+	ld	(ix + -16), hl
+	ld	a, 2
+	ld	c, a
+	call	__ishl
+	push	hl
+	pop	bc
+	lea	hl, iy + 0
+	add	hl, bc
+	ld	a, (hl)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	z, BB3_51
+	ld	iy, (_optix_menu)
+	push	de
+	pop	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 16)
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB3_52
+	ld	(_vysion_programdata+2033), de
+	ld	hl, (ix + -22)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -19)
+	add	iy, de
+	ld	a, (iy + 12)
+	ld	l, a
+	push	hl
+	push	iy
+	call	_vysion_RunProgram
+	pop	hl
+	pop	hl
+	jq	BB3_52
+BB3_51:
+	ld	a, 1
+	ld	(_vysion_programdata+2036), a
+	ld	hl, (ix + -16)
+	ld	c, 2
+	call	__ishl
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	(_vysion_programdata+2004), hl
+	inc	a
+	ld	(_vysion_programdata+2037), a
+BB3_52:
+	ld	iy, (ix + -12)
+	ld	(iy + 19), 0
+BB3_53:
+	ld	iy, (_optix_menu)
+	ld	a, (_vysion_programdata+2020)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	de, 35
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	bc
+	lea	de, iy + 0
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	(_vysion_programdata+2024), hl
+	ld	a, (_vysion_programdata+2019)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	push	de
+	pop	iy
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	(_vysion_programdata+2021), hl
+	call	_vysion_RenderDesktop
+	ld	a, (_vysion_programdata+2020)
+	ld	l, a
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	a, (_vysion_programdata+2020)
+	ld	de, 0
+	ld	e, a
+	push	de
+	pop	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	(ix + -12), iy
+	add	iy, bc
+	ld	iy, (iy + 16)
+	lea	hl, iy + 0
+	ld	bc, 17
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB3_55
+	ex	de, hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	lea	hl, iy + 0
+	ld	iy, (ix + -12)
+	add	iy, de
+	ld	b, (iy + 20)
+	ld	c, (iy + 5)
+	ld	de, 0
+	ld	e, c
+	call	__bdivu
+	ld	c, a
+	ld	(ix + -12), bc
+	push	de
+	pop	bc
+	call	__idivs
+	ld	a, 1
+	sub	a, (iy + 6)
+	add	a, l
+	ld	e, a
+	ld	a, (_vysion_settings+36)
+	ld	l, a
+	ld	a, -35
+	sub	a, l
+	ld	l, a
+	ld	bc, 0
+	push	bc
+	push	hl
+	ld	hl, 8
+	push	hl
+	push	de
+	ld	hl, (ix + -12)
+	push	hl
+	push	bc
+	ld	hl, 312
+	push	hl
+	call	_optix_VertScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+BB3_55:
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	c, 2
+	ld	d, (ix + -13)
+	jq	BB3_5
+BB3_61:
+	call	_vysion_About
+	jq	BB3_21
+BB3_62:
+	xor	a, a
+	ld	(ix + -13), a
+	jq	BB3_21
+BB3_63:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+	section	.rodata,"a",@progbits
+lJTI3_0:
+	private	LJTI3_0
+LJTI3_0:
+	dl	BB3_41
+	dl	BB3_59
+	dl	BB3_56
+	dl	BB3_57
+	dl	BB3_58
+	dl	BB3_60
+	dl	BB3_61
+	dl	BB3_62
+
+	section	.data,"aw",@progbits
+	public	_vysion_alticon
+_vysion_alticon:
+	dl	_basic_data
+	dl	_basic_data
+	dl	_ices_data
+	dl	_ice_data
+	dl	_cprog_data
+	dl	_ez80_data
+	dl	_appvar_data
+	dl	_unknown_data
+
+	section	.rodata,"a",@progbits
+	private	L_.str
+L_.str:
+	db	"Loading...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.1
+L_.str.1:
+	db	"Detecting files and restoring filesystem...",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_Desktop.currmenu
+L___const.vysion_Desktop.currmenu:
+	dl	0
+	dl	1
+
+	section	.rodata,"a",@progbits
+	private	L_.str.2
+L_.str.2:
+	db	"SUCCESS",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.3
+L_.str.3:
+	db	"You found an Easter egg! See if you can find some more.",000o
+
+	ident	"clang version 12.0.0 (https://github.com/jacobly0/llvm-project a4fd568b012f0b193e341952bf10624f559064fd)"
+	extern	_random
+	extern	_ez80_data
+	extern	_appvar_data
+	extern	_optix_HandleGUI
+	extern	__Unwind_SjLj_Register
+	extern	_optix_guidata
+	extern	_vysion_RunProgram
+	extern	__frameset
+	extern	_vysion_GetTempMenuText
+	extern	_malloc
+	extern	_vysion_programdata
+	extern	_vysion_settings
+	extern	_vysion_SetWallpaper
+	extern	_kb_AnyKey
+	extern	_gfx_Begin
+	extern	_optix_cursor
+	extern	_kb_Scan
+	extern	_vysion_SaveFilesystem
+	extern	_vysion_SetTempMenu
+	extern	_vysion_RenderDesktop
+	extern	_vysion_GetAsmIcons
+	extern	_optix_UpdateCurrMenu
+	extern	_optix_RenderMenu
+	extern	_optix_SetAdvancedMenuCentering
+	extern	_gfx_ScaledSprite_NoClip
+	extern	_optix_VertScrollbar
+	extern	_basic_data
+	extern	_optix_Dialogue
+	extern	_vysion_About
+	extern	__sand
+	extern	_optix_DeleteAllMenus
+	extern	_vysion_DetectAllFiles
+	extern	_gfx_SwapDraw
+	extern	_memcpy
+	extern	__ishl
+	extern	_optix_SetMenuSprScale
+	extern	_optix_guicolors
+	extern	_optix_Message
+	extern	_optix_SetDefaultColors
+	extern	_vysion_Search
+	extern	_gfx_SetDraw
+	extern	__idivs
+	extern	_vysion_SortFiles
+	extern	__setflag
+	extern	_unknown_data
+	extern	_ice_data
+	extern	_gfx_FillScreen
+	extern	__Unwind_SjLj_Unregister
+	extern	_gfx_Blit
+	extern	_optix_DeleteLastMenu
+	extern	_gfx_FillRectangle
+	extern	_vysion_LoadData
+	extern	__iremu
+	extern	_gfx_AllocSprite
+	extern	_vysion_file
+	extern	_vysion_InitializeSettings
+	extern	__imulu
+	extern	_vysion_GetTaskbar
+	extern	_gfx_SetColor
+	extern	_vysion_filesysteminfo
+	extern	_vysion_tempfile
+	extern	_vysion_SortFolders
+	extern	_vysion_GetBasicIcons
+	extern	_optix_guisettings
+	extern	_vysion_StartMenu
+	extern	_vysion_LockScreen
+	extern	_optix_AddMenu
+	extern	_boot_GetBatteryStatus
+	extern	_gfx_End
+	extern	_free
+	extern	_optix_SetActiveMenus
+	extern	_os_GetCSC
+	extern	_ClearFixStopHook
+	extern	_optix_menu
+	extern	_cprog_data
+	extern	_vysion_SettingsMenu
+	extern	_vysion_GetTempMenuIcons
+	extern	_vysion_SaveData
+	extern	_ices_data
+	extern	_vysion_CenterTaskbar
+	extern	_vysion_FileExplorer
+	extern	__bdivu

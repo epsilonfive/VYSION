@@ -1,0 +1,9683 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.text,"ax",@progbits
+	public	_vysion_RenderToolbar
+_vysion_RenderToolbar:
+	ld	hl, -24
+	call	__frameset
+	ld	iy, _vysion_programdata+2014
+	ld	bc, 1
+	ld	d, 0
+	ld	hl, (_vysion_programdata+2014)
+	lea	iy, iy + 3
+	ld	e, (iy)
+	ld	a, d
+	call	__ladd
+	ld	(_vysion_programdata+2014), hl
+	ld	a, e
+	ld	(_vysion_programdata+2017), a
+	ld	bc, 10000
+	ld	a, d
+	call	__lrems
+	call	__lcmpzero
+	jq	nz, BB0_2
+	ld	iy, -3145600
+	call	_boot_GetBatteryStatus
+	ld	(_vysion_programdata+2018), a
+BB0_2:
+	ld	a, (_vysion_settings+36)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB0_4
+	ld	a, (_vysion_settings+37)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 320
+	push	hl
+	ld	hl, 220
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_vysion_programdata+2019)
+	ld	l, a
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	a, (_vysion_settings+38)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 320
+	push	hl
+	ld	hl, 220
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_taskbaricon_data)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	de, 10
+	add	hl, de
+	ld	de, 20
+	push	de
+	ld	de, 220
+	push	de
+	push	hl
+	call	_gfx_VertLine
+	pop	hl
+	pop	hl
+	jq	BB0_5
+BB0_4:
+	ld	a, (_vysion_programdata+2019)
+	ld	l, a
+	push	hl
+	call	_optix_RenderMenu
+BB0_5:
+	pop	hl
+	lea	hl, ix + -18
+	ld	(ix + -21), hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_SetTransparentColor
+	pop	hl
+	ld	hl, 222
+	push	hl
+	ld	hl, 5
+	push	hl
+	ld	hl, _taskbaricon_data
+	push	hl
+	call	_gfx_TransparentSprite
+	pop	hl
+	pop	hl
+	pop	hl
+	pea	ix + -3
+	pea	ix + -2
+	pea	ix + -1
+	call	_boot_GetTime
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, -3145537
+	bit	2, (hl)
+	jq	nz, BB0_12
+	ld	a, (ix + -3)
+	or	a, a
+	jq	nz, BB0_9
+	ld	(ix + -3), 12
+BB0_9:
+	call	_boot_IsAfterNoon
+	ld	e, (ix + -2)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	iy
+	ld	iyl, e
+	ld	d, (ix + -3)
+	ld	l, d
+	ld	c, 1
+	xor	a, c
+	bit	0, a
+	jq	nz, BB0_15
+	ld	bc, -12
+	add	hl, bc
+	ld	a, e
+	cp	a, 10
+	jq	c, BB0_18
+	ld	de, L_.str.2
+	jq	BB0_20
+BB0_12:
+	ld	a, (ix + -2)
+	ld	de, 0
+	push	de
+	pop	hl
+	ld	l, a
+	ld	c, (ix + -3)
+	ld	e, c
+	cp	a, 10
+	jq	c, BB0_17
+	ld	bc, L_.str
+	jq	BB0_14
+BB0_15:
+	ld	a, e
+	cp	a, 10
+	jq	c, BB0_19
+	ld	de, L_.str.4
+	jq	BB0_20
+BB0_17:
+	ld	bc, L_.str.1
+BB0_14:
+	push	hl
+	push	de
+	push	bc
+	jq	BB0_21
+BB0_18:
+	ld	de, L_.str.3
+	jq	BB0_20
+BB0_19:
+	ld	de, L_.str.5
+BB0_20:
+	push	iy
+	push	hl
+	push	de
+BB0_21:
+	ld	hl, (ix + -21)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_vysion_settings+39)
+	ld	l, a
+	push	hl
+	call	_gfx_SetTextFGColor
+	pop	hl
+	ld	a, (_vysion_settings+37)
+	ld	l, a
+	push	hl
+	call	_gfx_SetTextBGColor
+	pop	hl
+	ld	a, (_vysion_settings+37)
+	ld	l, a
+	push	hl
+	call	_gfx_SetTextTransparentColor
+	pop	hl
+	ld	hl, -3145537
+	bit	6, (hl)
+	jq	z, BB0_24
+	ld	hl, (ix + -21)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, 295
+	or	a, a
+	sbc	hl, de
+	ld	de, 226
+	push	de
+	push	hl
+	ld	hl, (ix + -21)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+BB0_24:
+	ld	hl, 303
+	ld	(ix + -21), hl
+	ld	a, (_vysion_settings+37)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 8
+	push	hl
+	ld	hl, 15
+	push	hl
+	ld	hl, 226
+	push	hl
+	ld	hl, 301
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_vysion_settings+38)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 228
+	push	hl
+	ld	hl, 317
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 8
+	push	hl
+	ld	hl, 15
+	push	hl
+	ld	hl, 226
+	push	hl
+	ld	hl, 301
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, 0
+	ld	de, 0
+BB0_25:
+	ld	a, (_vysion_programdata+2018)
+	ld	e, a
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, de
+	jq	nc, BB0_27
+	ld	hl, 4
+	push	hl
+	ld	hl, 2
+	push	hl
+	ld	hl, 228
+	push	hl
+	ld	hl, (ix + -21)
+	push	hl
+	ld	(ix + -24), iy
+	call	_gfx_FillRectangle
+	ld	de, 0
+	ld	iy, (ix + -24)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	inc	iy
+	ld	bc, 3
+	ld	hl, (ix + -21)
+	add	hl, bc
+	ld	(ix + -21), hl
+	jq	BB0_25
+BB0_27:
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_CenterTaskbar
+_vysion_CenterTaskbar:
+	ld	iy, (_optix_menu)
+	ld	a, (_vysion_programdata+2019)
+	ld	de, 0
+	ld	e, a
+	ld	bc, 35
+	push	de
+	pop	hl
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 16)
+	ld	a, (iy + 7)
+	ld	e, a
+	push	de
+	pop	bc
+	call	__imulu
+	ld	bc, -2
+	call	__idivs
+	ld.sis	de, 160
+	add.sis	hl, de
+	ld	(iy), l
+	ld	(iy + 1), h
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_FileExplorer
+_vysion_FileExplorer:
+	ld	hl, -43
+	call	__frameset
+	ld	hl, _malloc
+	lea	de, ix + -6
+	ld	(ix + -28), de
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, 84
+	push	hl
+	call	_gfx_AllocSprite
+	ld	(ix + -12), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, -1
+	push	hl
+	ld	hl, (ix + 6)
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_vysion_GetTempMenuIcons
+	call	_vysion_GetTempMenuText
+	ld	hl, 93
+	push	hl
+	ld	hl, 2
+	push	hl
+	ld	hl, 300
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	ld	(ix + -9), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, 180
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	de, 0
+	push	de
+	ld	de, L_.str.6
+	push	de
+	ld	de, 20
+	push	de
+	ld	de, 92
+	push	de
+	ld	de, 9
+	push	de
+	ld	de, 1
+	push	de
+	dec	de
+	push	de
+	push	de
+	push	hl
+	ld	hl, (ix + -9)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	(ix + -15), hl
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	(ix + -9), hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 2
+	push	hl
+	ld	de, 300
+	push	de
+	push	hl
+	call	_optix_GetWindowXCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld.sis	de, -7
+	add.sis	hl, de
+	ld	(ix + -18), hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, 180
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_optix_GetWindowYCentering
+	ld	e, l
+	ld	d, h
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, 1
+	ld	hl, (ix + -9)
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB2_2
+	ld	hl, (_vysion_programdata+2011)
+	push	hl
+	ld	hl, _vysion_programdata
+	jq	BB2_3
+BB2_2:
+	ld	hl, L_.str.7
+	ld	bc, 0
+	push	bc
+BB2_3:
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, 2
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -18)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, 1
+	ld	iy, 2
+	ld	a, (_optix_guidata+18)
+	ld	c, a
+	dec	c
+	ld	(ix + -18), bc
+	ld	de, 0
+	push	de
+	push	iy
+	push	de
+	ld	iy, 22
+	push	iy
+	push	hl
+	push	de
+	push	hl
+	push	de
+	push	bc
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	de, 0
+	push	de
+	ld	hl, 2
+	push	hl
+	push	de
+	ld	hl, 5
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	de
+	push	hl
+	push	de
+	ld	hl, (ix + -15)
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	de, 0
+	ld	hl, (ix + -18)
+	ld	e, l
+	ld	(_optix_guidata+15), de
+	ld	hl, (_vysion_programdata+2027)
+	ld	(ix + -9), hl
+	ld	iy, (_optix_menu)
+	ld	bc, 35
+	push	de
+	pop	hl
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	(ix + -21), bc
+	add	iy, bc
+	ld	hl, (ix + -9)
+	ld	(iy + 12), hl
+	ld	a, (_vysion_programdata+2030)
+	ld	(iy + 20), a
+	ld	hl, (ix + 6)
+	ld	(_vysion_programdata+2004), hl
+	ld	(ix + -9), de
+	ld	(ix + -6), de
+	or	a, a
+	sbc	hl, hl
+	ld	de, (ix + -15)
+	ld	l, e
+	ld	(ix + -34), hl
+	ld	(ix + -3), hl
+	ld	hl, 2
+	push	hl
+	ld	hl, (ix + -28)
+	push	hl
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	de, (ix + -21)
+	add	iy, de
+	ld	(iy + 19), 0
+	ld	hl, 228
+	push	hl
+	ld	hl, 214
+	push	hl
+	ld	hl, (ix + -12)
+	push	hl
+	call	_gfx_GetSprite
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, -720868
+	xor	a, a
+	ld	(ix + -22), a
+BB2_5:
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB2_82
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	(ix + -31), hl
+	ld	de, 35
+	push	de
+	pop	bc
+	call	__imulu
+	ld	(ix + -37), hl
+	ld	hl, (_vysion_tempfile)
+	ld	(ix + -21), hl
+	ld	hl, (ix + -9)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -25), iy
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	c, 2
+	call	__ishl
+	push	hl
+	pop	de
+	ld	iy, (ix + -21)
+	add	iy, de
+	ld	hl, (_vysion_file)
+	ld	(ix + -40), hl
+	ld	(ix + -21), iy
+	ld	hl, (iy + 1)
+	ld	(ix + -43), hl
+	call	_kb_Scan
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	1, a
+	jq	nz, BB2_8
+	ld	a, (_optix_guidata+19)
+	ld	iyl, a
+	ld	bc, (_optix_guidata+15)
+	jq	BB2_14
+BB2_8:
+	ld	iy, (_optix_menu)
+	ld	hl, (ix + -9)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	bc, 1
+	call	__iand
+	ld	a, (_optix_guidata+19)
+	ld	iyl, a
+	ld	bc, (_optix_guidata+15)
+	ld	a, l
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB2_14
+	ld	a, iyl
+	or	a, a
+	jq	z, BB2_14
+	push	bc
+	pop	hl
+	ld	de, (ix + -9)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_14
+	ld	bc, (ix + -34)
+	ld	(_optix_guidata+15), bc
+	xor	a, a
+	ld	(_optix_guidata+19), a
+	ld	iyl, a
+BB2_14:
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	2, a
+	jq	z, BB2_20
+	ld	a, iyl
+	or	a, a
+	jq	z, BB2_20
+	push	bc
+	pop	hl
+	ld	de, (ix + -34)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_20
+	ld	bc, (ix + -9)
+	ld	(_optix_guidata+15), bc
+	xor	a, a
+	ld	(_optix_guidata+19), a
+	ld	iyl, a
+BB2_20:
+	push	bc
+	pop	hl
+	ld	bc, (ix + -9)
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB2_24
+	ld	hl, (_vysion_programdata+2004)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB2_24
+	call	_vysion_CheckAlphaJump
+	ld	bc, (ix + -9)
+	ld	a, (_optix_guidata+19)
+	ld	iyl, a
+BB2_24:
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	z, BB2_36
+	ld	a, iyl
+	or	a, a
+	jq	z, BB2_36
+	ld	hl, (_optix_guidata+15)
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB2_36
+	ld	hl, (_vysion_programdata+2004)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB2_36
+	xor	a, a
+	ld	(_optix_guidata+19), a
+	ld	hl, (_vysion_filesysteminfo+9)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	a, 4
+	ld	l, a
+	jq	z, BB2_34
+	ld	hl, (ix + -21)
+	ld	a, (hl)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	ld	a, 0
+	ld	l, a
+	jq	nz, BB2_34
+	ld	hl, (ix + -43)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -40)
+	add	iy, de
+	ld	a, (iy + 12)
+	cp	a, 7
+	ld	l, 2
+	jq	nc, BB2_34
+	ld	l, a
+	rlc	l
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, a
+	ld	hl, L_switch.table.vysion_FileExplorer
+	add	hl, de
+	ld	a, (hl)
+	ld	l, a
+BB2_34:
+	push	hl
+	call	_vysion_HandleFileOperations
+	pop	hl
+	and	a, 1
+	ld	(ix + -22), a
+	ld	hl, 2
+	push	hl
+	ld	hl, (ix + -28)
+	push	hl
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+BB2_36:
+	ld	hl, (ix + -31)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -25)
+	add	iy, de
+	ld	a, (iy + 19)
+	ld	iy, (_optix_guidata+15)
+	ld	c, 1
+	xor	a, c
+	bit	0, a
+	jq	nz, BB2_40
+	lea	hl, iy + 0
+	ld	de, -1
+	or	a, a
+	sbc	hl, de
+	jq	z, BB2_40
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, c
+	xor	a, c
+	bit	0, a
+	jq	nz, BB2_40
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	z, BB2_42
+BB2_40:
+	ld	a, (ix + -22)
+	and	a, 1
+	xor	a, c
+	bit	0, a
+	jq	nz, BB2_68
+BB2_42:
+	lea	hl, iy + 0
+	ld	de, (ix + -9)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_45
+	ld	hl, (ix + -21)
+	ld	a, (hl)
+	xor	a, c
+	bit	0, a
+	jq	nz, BB2_45
+	ld	a, (ix + -22)
+	and	a, 1
+	ld	c, a
+	jq	BB2_55
+BB2_45:
+	lea	hl, iy + 0
+	ld	de, (ix + -34)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_48
+	ld	hl, (ix + -31)
+	ld	bc, 35
+	call	__imulu
+	ld	a, 1
+	ld	b, a
+	ld	a, (ix + -22)
+	and	a, 1
+	ld	c, a
+	xor	a, b
+	xor	a, b
+	bit	0, a
+	jq	nz, BB2_55
+	ex	de, hl
+	ld	(ix + -40), iy
+	ld	iy, (ix + -25)
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	iy, (ix + -40)
+	ld	de, 3
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB2_82
+BB2_55:
+	ld	a, c
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB2_60
+	lea	hl, iy + 0
+	ld	de, (ix + -9)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_72
+	ld	iy, (ix + -21)
+	ld	hl, (iy + 1)
+	jq	BB2_58
+BB2_48:
+	ld	a, (ix + -22)
+	and	a, 1
+	xor	a, c
+	bit	0, a
+	jq	z, BB2_60
+	ld	(ix + -40), iy
+	ld	iy, (ix + -25)
+	ld	de, (ix + -37)
+	add	iy, de
+	ld	hl, (_optix_menu)
+	ld	(ix + -21), hl
+	ld	de, (ix + -9)
+	push	de
+	pop	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, (ix + -40)
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB2_67
+	ld	(ix + -25), iy
+	ld	iy, (ix + -21)
+	add	iy, bc
+	ld	a, (iy + 19)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB2_66
+	ld	a, l
+	ld	(_vysion_programdata+2036), a
+	ld	a, 2
+	ld	(_vysion_programdata+2037), a
+	ld	hl, (ix + -9)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -21)
+	add	iy, bc
+	ld	de, (iy + 12)
+	ld	(_vysion_programdata+2027), de
+	ld	a, (iy + 20)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(_vysion_programdata+2030), hl
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	ld	iy, (ix + -25)
+	jq	m, BB2_53
+	ld	hl, (_vysion_file)
+	ld	(ix + -21), hl
+	ld	iy, (_vysion_tempfile)
+	ex	de, hl
+	ld	c, 2
+	call	__ishl
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -21)
+	add	iy, de
+	ld	a, (iy + 12)
+	ld	l, a
+	push	hl
+	push	iy
+	call	_vysion_RunProgram
+	ld	iy, (ix + -25)
+	pop	hl
+	pop	hl
+BB2_53:
+	xor	a, a
+	ld	(_vysion_programdata+2036), a
+	or	a, a
+	sbc	hl, hl
+	ld	(_vysion_programdata+2027), hl
+	ld	(_vysion_programdata+2030), hl
+	jq	BB2_67
+BB2_60:
+	ld	hl, (_vysion_programdata+2004)
+	ld	de, 1
+	push	de
+	push	de
+	ld	de, -1
+	push	de
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	xor	a, a
+	ld	(ix + -22), a
+	jq	BB2_61
+BB2_72:
+	ld	hl, (ix + -31)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -25)
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB2_76
+	ld	iy, (_vysion_folder)
+	ld	hl, (_vysion_programdata+2004)
+	ld	bc, 20
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	bc, -1
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB2_61
+	push	de
+	call	_vysion_GetFolderByIndex
+	pop	de
+BB2_58:
+	ld	(_vysion_programdata+2004), hl
+	ld	de, 1
+	push	de
+	push	de
+	ld	de, -1
+	push	de
+	push	hl
+BB2_59:
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB2_61:
+	call	_vysion_GetTempMenuIcons
+	call	_vysion_GetTempMenuText
+	ld	iy, (_optix_menu)
+	ld	hl, (ix + -9)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	(ix + -21), hl
+	call	_optix_DeleteLastMenu
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	(ix + -31), hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 2
+	ex	de, hl
+	push	de
+	ld	hl, 300
+	push	hl
+	push	de
+	call	_optix_GetWindowXCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld.sis	de, -7
+	add.sis	hl, de
+	ld	(ix + -25), hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, 180
+	push	hl
+	ld	hl, 1
+	push	hl
+	call	_optix_GetWindowYCentering
+	ld	e, l
+	ld	d, h
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -31)
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB2_63
+	ld	hl, (_vysion_programdata+2011)
+	push	hl
+	ld	hl, _vysion_programdata
+	jq	BB2_64
+BB2_63:
+	ld	hl, 0
+	push	hl
+	ld	hl, L_.str.8
+BB2_64:
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, 2
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -25)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	de, 2
+	push	de
+	push	hl
+	ld	de, 22
+	push	de
+	ld	de, 1
+	push	de
+	push	hl
+	push	de
+	push	hl
+	ld	hl, (ix + -18)
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	lea	hl, iy + 0
+	add	hl, de
+	ld	(ix + -25), hl
+	ld	hl, (ix + -9)
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (ix + -21)
+	ld	(iy + 12), hl
+BB2_66:
+	ld	iy, (ix + -25)
+BB2_67:
+	ld	(iy + 19), 0
+BB2_68:
+	call	_vysion_CheckStartMenu
+	ld	a, (_vysion_programdata+2036)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB2_82
+	call	_optix_UpdateCurrMenu
+	ld	hl, -74
+	push	hl
+	ld	hl, 302
+	push	hl
+	ld	hl, L_.str.9
+	push	hl
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	hl, (ix + -9)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -21), de
+	add	iy, de
+	ld	e, (iy)
+	ld	d, (iy + 1)
+	or	a, a
+	sbc	hl, hl
+	ld	l, e
+	ld	h, d
+	dec	hl
+	ld	a, (iy + 2)
+	ld	de, 0
+	ld	e, a
+	ld	bc, 180
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_VertLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	de, (ix + -21)
+	add	iy, de
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld	de, 0
+	push	de
+	pop	bc
+	ld	c, l
+	ld	b, h
+	ld	(ix + -21), bc
+	ld	a, (iy + 7)
+	push	de
+	pop	bc
+	ld	c, a
+	ld	a, (iy + 5)
+	ld	e, a
+	push	de
+	pop	hl
+	call	__imulu
+	ld	bc, (ix + -21)
+	add	hl, bc
+	ld	(ix + -25), hl
+	ld	l, (iy + 2)
+	dec	l
+	ld	(ix + -31), l
+	ld	b, (iy + 20)
+	ld	c, a
+	call	__bdivu
+	ld	l, a
+	ld	(ix + -37), hl
+	ld	hl, (iy + 16)
+	ld	(ix + -21), hl
+	ld	a, (iy + 6)
+	ld	(ix + -40), a
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	bc, (ix + -21)
+	inc	bc
+	push	bc
+	pop	hl
+	push	de
+	pop	bc
+	call	__idivs
+	ld	a, l
+	sub	a, (ix + -40)
+	ld	e, a
+	lea	hl, iy + 0
+	ld	bc, (ix + -21)
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB2_71
+	xor	a, a
+	ld	e, a
+BB2_71:
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, -74
+	push	hl
+	ld	hl, 8
+	push	hl
+	push	de
+	ld	hl, (ix + -37)
+	push	hl
+	ld	a, (ix + -31)
+	ld	l, a
+	push	hl
+	ld	hl, (ix + -25)
+	push	hl
+	call	_optix_VertScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, (ix + -15)
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	hl, (ix + -18)
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	hl, 228
+	push	hl
+	ld	hl, 214
+	push	hl
+	ld	hl, (ix + -12)
+	push	hl
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	hl, -720868
+	jq	BB2_5
+BB2_76:
+	dec	de
+	push	de
+	pop	hl
+	ld	bc, 2
+	or	a, a
+	sbc	hl, bc
+	jq	nc, BB2_61
+	ld	(_vysion_programdata+2004), de
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, -1
+	push	hl
+	push	de
+	jq	BB2_59
+BB2_81:
+	call	_kb_Scan
+BB2_82:
+	call	_kb_AnyKey
+	or	a, a
+	jq	nz, BB2_81
+	call	_optix_DeleteLastMenu
+	call	_optix_DeleteLastMenu
+	or	a, a
+	sbc	hl, hl
+	ld	(_vysion_programdata+2027), hl
+	ld	(_vysion_programdata+2030), hl
+	ld	(_vysion_programdata+2004), hl
+	call	_vysion_SaveFilesystem
+	call	_vysion_RenderDesktop
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	hl, (ix + -12)
+	push	hl
+	call	_free
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_CheckAlphaJump
+_vysion_CheckAlphaJump:
+	ld	hl, -9
+	call	__frameset
+	or	a, a
+	sbc	hl, hl
+	ld	de, (_optix_menu)
+	ld	(ix + -3), de
+	ld	de, (_optix_guidata+15)
+	ld	(ix + -6), de
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	hl, -720876
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	a, (_optix_guidata+19)
+	ld	l, a
+	ld	a, e
+	cp	a, 0
+	call	__setflag
+	jq	p, BB3_14
+	ld	a, l
+	or	a, a
+	jq	nz, BB3_2
+BB3_14:
+	ld	sp, ix
+	pop	ix
+	ret
+BB3_2:
+	ld	hl, L_.str.84
+	ld	de, L_.str.85
+	xor	a, a
+	ld	(_optix_guidata+19), a
+	ld	bc, 6
+	push	bc
+	ld	bc, 100
+	push	bc
+	ld	bc, 12
+	push	bc
+	push	de
+	push	hl
+	call	_optix_Dialogue
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	xor	a, a
+BB3_3:
+	ld	de, 0
+	ld	e, a
+	ld	hl, L___const.vysion_CheckAlphaJump.text
+	add	hl, de
+	ld	e, (hl)
+	ld	a, e
+	or	a, a
+	jq	nz, BB3_8
+	call	_os_GetCSC
+	cp	a, 15
+	jq	nz, BB3_3
+BB3_6:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB3_14
+	call	_kb_Scan
+	jq	BB3_6
+BB3_8:
+	ld	bc, 35
+	ld	hl, (ix + -6)
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, (ix + -3)
+	add	iy, bc
+	ld	(ix + -3), iy
+	ld	iy, (iy + 9)
+	ld	hl, (iy)
+	lea	bc, iy + 3
+	ld	(ix + -6), bc
+	ld	bc, 0
+BB3_9:
+	ld	iy, (ix + -3)
+	ld	(iy + 12), bc
+	ld	a, (hl)
+	cp	a, e
+	jq	z, BB3_11
+	inc	bc
+	ld	(ix + -9), bc
+	ld	iy, (ix + -6)
+	ld	hl, (iy)
+	ld	c, (hl)
+	lea	iy, iy + 3
+	ld	(ix + -6), iy
+	ld	a, e
+	cp	a, c
+	ld	bc, (ix + -9)
+	call	__setflag
+	jq	p, BB3_9
+BB3_11:
+BB3_12:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB3_14
+	call	_kb_Scan
+	jq	BB3_12
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_CheckStartMenu
+_vysion_CheckStartMenu:
+	call	_kb_Scan
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	4, a
+	jq	z, BB4_4
+	call	_optix_SaveActiveMenus
+	call	_vysion_StartMenu
+	ld	(_vysion_programdata+2037), a
+	cp	a, 8
+	jq	nc, BB4_3
+	ld	a, 1
+	ld	(_vysion_programdata+2036), a
+BB4_3:
+	call	_optix_RestoreActiveMenus
+BB4_4:
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_RenderDesktop
+_vysion_RenderDesktop:
+	ld	a, (_optix_guicolors)
+	ld	l, a
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, (_vysion_programdata+2008)
+	ld	a, (_vysion_programdata+2007)
+	ld	c, a
+	ld	a, (_vysion_settings+8)
+	ld	e, a
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB5_4
+	ld	a, c
+	or	a, a
+	jq	z, BB5_4
+	ld	a, e
+	or	a, a
+	jq	z, BB5_4
+	ld	de, 2
+	push	de
+	push	de
+	ld	de, 0
+	push	de
+	push	de
+	push	hl
+	call	_gfx_ScaledSprite_NoClip
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB5_4:
+	jp	_vysion_RenderToolbar
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_FileOperationsMenu
+_vysion_FileOperationsMenu:
+	ld	hl, -18
+	call	__frameset
+	ld	hl, 1
+	ld	a, (_optix_guidata+18)
+	ld	de, 0
+	ld	e, a
+	ld	(ix + -9), de
+	ld	(ix + -3), de
+	push	hl
+	pea	ix + -3
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	xor	a, a
+	ld	(_optix_guisettings), a
+	ld	a, (ix + 6)
+	ld	hl, (ix + -9)
+	ld	l, a
+	ld	(ix + -9), hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_FileOperationsMenu.menutext
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, 0
+	push	de
+	push	hl
+	ld	hl, 14
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 7
+	push	hl
+	inc	de
+	push	de
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	de
+	push	de
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	ld	iy, (_optix_menu)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	(ix + -6), iy
+	ld	l, (iy + 5)
+	ld	h, (iy + 7)
+	mlt	hl
+	ld	a, l
+	add	a, 2
+	ld	l, a
+	ld	e, (iy + 16)
+	ld	d, (iy + 8)
+	mlt	de
+	ld	a, e
+	add	a, 2
+	ld	e, a
+	ld	bc, _malloc
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_AllocSprite
+	ld	(ix + -12), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ld	iy, (ix + -6)
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	dec	hl
+	ex	de, hl
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -12)
+	push	hl
+	call	_gfx_GetSprite
+	ld	iy, (ix + -6)
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	e, 1
+BB6_1:
+	ld	a, (iy + 19)
+	xor	a, e
+	bit	0, a
+	jq	nz, BB6_4
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB6_4
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	z, BB6_9
+BB6_4:
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB6_6
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	z, BB6_8
+BB6_6:
+	ld	a, (_optix_guidata+19)
+	xor	a, e
+	bit	0, a
+	jq	z, BB6_7
+BB6_8:
+	call	_optix_UpdateCurrMenu
+	ld	a, (_optix_guicolors+1)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, (ix + -6)
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	de, 0
+	push	de
+	pop	bc
+	ld	e, l
+	ld	d, h
+	dec	de
+	ld	(ix + -15), de
+	ld	iy, (ix + -6)
+	ld	a, (iy + 2)
+	push	bc
+	pop	de
+	ld	e, a
+	dec	de
+	ld	iy, (ix + -6)
+	ld	a, (iy + 5)
+	ld	c, a
+	ld	iy, (ix + -6)
+	ld	a, (iy + 7)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	hl, 2
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	(ix + -18), iy
+	ld	iy, (ix + -6)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -6)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	push	hl
+	ld	hl, (ix + -18)
+	push	hl
+	push	de
+	ld	hl, (ix + -15)
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, (ix + -6)
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	bc, 0
+	push	bc
+	pop	de
+	ld	e, l
+	ld	d, h
+	dec	de
+	ld	(ix + -15), de
+	ld	iy, (ix + -6)
+	ld	a, (iy + 2)
+	push	bc
+	pop	de
+	ld	e, a
+	dec	de
+	ld	iy, (ix + -6)
+	ld	a, (iy + 5)
+	ld	c, a
+	ld	iy, (ix + -6)
+	ld	a, (iy + 7)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	ld	(ix + -18), hl
+	ld	iy, (ix + -6)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -6)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	push	hl
+	ld	hl, (ix + -18)
+	push	hl
+	push	de
+	ld	hl, (ix + -15)
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	iy, (ix + -6)
+	ld	de, (iy + 12)
+	ld	hl, (ix + -9)
+	ld	bc, 21
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	iy, L___const.vysion_FileOperationsMenu.returnvalue
+	add	iy, bc
+	ex	de, hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	a, (iy)
+	ld	(ix + -15), a
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	e, 1
+	ld	iy, (ix + -6)
+	jq	BB6_1
+BB6_7:
+	xor	a, a
+	ld	(_optix_guidata+19), a
+	ld	a, -1
+	ld	(ix + -15), a
+BB6_9:
+	ld	de, 0
+	ld	e, (iy)
+	ld	d, (iy + 1)
+	dec	de
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -12)
+	push	hl
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	call	_optix_DeleteLastMenu
+	ld	hl, (_optix_guidata+15)
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	ld	hl, (ix + -12)
+	push	hl
+	call	_free
+	pop	hl
+BB6_10:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB6_12
+	call	_kb_Scan
+	jq	BB6_10
+BB6_12:
+	ld	a, (_vysion_settings+3)
+	ld	(_optix_guisettings), a
+	ld	a, (ix + -15)
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_StartMenu
+_vysion_StartMenu:
+	ld	hl, -44
+	call	__frameset
+	ld	iy, L___const.vysion_StartMenu.spr
+	ld	de, 24
+	lea	hl, ix + -24
+	ld	(ix + -30), hl
+	ld	bc, (_optix_guidata+15)
+	ld	(ix + -44), bc
+	push	de
+	push	iy
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(ix + -27), hl
+	ld	hl, 1
+	push	hl
+	pea	ix + -27
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	a, (_startmenuicon_data)
+	ld	h, 0
+	ld	l, a
+	ld	(ix + -38), l
+	ld	(ix + -37), h
+	ld.sis	de, 3
+	add.sis	hl, de
+	ld	de, (ix + -30)
+	push	de
+	ld	de, L_.str.15
+	push	de
+	ld	de, 16
+	push	de
+	ld	de, 100
+	push	de
+	ld	de, 9
+	push	de
+	ld	de, 1
+	push	de
+	dec	de
+	push	de
+	push	de
+	ld	de, 91
+	push	de
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	push	hl
+	pop	bc
+	ld	(ix + -36), bc
+	ld	hl, (_optix_menu)
+	ld	(ix + -30), hl
+	ld	de, 0
+	push	de
+	ld	hl, 2
+	push	hl
+	push	de
+	ld	hl, 18
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	de
+	push	hl
+	push	de
+	push	bc
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	l, (ix + -38)
+	ld	h, (ix + -37)
+	ld	a, h
+	ld	(_optix_guidata+19), a
+	ld	a, (_startmenuicon_data)
+	add	a, 4
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	add	a, (iy + 7)
+	ld	l, a
+	ld	e, (iy + 16)
+	ld	d, (iy + 8)
+	mlt	de
+	ld	a, e
+	add	a, 2
+	ld	e, a
+	ld	bc, _malloc
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_AllocSprite
+	ld	(ix + -33), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	hl, (_optix_guidata+15)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, (ix + -33)
+	push	hl
+	call	_gfx_GetSprite
+	ld	iy, (ix + -30)
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -36)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	e, 1
+	ld	(ix + -30), iy
+BB7_1:
+	ld	a, (iy + 19)
+	xor	a, e
+	bit	0, a
+	jq	nz, BB7_4
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB7_4
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	z, BB7_9
+BB7_4:
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB7_6
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	4, a
+	jq	z, BB7_8
+BB7_6:
+	ld	a, (_optix_guidata+19)
+	xor	a, e
+	bit	0, a
+	jq	z, BB7_7
+BB7_8:
+	call	_optix_UpdateCurrMenu
+	ld	a, (_optix_guicolors+1)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, (ix + -30)
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	de, 0
+	push	de
+	pop	bc
+	ld	e, l
+	ld	d, h
+	dec	de
+	ld	(ix + -36), de
+	ld	iy, (ix + -30)
+	ld	a, (iy + 2)
+	push	bc
+	pop	de
+	ld	e, a
+	dec	de
+	ld	iy, (ix + -30)
+	ld	a, (iy + 5)
+	ld	c, a
+	ld	iy, (ix + -30)
+	ld	a, (iy + 7)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	hl, 2
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	(ix + -41), iy
+	ld	iy, (ix + -30)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -30)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	push	hl
+	ld	hl, (ix + -41)
+	push	hl
+	push	de
+	ld	hl, (ix + -36)
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	iy, (ix + -30)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -30)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	hl, 218
+	lea	de, iy + 0
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	de
+	ld	a, (_startmenuicon_data)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 2
+	add	hl, bc
+	add	iy, bc
+	push	iy
+	push	hl
+	push	de
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, (ix + -30)
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	bc, 0
+	push	bc
+	pop	de
+	ld	e, l
+	ld	d, h
+	dec	de
+	ld	(ix + -36), de
+	ld	iy, (ix + -30)
+	ld	a, (iy + 2)
+	push	bc
+	pop	de
+	ld	e, a
+	dec	de
+	ld	iy, (ix + -30)
+	ld	a, (iy + 5)
+	ld	c, a
+	ld	iy, (ix + -30)
+	ld	a, (iy + 7)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	ld	(ix + -41), hl
+	ld	iy, (ix + -30)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -30)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	ld	bc, 2
+	add	hl, bc
+	push	hl
+	ld	hl, (ix + -41)
+	push	hl
+	push	de
+	ld	hl, (ix + -36)
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -30)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -30)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	push	hl
+	pop	iy
+	ld	hl, 218
+	lea	de, iy + 0
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	de
+	ld	a, (_startmenuicon_data)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 2
+	add	hl, bc
+	add	iy, bc
+	push	iy
+	push	hl
+	push	de
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -30)
+	ld	hl, (iy + 16)
+	ld	iy, (ix + -30)
+	ld	a, (iy + 8)
+	ld	bc, 0
+	ld	c, a
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, 219
+	or	a, a
+	sbc	hl, de
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, _startmenuicon_data
+	push	hl
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	iy, (ix + -30)
+	ld	a, (iy + 12)
+	ld	(ix + -36), a
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	e, 1
+	ld	iy, (ix + -30)
+	jq	BB7_1
+BB7_7:
+	ld	l, (ix + -38)
+	ld	h, (ix + -37)
+	ld	a, h
+	ld	(_optix_guidata+19), a
+	ld	a, -1
+	ld	(ix + -36), a
+BB7_9:
+	ld	iy, (_optix_menu)
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, (ix + -33)
+	push	hl
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	hl, (ix + -33)
+	push	hl
+	call	_free
+	pop	hl
+	call	_optix_DeleteLastMenu
+	ld	hl, (ix + -44)
+	ld	(_optix_guidata+15), hl
+BB7_10:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB7_12
+	call	_kb_Scan
+	jq	BB7_10
+BB7_12:
+	ld	a, (ix + -36)
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_PropertiesMenu
+_vysion_PropertiesMenu:
+	ld	hl, -185
+	call	__frameset
+	ld	hl, (ix + 6)
+	ld	iy, (_vysion_file)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -130
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+	add	iy, de
+	lea	hl, iy + 23
+	ld	(ix + -118), hl
+	lea	hl, iy + 24
+	ld	(ix + -115), hl
+	lea	hl, iy + 27
+	ld	(ix + -112), hl
+	lea	hl, iy + 26
+	ld	(ix + -109), hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	(ix + -121), hl
+	ld	de, -185
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	ld	a, (iy + 12)
+	ld	l, a
+	push	hl
+	ld	bc, (ix + -3)
+	call	_vysion_GetFileType
+	ld	l, a
+	ld	de, -179
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	pop	hl
+	ld	de, 160
+	push	de
+	ld	hl, 1
+	push	hl
+	push	de
+	dec	hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	ld	(ix + -127), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 130
+	push	hl
+	ld	de, 1
+	push	de
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	ld	c, l
+	ld	b, h
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_vysion_file)
+	ld	(ix + -124), iy
+	ld	(ix + -3), bc
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	add	iy, de
+	push	ix
+	ld	de, -148
+	add	ix, de
+	ld	(ix + 0), iy
+	pop	ix
+	ld	a, (iy + 12)
+	ld	iy, L_.str.31
+	cp	a, 2
+	ld	bc, (ix + -3)
+	push	ix
+	ld	de, -136
+	push	af
+	add	ix, de
+	pop	af
+	ld	(ix + 0), c
+	ld	(ix + 1), b
+	pop	ix
+	jq	nc, BB8_5
+	ld	de, (ix + 6)
+	ld	iy, (ix + -124)
+	ld	bc, -179
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	a, l
+	cp	a, 6
+	jq	z, BB8_3
+	ld	a, 0
+	jq	BB8_4
+BB8_3:
+	ld	a, 1
+BB8_4:
+	ld	bc, 28
+	ex	de, hl
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	and	a, 1
+	ld	(iy + 24), a
+	ld	de, -136
+	lea	iy, ix + 0
+	add	iy, de
+	ld	c, (iy + 0)
+	ld	b, (iy + 1)
+	ld	hl, L_.str.31
+	push	hl
+	pop	iy
+BB8_5:
+	lea	hl, ix + -106
+	push	ix
+	ld	de, -130
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	lea	hl, ix + -118
+	push	ix
+	ld	de, -151
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	l, c
+	ld	h, b
+	ld.sis	bc, 255
+	call	__sand
+	ld	de, 0
+	ld	e, l
+	ld	d, h
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -139
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+	push	ix
+	ld	bc, -136
+	add	ix, bc
+	ld	l, (ix + 0)
+	ld	h, (ix + 1)
+	pop	ix
+	ld	a, l
+	add	a, 50
+	ld	l, a
+	ld	de, 0
+	push	de
+	push	iy
+	ld	de, 16
+	push	de
+	ld	de, 120
+	push	de
+	ld	de, 5
+	push	de
+	ld	de, 1
+	push	de
+	dec	de
+	push	de
+	push	de
+	push	hl
+	ld	hl, (ix + -127)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	bc, 0
+	push	bc
+	push	bc
+	push	bc
+	ld	de, 4
+	push	de
+	push	bc
+	push	bc
+	ld	de, 1
+	push	de
+	push	bc
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	bc, -142
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	(_optix_guidata+15), hl
+	ld	hl, (_optix_menu)
+	push	ix
+	ld	bc, -133
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	hl, 1
+	push	hl
+	pea	ix + -121
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	bc, 35
+	ld	de, -142
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -133
+	add	ix, bc
+	ld	hl, (ix + 0)
+	pop	ix
+	add	hl, de
+	push	ix
+	ld	de, -133
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, (ix + -3)
+	ld	bc, 28
+	ld	hl, (ix + 6)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, (ix + -124)
+	add	hl, de
+	ld	(ix + -124), hl
+	ld	de, 0
+	ld	hl, (ix + -127)
+	ld	e, l
+	ld	d, h
+	push	de
+	pop	hl
+	ld	bc, 2
+	add	hl, bc
+	ld	(ix + -3), de
+	push	ix
+	ld	de, -154
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, -139
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	lea	hl, iy + 0
+	add	hl, bc
+	push	ix
+	ld	de, -157
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	lea	hl, iy + 0
+	ld	bc, 20
+	add	hl, bc
+	push	ix
+	ld	de, -160
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, (ix + -3)
+	push	de
+	pop	hl
+	add	hl, bc
+	push	ix
+	ld	bc, -173
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	lea	hl, iy + 0
+	ld	bc, 6
+	add	hl, bc
+	push	ix
+	ld	bc, -176
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, -142
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	ex	de, hl
+	ld	de, 4
+	add	hl, de
+	push	ix
+	ld	de, -163
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	lea	bc, iy + 0
+	push	bc
+	pop	hl
+	ld	de, 49
+	add	hl, de
+	ld	de, -166
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	ld.sis	de, 136
+	ld	iy, (ix + -127)
+	add.sis	iy, de
+	ld	de, 25
+	push	bc
+	pop	hl
+	add	hl, de
+	push	ix
+	ld	bc, -139
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, -136
+	lea	hl, ix + 0
+	add	hl, bc
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	dec	hl
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	ld	hl, -720868
+	add	a, 68
+	push	ix
+	ld	bc, -167
+	add	ix, bc
+	ld	(ix + 0), a
+	pop	ix
+	lea	de, iy + 0
+	ld	bc, (ix + -124)
+BB8_6:
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB8_66
+	ld	(ix + -127), de
+	call	_kb_Scan
+	call	_optix_UpdateCurrMenu
+	ld	bc, -133
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 19)
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	jq	nz, BB8_18
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB8_18
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	nz, BB8_18
+	ld	bc, -133
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	m, BB8_20
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB8_27
+	call	_ti_CloseAll
+	ld	bc, -179
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	hl, L_.str.32
+	push	hl
+	ld	hl, (ix + -124)
+	push	hl
+	call	_ti_OpenVar
+	ld	e, a
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	z, BB8_14
+	ld	iy, (ix + -124)
+	ld	a, (iy + 23)
+	ld	l, 1
+	xor	a, l
+	ld	l, a
+	ld	bc, -136
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), de
+	push	de
+	push	hl
+	call	_ti_SetArchiveStatus
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	hl, 6
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.34
+	push	hl
+	ld	hl, L_.str.33
+	push	hl
+	call	z, _optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, -136
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_ti_IsArchived
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	a, 1
+	jq	nz, BB8_37
+	ld	a, 0
+BB8_37:
+	and	a, 1
+	ld	iy, (ix + -124)
+	lea	hl, iy + 0
+	ld	(iy + 23), a
+	jq	BB8_49
+BB8_18:
+	ld	hl, (ix + -124)
+BB8_50:
+	push	hl
+	ld	hl, L_.str.37
+	push	hl
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, -124
+	push	hl
+	ld	hl, 162
+	push	hl
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -124)
+	ld	hl, (iy + 16)
+	ld	bc, -157
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	push	de
+	push	ix
+	ld	bc, -154
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	de
+	push	hl
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 160
+	push	hl
+	ld	bc, -160
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -142
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	bc, -148
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 12)
+	add	a, -3
+	cp	a, 3
+	jq	nc, BB8_52
+	ld	iy, (ix + -124)
+	ld	hl, (iy + 9)
+	ld	bc, -176
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	push	de
+	push	ix
+	ld	bc, -173
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	de
+	jq	BB8_53
+BB8_52:
+	ld	bc, -176
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -173
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	hl, (ix + -124)
+BB8_53:
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, -139
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	de, -136
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	ld	hl, L___const.vysion_PropertiesMenu.text
+	push	hl
+	pop	iy
+	ld	bc, 0
+	jq	BB8_55
+BB8_56:
+	ld	de, -170
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	ld	hl, (iy)
+	ld	de, -182
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	push	hl
+	ld	de, -130
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	de, -145
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), bc
+	call	_strcpy
+	ld	bc, -145
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB8_58
+	ld	de, -148
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	ld	a, (iy + 12)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_PropertiesMenu.type
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	de, -130
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	call	_strcat
+	pop	hl
+	pop	hl
+	ld	(ix + -3), bc
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	ld	bc, (ix + -3)
+	jq	BB8_60
+BB8_58:
+	ld	de, -182
+	lea	iy, ix + 0
+	add	iy, de
+	ld	bc, (iy + 0)
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	ld	(ix + -3), bc
+	ld	bc, -130
+	lea	hl, ix + 0
+	push	af
+	add	hl, bc
+	pop	af
+	ld	de, (hl)
+	ld	bc, (ix + -3)
+	jq	nz, BB8_60
+	ld	iy, (ix + -124)
+	ld	hl, (iy + 19)
+	push	hl
+	push	bc
+	ld	hl, L_.str.38
+	push	hl
+	push	de
+	call	_sprintf
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB8_60:
+	ld	bc, -136
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -163
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	push	de
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -145
+	lea	hl, ix + 0
+	add	hl, de
+	ld	bc, (hl)
+	inc	bc
+	ld	de, -170
+	lea	iy, ix + 0
+	add	iy, de
+	ld	iy, (iy + 0)
+	lea	iy, iy + 3
+	ld	de, 12
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -136
+	add	ix, bc
+	ld	hl, (ix + 0)
+	pop	ix
+	add	hl, de
+	push	ix
+	ld	de, -136
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, (ix + -3)
+BB8_55:
+	push	bc
+	pop	hl
+	ld	de, 2
+	or	a, a
+	sbc	hl, de
+	jq	nz, BB8_56
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 160
+	push	hl
+	ld	bc, -166
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -142
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -167
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	c, a
+	ld	iy, 0
+BB8_62:
+	lea	hl, iy + 0
+	ld	de, 12
+	or	a, a
+	sbc	hl, de
+	jq	z, BB8_64
+	lea	de, iy + 0
+	ld	(ix + -3), bc
+	ld	bc, -151
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	bc, (ix + -3)
+	ld	de, -145
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), bc
+	push	bc
+	ld	hl, (ix + -127)
+	push	hl
+	ld	l, a
+	push	hl
+	ld	bc, -136
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	call	_optix_BoolSwitch
+	ld	bc, -136
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, -145
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, l
+	add	a, 16
+	ld	c, a
+	jq	BB8_62
+BB8_64:
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	de, (ix + -127)
+	ld	bc, (ix + -124)
+	ld	iy, -720868
+	lea	hl, iy + 0
+	jq	BB8_6
+BB8_20:
+	call	_ti_CloseAll
+	ld	hl, 8
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.35
+	push	hl
+	call	_optix_GetStringInput
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	push	hl
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_strcpy
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ld	bc, -136
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+BB8_21:
+	push	hl
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	(ix + -3), de
+	ld	de, -136
+	lea	hl, ix + 0
+	add	hl, de
+	ld	bc, (hl)
+	push	bc
+	pop	hl
+	ld	de, (ix + -3)
+	or	a, a
+	sbc	hl, de
+	jq	nc, BB8_25
+	ld	de, -130
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	add	hl, bc
+	ld	e, (hl)
+	ld	a, e
+	add	a, -97
+	cp	a, 26
+	jq	nc, BB8_24
+	ld	a, e
+	add	a, -32
+	ld	(hl), a
+BB8_24:
+	inc	bc
+	ld	de, -136
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), bc
+	ld	bc, -130
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	jq	BB8_21
+BB8_25:
+	ld	a, (ix + -106)
+	or	a, a
+	jq	nz, BB8_31
+	ld	hl, 6
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.36
+	jq	BB8_15
+BB8_27:
+	push	de
+	pop	hl
+	ld	bc, 2
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB8_38
+	ld	bc, -148
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 12)
+	cp	a, 2
+	jq	nc, BB8_40
+	call	_ti_CloseAll
+	ld	bc, -148
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 12)
+	ld	l, a
+	push	hl
+	call	_vysion_GetFileType
+	ld	l, a
+	pop	de
+	push	hl
+	ld	hl, L_.str.32
+	push	hl
+	ld	hl, (ix + -124)
+	push	hl
+	call	_ti_OpenVar
+	ld	c, a
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	z, BB8_14
+	ld	de, -179
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, l
+	cp	a, 1
+	ld	l, 1
+	jq	nz, BB8_43
+	ld	l, 0
+BB8_43:
+	ld	a, l
+	and	a, 1
+	ld	de, -136
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), a
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -179
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	ld	a, e
+	cp	a, 1
+	ld	a, 6
+	push	ix
+	ld	de, -148
+	push	af
+	add	ix, de
+	pop	af
+	ld	iy, (ix + 0)
+	pop	ix
+	ld	bc, (ix + -3)
+	jq	z, BB8_45
+	ld	a, 5
+BB8_45:
+	push	ix
+	ld	de, -145
+	add	ix, de
+	ld	(ix + 0), a
+	pop	ix
+	ld	a, l
+	and	a, 1
+	ld	l, a
+	push	ix
+	ld	de, -179
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, -136
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	(iy + 12), a
+	push	bc
+	call	_ti_GetVATPtr
+	pop	de
+	ld	bc, -145
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	a, (iy + 0)
+	ld	(hl), a
+	ld	bc, -148
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 12)
+	or	a, a
+	ld	a, 1
+	jq	z, BB8_47
+	ld	a, 0
+BB8_47:
+	ld	de, -133
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	ld	hl, (iy + 12)
+	dec	hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -151
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	add	hl, de
+	ld	hl, (hl)
+	and	a, 1
+	jq	BB8_48
+BB8_31:
+	ld	bc, -179
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	hl, (ix + -124)
+	push	hl
+	call	_ti_RenameVar
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	nz, BB8_14
+	ld	bc, -130
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	hl, (ix + -124)
+	push	hl
+	call	_strcpy
+	jq	BB8_16
+BB8_14:
+	ld	hl, 6
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.34
+BB8_15:
+	push	hl
+	ld	hl, L_.str.33
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+BB8_16:
+	pop	hl
+	pop	hl
+BB8_17:
+	ld	hl, (ix + -124)
+BB8_49:
+	ld	bc, -133
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	ld	(iy + 19), 0
+	jq	BB8_50
+BB8_38:
+	dec	de
+	ex	de, hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -151
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	xor	a, 1
+BB8_48:
+	ld	(hl), a
+	ld	hl, (ix + -124)
+	ld	bc, (ix + -3)
+	jq	BB8_49
+BB8_40:
+	ld	bc, -185
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 24)
+	xor	a, 1
+	ld	(iy + 24), a
+	jq	BB8_17
+BB8_66:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB8_68
+	call	_kb_Scan
+	jq	BB8_66
+BB8_68:
+	call	_optix_DeleteLastMenu
+	ld	hl, (_optix_guidata+15)
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SetWallpaper
+_vysion_SetWallpaper:
+	ld	hl, -32
+	call	__frameset
+	ld	iy, L___const.vysion_SelectWallpaper.search
+	ld	bc, 10
+	lea	de, ix + -10
+	lea	hl, ix + -20
+	ld	(ix + -26), hl
+	push	bc
+	push	iy
+	ld	(ix + -29), de
+	push	de
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L___const.vysion_SelectWallpaper.appvarstring
+	push	hl
+	ld	hl, (ix + -26)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 19211
+	push	hl
+	call	_malloc
+	ld	(ix + -23), hl
+	pop	hl
+	call	_ti_CloseAll
+	ld	a, 1
+	ld	(_vysion_programdata+2007), a
+	ld	hl, 21
+	push	hl
+	ld	hl, L_.str.32
+	push	hl
+	ld	hl, (ix + 6)
+	push	hl
+	call	_ti_OpenVar
+	ld	e, a
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	z, BB9_9
+	ld	(ix + -32), de
+	push	de
+	call	_ti_GetDataPtr
+	pop	de
+	ld	de, 10
+	push	de
+	push	hl
+	ld	hl, (ix + -29)
+	push	hl
+	call	_memcmp
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB9_9
+	ld	hl, (ix + -32)
+	push	hl
+	call	_ti_GetDataPtr
+	pop	de
+	push	hl
+	ld	hl, (ix + -23)
+	push	hl
+	call	_zx7_Decompress
+	pop	hl
+	pop	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, (ix + -23)
+	push	hl
+	ld	hl, (ix + -26)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, L___const.vysion_SelectWallpaper.appvarstring
+	push	hl
+	ld	hl, (ix + -26)
+	push	hl
+	call	_strcmp
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB9_9
+	ld	iy, (ix + -23)
+	ld	a, (iy + 9)
+	cp	a, -96
+	jq	nz, BB9_9
+	ld	a, (iy + 10)
+	cp	a, 120
+	jq	nz, BB9_9
+	ld	hl, 19202
+	ld	de, (_vysion_programdata+2008)
+	push	hl
+	pea	iy + 9
+	push	de
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (ix + 6)
+	push	hl
+	ld	hl, _vysion_settings+10
+	push	hl
+	call	_strcpy
+	pop	hl
+	pop	hl
+	jq	BB9_10
+BB9_9:
+	xor	a, a
+	ld	(_vysion_programdata+2007), a
+BB9_10:
+	call	_ti_CloseAll
+	ld	hl, (ix + -23)
+	push	hl
+	call	_free
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_SettingsMenu
+_vysion_SettingsMenu:
+	ld	hl, -245
+	call	__frameset
+	ld	bc, -152
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	bc, -161
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	lea	hl, ix + -33
+	push	ix
+	ld	bc, -175
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	lea	hl, ix + -43
+	push	ix
+	ld	bc, -193
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	lea	hl, iy + 9
+	ld	bc, -239
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	bc, -161
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	lea	de, iy + 6
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	lea	hl, iy + 0
+	ld	bc, -172
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	push	de
+	pop	iy
+	lea	hl, iy + 2
+	inc	de
+	push	ix
+	ld	bc, -205
+	add	ix, bc
+	ld	(ix + 0), iy
+	pop	ix
+	push	iy
+	ld	bc, -212
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), de
+	push	de
+	push	ix
+	ld	bc, -209
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	push	hl
+	call	_boot_GetTime
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, 240
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	push	ix
+	ld	bc, -158
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	ld	hl, 134
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	push	ix
+	ld	bc, -163
+	add	ix, bc
+	ld	(ix + 0), l
+	ld	(ix + 1), h
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 60
+	push	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 240
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	push	ix
+	ld	bc, -155
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 14
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 134
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	de, 0
+	push	de
+	ld	de, L_.str.40
+	push	de
+	ld	de, 14
+	push	de
+	ld	de, 60
+	push	de
+	ld	de, 1
+	push	de
+	ld	de, 4
+	push	de
+	ld	de, 0
+	push	de
+	push	de
+	push	hl
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	de, 0
+	push	ix
+	ld	bc, -181
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	e, l
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	ld	(_optix_guidata+15), de
+	ld	hl, 60
+	push	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 240
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	push	ix
+	ld	bc, -166
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 14
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 134
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	a, l
+	add	a, 23
+	ld	e, a
+	ld	iy, (_optix_menu)
+	ld	bc, 35
+	ld	(ix + -3), de
+	ld	de, -155
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, L___const.vysion_SettingsMenu.subtext
+	add	hl, bc
+	ld	hl, (hl)
+	ld	bc, 0
+	push	bc
+	push	hl
+	ld	hl, 16
+	push	hl
+	ld	hl, -122
+	push	hl
+	ld	hl, 8
+	push	hl
+	ld	hl, 1
+	push	hl
+	dec	hl
+	push	hl
+	push	hl
+	ld	de, (ix + -3)
+	push	de
+	ld	bc, -166
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	e, a
+	dec	e
+	ld	bc, -166
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	ld	bc, -161
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	push	ix
+	ld	bc, -155
+	add	ix, bc
+	ld	hl, (ix + 0)
+	pop	ix
+	ld	(iy + 0), hl
+	or	a, a
+	sbc	hl, hl
+	ld	l, e
+	ld	(iy + 3), hl
+	ld	hl, 5462358
+	ld	(ix + -33), hl
+	ld	de, 4999494
+	ld	(ix + -30), de
+	ld.sis	de, 69
+	ld	(ix + -27), e
+	ld	(ix + -26), d
+	ld	(ix + -24), hl
+	ld	hl, 5521732
+	ld	(ix + -21), hl
+	ld.sis	hl, 65
+	ld	(ix + -18), l
+	ld	(ix + -17), h
+	ld	hl, 9
+	push	hl
+	ld	hl, L_.str.53
+	push	hl
+	ld	bc, -175
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	pea	iy + 18
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	push	hl
+	ld	bc, -172
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	hl
+	ld	de, 4
+	push	de
+	push	hl
+	push	hl
+	ld	de, 1
+	push	de
+	push	hl
+	ld	bc, -166
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	bc, -158
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ex	de, hl
+	ld	e, iyl
+	ld	d, iyh
+	ex	de, hl
+	ld.sis	de, 140
+	add.sis	hl, de
+	push	ix
+	ld	de, -229
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, -163
+	lea	hl, ix + 0
+	add	hl, de
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	dec	hl
+	ld	a, c
+	add	a, 22
+	ld	l, a
+	push	ix
+	ld	de, -232
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ex	de, hl
+	ld	e, iyl
+	ld	d, iyh
+	ex	de, hl
+	ld.sis	de, 139
+	add.sis	hl, de
+	push	ix
+	ld	de, -226
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	a, c
+	add	a, 85
+	ld	l, a
+	push	ix
+	ld	de, -236
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	a, c
+	add	a, 21
+	ld	de, -233
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), a
+	ld	de, 0
+	ld	e, iyl
+	ld	d, iyh
+	ld	l, c
+	ld	h, b
+	ld.sis	bc, 255
+	call	__sand
+	ld	iy, 0
+	ex	de, hl
+	ld	iyl, e
+	ld	iyh, d
+	ex	de, hl
+	push	de
+	pop	hl
+	dec	hl
+	ld	(ix + -3), de
+	push	ix
+	ld	de, -190
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld.sis	bc, 216
+	ld	de, -158
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	add.sis	hl, bc
+	push	ix
+	ld	bc, -158
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, (ix + -3)
+	push	de
+	pop	hl
+	ld	bc, 216
+	add	hl, bc
+	push	ix
+	ld	bc, -196
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, -184
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	ex	de, hl
+	ld	de, 236
+	add	hl, de
+	push	ix
+	ld	bc, -199
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, -187
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	lea	hl, iy + 0
+	ld	de, 26
+	add	iy, de
+	push	ix
+	ld	bc, -202
+	add	ix, bc
+	ld	(ix + 0), iy
+	pop	ix
+	push	hl
+	pop	iy
+	ld	de, 90
+	add	iy, de
+	push	ix
+	ld	de, -218
+	add	ix, de
+	ld	(ix + 0), iy
+	pop	ix
+	ld	de, -163
+	lea	iy, ix + 0
+	add	iy, de
+	ld	c, (iy + 0)
+	ld	b, (iy + 1)
+	ld	a, c
+	add	a, 25
+	push	ix
+	ld	de, -219
+	add	ix, de
+	ld	(ix + 0), a
+	pop	ix
+	push	hl
+	pop	iy
+	ld	de, 57
+	add	iy, de
+	push	ix
+	ld	de, -222
+	add	ix, de
+	ld	(ix + 0), iy
+	pop	ix
+	ld	a, c
+	add	a, 41
+	ld	de, -206
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), a
+	ld	de, 25
+	add	hl, de
+	push	ix
+	ld	de, -215
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	a, c
+	add	a, 57
+	ld	bc, -223
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), a
+	ld	hl, -720868
+BB10_1:
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB10_103
+	call	_kb_Scan
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	ld	de, (_optix_guidata+15)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	bc
+	ld	(ix + -3), de
+	ld	de, -166
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	c, l
+	bit	3, a
+	ld	de, -178
+	lea	hl, ix + 0
+	push	af
+	add	hl, de
+	pop	af
+	ld	(hl), bc
+	ld	de, (ix + -3)
+	jq	z, BB10_10
+	push	de
+	pop	hl
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_10
+	ld	iy, (_optix_menu)
+	push	de
+	pop	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	a, (_optix_guidata+19)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_10
+	or	a, a
+	jq	z, BB10_10
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	ld	(_optix_guidata+15), de
+	xor	a, a
+	ld	(_optix_guidata+19), a
+BB10_10:
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, (_optix_guidata+19)
+	ld	c, a
+	ld	a, l
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB10_14
+	ex	de, hl
+	ld	(ix + -3), bc
+	ld	bc, -155
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	or	a, a
+	sbc	hl, de
+	ld	bc, (ix + -3)
+	jq	nz, BB10_14
+	ld	a, c
+	or	a, a
+	jq	z, BB10_14
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	(_optix_guidata+15), hl
+	xor	a, a
+	ld	(_optix_guidata+19), a
+BB10_14:
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	(ix + 0), iy
+	pop	ix
+	add	iy, de
+	ld	a, (iy + 19)
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	ld	bc, (ix + -3)
+	jq	nz, BB10_20
+	ld	iy, -720868
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB10_20
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	ld	bc, 35
+	jq	nz, BB10_22
+	ld	de, -155
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	bc, (ix + -3)
+	ld	bc, 6
+	or	a, a
+	sbc	hl, bc
+	ld	bc, 35
+	jq	nc, BB10_19
+	ld	hl, LJTI10_0
+	add	hl, de
+	add	hl, de
+	add	hl, de
+	ld	hl, (hl)
+	jp	(hl)
+BB10_38:
+	ld	bc, -205
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -212
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -209
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_boot_GetTime
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	bc, 2
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	p, BB10_88
+	push	de
+	pop	hl
+	ld	bc, 1
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB10_41
+	ld	c, 0
+BB10_41:
+	bit	0, c
+	ld	l, 16
+	jq	nz, BB10_43
+	ld	l, 0
+BB10_43:
+	ld	(ix + -3), de
+	ld	de, -233
+	lea	iy, ix + 0
+	add	iy, de
+	ld	a, (iy + 0)
+	add	a, l
+	ld	l, a
+	bit	0, c
+	ld	bc, 59
+	ld	de, (ix + -3)
+	jq	nz, BB10_45
+	ld	bc, 23
+BB10_45:
+	ld	(ix + -3), bc
+	ld	bc, -205
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	a, (iy)
+	ld	de, 0
+	ld	e, a
+	push	de
+	ld	bc, (ix + -3)
+	push	bc
+	ld	de, 0
+	push	de
+	ld	de, 18
+	push	de
+	ld	de, 102
+	push	de
+	push	hl
+	ld	bc, -226
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_Slider
+	ld	iy, 21
+	add	iy, sp
+	ld	sp, iy
+	ld	a, l
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	de, (iy + 12)
+	ld	(ix + -3), bc
+	ld	bc, -205
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	(iy), a
+	ld	bc, (ix + -3)
+	jq	BB10_99
+BB10_20:
+	ld	bc, 35
+BB10_22:
+	ld	de, -155
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	push	ix
+	add	ix, bc
+	ld	(ix + 0), iy
+	pop	ix
+	ld	a, (iy + 19)
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	ld	bc, (ix + -3)
+	jq	nz, BB10_26
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB10_26
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	nz, BB10_26
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	(iy + 19), 0
+BB10_26:
+	call	_optix_UpdateCurrMenu
+	ld	iy, (_optix_menu)
+	ld	de, -155
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	(ix + -3), bc
+	ld	bc, -242
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	or	a, a
+	sbc	hl, de
+	ld	bc, (ix + -3)
+	jq	z, BB10_28
+	call	_optix_DeleteLastMenu
+	ld	hl, 60
+	push	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 240
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	ld	bc, -166
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 14
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 134
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	a, l
+	add	a, 22
+	ld	e, a
+	ld	iy, (_optix_menu)
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	bc
+	add	iy, bc
+	ld	hl, (iy + 12)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, L___const.vysion_SettingsMenu.subtext
+	add	hl, bc
+	ld	hl, (hl)
+	ld	bc, 0
+	push	bc
+	push	hl
+	ld	hl, 16
+	push	hl
+	ld	hl, -122
+	push	hl
+	ld	hl, 8
+	push	hl
+	ld	hl, 1
+	push	hl
+	dec	hl
+	push	hl
+	push	hl
+	push	de
+	ld	bc, -166
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	ld	de, 0
+	push	de
+	push	de
+	push	de
+	ld	bc, 4
+	push	bc
+	push	de
+	push	de
+	ld	bc, 1
+	push	bc
+	push	de
+	ld	bc, -166
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+BB10_28:
+	call	_vysion_CheckStartMenu
+	ld	a, (_vysion_programdata+2036)
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB10_103
+	ld	iy, (_optix_menu)
+	ld	de, -155
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	de, -242
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	ld	hl, -120
+	push	hl
+	ld	hl, 242
+	push	hl
+	ld	hl, L_.str.70
+	push	hl
+	ld	bc, (ix + -3)
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -181
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	de, -166
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	add	iy, de
+	ld	a, (iy + 8)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, -187
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	add	hl, de
+	ld	de, 240
+	push	de
+	push	hl
+	ld	de, -184
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	add	iy, de
+	ld	a, (iy + 8)
+	push	ix
+	ld	bc, -163
+	add	ix, bc
+	ld	l, (ix + 0)
+	ld	h, (ix + 1)
+	pop	ix
+	add	a, l
+	ld	l, a
+	ld	a, (iy + 20)
+	ld	de, 0
+	push	de
+	ld	de, 8
+	push	de
+	ld	de, 242
+	push	de
+	ld	de, 2
+	push	de
+	ld	e, a
+	push	de
+	push	hl
+	ld	de, -190
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_optix_HorizScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+	ld	iy, (_optix_menu)
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	ld	bc, (ix + -3)
+	ld	bc, 5
+	or	a, a
+	sbc	hl, bc
+	jq	c, BB10_31
+BB10_30:
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	hl, -720868
+	jq	BB10_1
+BB10_31:
+	ld	hl, LJTI10_1
+	add	hl, de
+	add	hl, de
+	add	hl, de
+	ld	hl, (hl)
+	jp	(hl)
+BB10_32:
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	hl, (_vysion_programdata+2014)
+	ld	a, (_vysion_programdata+2017)
+	ld	e, a
+	ld	bc, 1000
+	xor	a, a
+	call	__lrems
+	call	__lcmpzero
+	ld	bc, -205
+	lea	hl, ix + 0
+	push	af
+	add	hl, bc
+	pop	af
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -212
+	lea	hl, ix + 0
+	push	af
+	add	hl, bc
+	pop	af
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -209
+	lea	hl, ix + 0
+	push	af
+	add	hl, bc
+	pop	af
+	ld	hl, (hl)
+	push	hl
+	call	z, _boot_GetTime
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -202
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, -169
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	bc
+BB10_35:
+	push	bc
+	pop	hl
+	ld	de, 2
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_62
+	ld	de, -205
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	add	iy, bc
+	ld	a, (iy)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	hl
+	ld	hl, L_.str.71
+	push	hl
+	ld	de, -193
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), bc
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, -193
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, -199
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	or	a, a
+	sbc	hl, de
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	push	de
+	push	hl
+	ld	bc, -193
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_PrintStringXY
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	bc, (hl)
+	pop	hl
+	pop	hl
+	pop	hl
+	inc	bc
+	ld	de, 16
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, de
+	push	ix
+	ld	de, -169
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	bc, (ix + -3)
+	jq	BB10_35
+BB10_46:
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	a, (_vysion_settings+9)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.filedetection
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, -169
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	(ix + -3), bc
+	ld	bc, -199
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	or	a, a
+	sbc	hl, de
+	push	ix
+	ld	bc, -202
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	de
+	push	hl
+	ld	de, -169
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -206
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	c, a
+	ld	iy, 0
+BB10_47:
+	lea	hl, iy + 0
+	ld	de, 9
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_30
+	lea	de, iy + 0
+	ld	hl, L___const.vysion_SettingsMenu.startupbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	push	bc
+	ld	de, -158
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	l, a
+	push	hl
+	ld	de, -169
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	ld	de, -178
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), bc
+	call	_optix_BoolSwitch
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	iy, (ix + 0)
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, l
+	add	a, 16
+	ld	c, a
+	jq	BB10_47
+BB10_49:
+	ld	bc, -215
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	iy, 0
+BB10_50:
+	lea	hl, iy + 0
+	ld	de, 21
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_30
+	lea	de, iy + 0
+	ld	hl, L___const.vysion_SettingsMenu.colors
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	l, a
+	push	hl
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -196
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -196
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_Rectangle
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, 16
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, de
+	push	ix
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	jq	BB10_50
+BB10_52:
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	a, (_vysion_programdata+2007)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	ld	hl, L_.str.72
+	jq	nz, BB10_54
+	ld	hl, _vysion_settings+10
+BB10_54:
+	bit	0, a
+	ld	de, L_.str.72
+	jq	nz, BB10_56
+	ld	de, _vysion_settings+10
+BB10_56:
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), de
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, -199
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	or	a, a
+	sbc	hl, de
+	push	ix
+	ld	bc, -202
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	de
+	push	hl
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -206
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	c, a
+	ld	iy, 0
+BB10_57:
+	lea	hl, iy + 0
+	ld	de, 9
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_30
+	lea	de, iy + 0
+	ld	hl, L___const.vysion_SettingsMenu.desktopbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	push	bc
+	ld	de, -158
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	l, a
+	push	hl
+	ld	de, -169
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	ld	de, -178
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), bc
+	call	_optix_BoolSwitch
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	iy, (ix + 0)
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, l
+	add	a, 16
+	ld	c, a
+	jq	BB10_57
+BB10_59:
+	ld	de, -219
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	c, a
+	ld	iy, 0
+BB10_60:
+	lea	hl, iy + 0
+	ld	de, 6
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_67
+	lea	de, iy + 0
+	ld	hl, L___const.vysion_SettingsMenu.taskbarbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	push	bc
+	ld	de, -158
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	l, a
+	push	hl
+	ld	de, -169
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	ld	de, -178
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), bc
+	call	_optix_BoolSwitch
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	iy, (ix + 0)
+	pop	ix
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, l
+	add	a, 16
+	ld	c, a
+	jq	BB10_60
+BB10_62:
+	ld	de, -223
+	lea	hl, ix + 0
+	add	hl, de
+	ld	a, (hl)
+	ld	iyl, a
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	bc
+BB10_63:
+	push	bc
+	pop	hl
+	ld	de, 2
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_70
+	ld	hl, L___const.vysion_SettingsMenu.systembool
+	push	ix
+	ld	de, -169
+	add	ix, de
+	ld	(ix + 0), bc
+	pop	ix
+	add	hl, bc
+	ld	a, (hl)
+	ld	hl, -3145537
+	and	a, (hl)
+	or	a, a
+	ld	a, 1
+	ld	l, a
+	jq	nz, BB10_66
+	ld	a, 0
+	ld	l, a
+BB10_66:
+	ld	de, 10
+	push	de
+	ld	de, 20
+	push	de
+	push	iy
+	push	ix
+	ld	bc, -158
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	de
+	push	hl
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	call	_optix_BoolSwitch
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, -169
+	lea	hl, ix + 0
+	add	hl, de
+	ld	bc, (hl)
+	inc	bc
+	ld	de, -178
+	lea	iy, ix + 0
+	add	iy, de
+	ld	hl, (iy + 0)
+	ld	a, l
+	add	a, 16
+	ld	iyl, a
+	jq	BB10_63
+BB10_67:
+	ld	bc, -222
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	iy, 0
+BB10_68:
+	lea	hl, iy + 0
+	ld	de, 9
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_30
+	lea	de, iy + 0
+	ld	hl, L___const.vysion_SettingsMenu.taskbarcolors
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	ld	l, a
+	push	hl
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -196
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 20
+	push	hl
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -196
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_Rectangle
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	de, 3
+	add	iy, de
+	ld	de, 16
+	ld	bc, -169
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, de
+	push	ix
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	jq	BB10_68
+BB10_70:
+	ld	hl, -655324
+	ld	a, (hl)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	hl
+	ld	hl, L_.str.71
+	push	hl
+	ld	bc, -193
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, -193
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, -199
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	or	a, a
+	sbc	hl, de
+	ld	bc, -218
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	de, (iy + 0)
+	push	de
+	push	hl
+	ld	bc, -193
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	jq	BB10_30
+BB10_71:
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	de, (iy + 12)
+	push	de
+	pop	hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	bc, (ix + -3)
+	jq	nz, BB10_90
+	ld	hl, L_.str.54
+	push	hl
+	ld	hl, 16
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	bc, -232
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -229
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_SimpleMenu
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	a, l
+	ld	(_vysion_settings+9), a
+	jq	BB10_87
+BB10_73:
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	de, 35
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -245
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), de
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	iy, (ix + 0)
+	pop	ix
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	de, 3
+	ld	bc, (ix + -3)
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.colors
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	hl
+	call	_optix_ColorPicker
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	(ix + -3), bc
+	ld	bc, -245
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	de, (hl)
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	bc, (ix + -3)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.colors
+	add	hl, de
+	ld	hl, (hl)
+	ld	(hl), a
+	call	_vysion_RenderDesktop
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	ld	bc, 35
+	pop	hl
+	ld	a, (_optix_guicolors+1)
+	ld	(_optix_guicolors+5), a
+	ld	a, (_optix_guicolors+2)
+	ld	(_optix_guicolors+7), a
+	jq	BB10_19
+BB10_74:
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	hl, (iy + 12)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	bc, (ix + -3)
+	jq	nz, BB10_92
+	call	_vysion_SelectWallpaper
+	jq	BB10_93
+BB10_76:
+	ld	bc, -178
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	ld	de, 35
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	iy, (iy + 12)
+	lea	hl, iy + 0
+	ld	de, 2
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	bc, (ix + -3)
+	jq	p, BB10_94
+	lea	hl, iy + 0
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.taskbarbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	xor	a, 1
+	jq	BB10_78
+BB10_79:
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -169
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	de, 3
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	bc, (ix + -3)
+	jq	p, BB10_95
+	ld	hl, 3
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.63
+	push	hl
+	ld	hl, L_.str.62
+	push	hl
+	call	_optix_Menu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	ld	hl, 35
+	push	hl
+	pop	bc
+	jq	nz, BB10_19
+	call	_vysion_SaveFilesystem
+	call	_vysion_SaveData
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	bc, 9
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -175
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	push	iy
+	ld	bc, (ix + -3)
+	call	_ti_Delete
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_104
+	ld	hl, 8
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.66
+	jq	BB10_83
+BB10_88:
+	push	de
+	pop	hl
+	ld	bc, 4
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	jq	p, BB10_98
+	ex	de, hl
+	ld	de, -2
+	add	hl, de
+	ex	de, hl
+	ld	hl, L___const.vysion_SettingsMenu.systembool
+	add	hl, de
+	ld	de, -3145537
+	push	de
+	pop	iy
+	ld	a, (iy)
+	xor	a, (hl)
+	ld	(iy), a
+	jq	BB10_99
+BB10_90:
+	push	de
+	pop	hl
+	ld	bc, 4
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_100
+	ld	hl, 16
+	push	hl
+	ld	hl, 160
+	push	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L_.str.55
+	push	hl
+	call	_optix_GetStringInput
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	push	hl
+	ld	hl, _vysion_settings+19
+	push	hl
+	call	_strcpy
+	jq	BB10_86
+BB10_92:
+	dec	hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.desktopbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	xor	a, 1
+	ld	(hl), a
+BB10_93:
+	ld	hl, 2
+	push	hl
+	ld	bc, -172
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_SetActiveMenus
+	jq	BB10_86
+BB10_94:
+	ld	hl, -2
+	ex	de, hl
+	add	iy, de
+	lea	hl, iy + 0
+	ld	de, 3
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.taskbarcolors
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	hl
+	call	_optix_ColorPicker
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, 35
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	de, -2
+	add	hl, de
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.taskbarcolors
+	add	hl, de
+	ld	hl, (hl)
+BB10_78:
+	ld	(hl), a
+	ld	bc, 35
+	jq	BB10_19
+BB10_95:
+	ld	hl, 3
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.63
+	push	hl
+	ld	hl, L_.str.67
+	push	hl
+	call	_optix_Menu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	ld	hl, 35
+	push	hl
+	pop	bc
+	jq	nz, BB10_19
+	ld	hl, 6
+	push	hl
+	ld	hl, L_.str.57
+	push	hl
+	call	_ti_DeleteVar
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_106
+	ld	hl, 8
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.69
+BB10_83:
+	push	hl
+	ld	hl, L_.str.33
+	jq	BB10_84
+BB10_98:
+	ld	hl, -655324
+	ld	a, (hl)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	push	hl
+	ld	hl, 255
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, 18
+	push	hl
+	ld	hl, 102
+	push	hl
+	ld	bc, -236
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -226
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_Slider
+	ld	iy, 21
+	add	iy, sp
+	ld	sp, iy
+	ld	a, l
+	ld	hl, -655324
+	ld	(hl), a
+BB10_99:
+	ld	bc, -161
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (iy + 7)
+	ld	l, (iy + 6)
+	push	hl
+	ld	l, a
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_boot_SetTime
+	jq	BB10_85
+BB10_100:
+	push	de
+	pop	hl
+	ld	bc, 5
+	or	a, a
+	sbc	hl, bc
+	jq	nz, BB10_102
+	ld	hl, L_.str.60
+	push	hl
+	ld	hl, L_.str.59
+	push	hl
+	ld	hl, L_.str.58
+	push	hl
+	ld	hl, L_.str.57
+	push	hl
+	ld	hl, L_.str.56
+	push	hl
+	ld	bc, -239
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 4
+	push	hl
+	ld	hl, 210
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	bc, -239
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	hl, L_.str.61
+BB10_84:
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+BB10_85:
+	pop	hl
+BB10_86:
+	pop	hl
+	pop	hl
+BB10_87:
+	ld	hl, 35
+	push	hl
+	pop	bc
+BB10_19:
+	ld	iy, (_optix_menu)
+	ld	de, -178
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	push	ix
+	ld	bc, -169
+	add	ix, bc
+	ld	(ix + 0), iy
+	pop	ix
+	add	iy, de
+	ld	(iy + 19), 0
+	ld	bc, (ix + -3)
+	jq	BB10_22
+BB10_102:
+	dec	de
+	ex	de, hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_SettingsMenu.startupbool
+	add	hl, de
+	ld	hl, (hl)
+	ld	a, (hl)
+	xor	a, 1
+	ld	(hl), a
+	ld	a, (_vysion_settings+3)
+	ld	(_optix_guisettings), a
+	jq	BB10_87
+BB10_103:
+	call	_optix_DeleteLastMenu
+	ld	sp, ix
+	pop	ix
+	ret
+BB10_104:
+	ld	hl, 8
+	push	hl
+	ld	hl, 120
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.65
+	jq	BB10_105
+BB10_106:
+	ld	de, 27
+	ld	iy, 0
+BB10_107:
+	lea	hl, iy + 0
+	or	a, a
+	sbc	hl, de
+	jq	z, BB10_109
+	lea	de, iy + 0
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), iy
+	ld	bc, -175
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	push	iy
+	call	_ti_Delete
+	ld	bc, -155
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	pop	hl
+	ld	de, 9
+	add	iy, de
+	ld	de, 27
+	jq	BB10_107
+BB10_109:
+	ld	hl, 8
+	push	hl
+	ld	hl, 200
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.68
+BB10_105:
+	push	hl
+	ld	hl, L_.str.64
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_End
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_exit
+	pop	hl
+	section	.text,"ax",@progbits
+	section	.rodata,"a",@progbits
+lJTI10_0:
+	private	LJTI10_0
+LJTI10_0:
+	dl	BB10_38
+	dl	BB10_71
+	dl	BB10_73
+	dl	BB10_74
+	dl	BB10_76
+	dl	BB10_79
+lJTI10_1:
+	private	LJTI10_1
+LJTI10_1:
+	dl	BB10_32
+	dl	BB10_46
+	dl	BB10_49
+	dl	BB10_52
+	dl	BB10_59
+
+	section	.text,"ax",@progbits
+	public	_vysion_SelectWallpaper
+_vysion_SelectWallpaper:
+	ld	hl, -1062
+	call	__frameset
+	ld	de, -1032
+	lea	iy, ix + 0
+	add	iy, de
+	ld	bc, 10
+	lea	de, ix + -16
+	lea	hl, iy + 13
+	ld	(ix + -3), de
+	push	ix
+	ld	de, -1038
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	ld	de, -1056
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	lea	hl, iy + 3
+	ld	de, -1044
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	push	bc
+	ld	hl, L___const.vysion_SelectWallpaper.search
+	push	hl
+	ld	de, (ix + -3)
+	ld	bc, -1041
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	push	de
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 0
+	ld	(ix + -19), hl
+	ld	hl, 1000
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_memset
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L___const.vysion_SelectWallpaper.appvarstring
+	push	hl
+	ld	bc, -1044
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 19211
+	push	hl
+	call	_malloc
+	push	ix
+	ld	bc, -1047
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	pop	hl
+	call	_ti_CloseAll
+	ld	hl, 4
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, L_.str.80
+	push	hl
+	ld	hl, L_.str.79
+	push	hl
+	call	_optix_Dialogue
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	hl, 21
+	ld	de, 0
+	push	ix
+	ld	bc, -1035
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+	push	ix
+	ld	bc, -1050
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+BB11_1:
+BB11_2:
+BB11_3:
+	push	hl
+	ld	bc, -1041
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	pea	ix + -19
+	call	_ti_DetectVar
+	pop	de
+	pop	de
+	pop	de
+	ld	bc, -1053
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB11_10
+	call	_ti_CloseAll
+	ld	hl, L_.str.32
+	push	hl
+	ld	bc, -1053
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_ti_Open
+	ld	e, a
+	pop	hl
+	pop	hl
+	or	a, a
+	jq	z, BB11_10
+	push	de
+	ld	bc, -1059
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	(hl), de
+	call	_ti_GetDataPtr
+	pop	de
+	ld	de, 10
+	push	de
+	push	hl
+	ld	bc, -1041
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_memcmp
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	hl, 21
+	jq	nz, BB11_3
+	ld	bc, -1059
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_ti_GetDataPtr
+	pop	de
+	push	hl
+	ld	bc, -1047
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_zx7_Decompress
+	pop	hl
+	pop	hl
+	ld	hl, 9
+	push	hl
+	ld	bc, -1047
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -1044
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 9
+	push	hl
+	ld	hl, L___const.vysion_SelectWallpaper.appvarstring
+	push	hl
+	ld	bc, -1044
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_strncmp
+	pop	de
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	hl, 21
+	jq	nz, BB11_2
+	ld	bc, -1047
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	ld	a, (iy + 9)
+	cp	a, -96
+	jq	nz, BB11_2
+	ld	bc, -1047
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	ld	a, (iy + 10)
+	cp	a, 120
+	jq	nz, BB11_2
+	ld	bc, -1035
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	inc	hl
+	ld	bc, -1062
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	de, 3
+	push	de
+	pop	bc
+	call	__imulu
+	push	hl
+	ld	de, -1050
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	call	_realloc
+	push	ix
+	ld	de, -1050
+	add	ix, de
+	ld	(ix + 0), hl
+	pop	ix
+	pop	hl
+	pop	hl
+	ld	de, -1059
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	call	_ti_GetDataPtr
+	push	hl
+	pop	de
+	pop	hl
+	ld	(ix + -3), de
+	ld	de, -1035
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	push	ix
+	ld	de, -1050
+	add	ix, de
+	ld	hl, (ix + 0)
+	pop	ix
+	add	hl, bc
+	ld	de, (ix + -3)
+	ld	(hl), de
+	ld	bc, -1053
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_strcat
+	pop	hl
+	pop	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, de
+	ld.sis	de, 96
+	ld	(hl), e
+	inc	hl
+	ld	(hl), d
+	ld	hl, 21
+	push	ix
+	ld	bc, -1062
+	add	ix, bc
+	ld	de, (ix + 0)
+	pop	ix
+	push	ix
+	ld	bc, -1035
+	add	ix, bc
+	ld	(ix + 0), de
+	pop	ix
+	jq	BB11_1
+BB11_10:
+	call	_vysion_RenderDesktop
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	pop	hl
+	ld	bc, -1035
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	ld	hl, 6
+	push	hl
+	ld	hl, L_.str.82
+	push	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	push	af
+	add	hl, bc
+	pop	af
+	ld	hl, (hl)
+	push	hl
+	call	z, _memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 260
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowXCentering
+	ld	bc, -1041
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, 10
+	push	hl
+	ld	hl, 120
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_GetWindowYCentering
+	ld	e, l
+	ld	d, h
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, 11
+	ld	(ix + -3), de
+	ld	de, -1035
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	or	a, a
+	sbc	hl, bc
+	ld	c, 92
+	ld	de, (ix + -3)
+	jq	nc, BB11_14
+	ld	a, 99
+	ld	c, a
+BB11_14:
+	ld	hl, 0
+	push	hl
+	ld	(ix + -3), de
+	ld	de, -1038
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	hl, 10
+	push	hl
+	push	bc
+	ld	hl, 12
+	push	hl
+	ld	hl, 1
+	push	hl
+	dec	hl
+	push	hl
+	push	hl
+	ld	de, (ix + -3)
+	push	de
+	ld	bc, -1041
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	hl, (_optix_menu)
+	ld	bc, -1041
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	push	ix
+	ld	bc, -1044
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	(_optix_guidata+15), hl
+	push	ix
+	ld	bc, -1056
+	add	ix, bc
+	ld	iy, (ix + 0)
+	pop	ix
+	ld	(iy + 0), hl
+	ld	hl, 1
+	push	hl
+	push	iy
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	bc, 35
+	ld	de, -1044
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -1041
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	add	hl, de
+	push	ix
+	ld	bc, -1038
+	add	ix, bc
+	ld	(ix + 0), hl
+	pop	ix
+	ld	e, 1
+	ld	bc, (ix + -3)
+	ld.sis	bc, 1
+	ld	hl, -720868
+BB11_15:
+	ld	(ix + -3), bc
+	ld	bc, -1038
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	ld	a, (iy + 19)
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	ld	bc, (ix + -3)
+	jq	nz, BB11_33
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB11_34
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	nz, BB11_31
+	call	_optix_UpdateCurrMenu
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB11_32
+	ld	hl, 122
+	push	hl
+	ld	hl, 262
+	push	hl
+	ld	hl, L_.str.83
+	push	hl
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	bc, -1035
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB11_22
+	ld	iy, (_optix_menu)
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	hl, (iy + 12)
+	ld	de, -1
+	or	a, a
+	sbc	hl, de
+	jq	z, BB11_22
+	ld	de, -1038
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	ld	hl, (iy + 12)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -1050
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	de, -1047
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_zx7_Decompress
+	pop	hl
+	pop	hl
+	ld	hl, 160
+	push	hl
+	ld	hl, 1
+	push	hl
+	ld	hl, 260
+	push	hl
+	ld	hl, 2
+	push	hl
+	call	_optix_GetWindowXCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	de, 0
+	push	de
+	pop	bc
+	ld	c, l
+	ld	b, h
+	ld	(ix + -3), de
+	ld	de, -1053
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), bc
+	ld	hl, 120
+	push	hl
+	ld	bc, 1
+	push	bc
+	push	hl
+	ld	de, (ix + -3)
+	push	de
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	de, 0
+	ld	e, l
+	ld	d, h
+	push	de
+	ld	bc, -1053
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	ld	bc, -1047
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	pea	iy + 9
+	call	_gfx_Sprite
+	pop	hl
+	pop	hl
+	pop	hl
+BB11_22:
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	ex	de, hl
+	push	de
+	push	de
+	ld	hl, 260
+	push	hl
+	push	de
+	call	_optix_GetWindowXCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	bc, 0
+	push	bc
+	pop	iy
+	ex	de, hl
+	ld	iyl, e
+	ld	iyh, d
+	ex	de, hl
+	ld	de, 99
+	add	iy, de
+	ld	de, -1053
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	push	bc
+	push	bc
+	ld	hl, 120
+	push	hl
+	push	bc
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	de, 0
+	ld	e, l
+	ld	d, h
+	ld	hl, 120
+	push	hl
+	push	de
+	ld	bc, -1053
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_gfx_VertLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	bc, -1038
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	iy, (hl)
+	ld	hl, (iy + 16)
+	ld	de, 11
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB11_24
+	or	a, a
+	sbc	hl, hl
+	ex	de, hl
+	push	de
+	push	de
+	ld	hl, 260
+	push	hl
+	push	de
+	call	_optix_GetWindowXCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	bc, 0
+	push	bc
+	pop	iy
+	ex	de, hl
+	ld	iyl, e
+	ld	iyh, d
+	ex	de, hl
+	ld	de, 92
+	add	iy, de
+	ld	de, -1053
+	lea	hl, ix + 0
+	add	hl, de
+	ld	(hl), iy
+	push	bc
+	pop	de
+	push	de
+	push	de
+	ld	hl, 120
+	push	hl
+	push	de
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	dec	l
+	ld	de, -1038
+	lea	iy, ix + 0
+	add	iy, de
+	ld	iy, (iy + 0)
+	ld	a, (iy + 20)
+	push	ix
+	ld	de, -1056
+	add	ix, de
+	ld	(ix + 0), a
+	pop	ix
+	ld	a, (iy + 16)
+	sub	a, (iy + 6)
+	ld	c, a
+	ld	de, 0
+	push	de
+	ld	de, 122
+	push	de
+	ld	de, 8
+	push	de
+	push	bc
+	ld	bc, -1056
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	a, (iy + 0)
+	ld	e, a
+	push	de
+	push	hl
+	ld	bc, -1053
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_optix_VertScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+BB11_24:
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld.sis	bc, 1
+	ld	hl, -720868
+	ld	e, 1
+	jq	BB11_15
+BB11_33:
+	jq	BB11_25
+BB11_34:
+	jq	BB11_25
+BB11_31:
+	jq	BB11_25
+BB11_32:
+	or	a, a
+	sbc	hl, hl
+	ld	bc, -1035
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	(iy + 0), hl
+BB11_25:
+	ld	bc, -1050
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_free
+	pop	hl
+	ld	bc, -1047
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	push	hl
+	call	_free
+	pop	hl
+	call	_optix_DeleteLastMenu
+	ld	hl, (_optix_guidata+15)
+	dec	hl
+	ld	(_optix_guidata+15), hl
+BB11_26:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB11_28
+	call	_kb_Scan
+	jq	BB11_26
+BB11_28:
+	ld	bc, -1035
+	lea	hl, ix + 0
+	add	hl, bc
+	ld	hl, (hl)
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB11_30
+	ld	bc, 35
+	ld	de, -1044
+	lea	hl, ix + 0
+	add	hl, de
+	ld	hl, (hl)
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -1041
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	iy, (iy + 0)
+	add	iy, de
+	ld	hl, (iy + 9)
+	ld	de, -1035
+	lea	iy, ix + 0
+	add	iy, de
+	ld	(iy + 0), hl
+	ld	de, -1038
+	lea	hl, ix + 0
+	add	hl, de
+	ld	iy, (hl)
+	ld	hl, (iy + 12)
+	ld	bc, (ix + -3)
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	(ix + -3), bc
+	ld	bc, -1035
+	lea	iy, ix + 0
+	add	iy, bc
+	ld	hl, (iy + 0)
+	add	hl, de
+	ld	hl, (hl)
+	push	hl
+	ld	bc, (ix + -3)
+	call	_vysion_SetWallpaper
+	pop	hl
+BB11_30:
+	call	_vysion_RenderDesktop
+	ld	hl, 1
+	push	hl
+	call	_gfx_Blit
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_About
+_vysion_About:
+	ld	hl, -12
+	call	__frameset
+	ld	hl, 0
+	ld	iy, 1
+	ld	de, 60
+	ld	a, (_optix_guidata+18)
+	ld	bc, 0
+	ld	c, a
+	ld	(ix + -3), bc
+	push	hl
+	ld	hl, L_.str.77
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, 100
+	push	hl
+	push	iy
+	ld	hl, 2
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ld	hl, 75
+	push	hl
+	push	de
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	ld	iy, (_optix_menu)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	(ix + -10), iy
+	or	a, a
+	sbc	hl, hl
+	ld	(iy + 12), hl
+	inc	hl
+	push	hl
+	pea	ix + -3
+	call	_optix_SetActiveMenus
+	ld	iy, -720868
+	pop	hl
+	pop	hl
+	xor	a, a
+	ld	(ix + -7), a
+	ld	(ix + -4), a
+BB12_1:
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld	a, l
+	bit	6, a
+	jq	nz, BB12_35
+	call	_kb_Scan
+	ld	iy, (ix + -10)
+	ld	(iy + 19), 0
+	call	_optix_UpdateCurrMenu
+	ld	hl, 104
+	push	hl
+	ld	hl, 202
+	push	hl
+	ld	hl, L_.str.61
+	push	hl
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -10)
+	ld	iy, (iy + 12)
+	lea	hl, iy + 0
+	ld	de, 4
+	or	a, a
+	sbc	hl, de
+	ld	a, 1
+	jq	z, BB12_4
+	ld	a, 0
+BB12_4:
+	rrc	a
+	sbc	hl, hl
+	push	hl
+	pop	de
+	add	iy, de
+	lea	hl, iy + 0
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	de
+	ld	hl, L___const.vysion_About.description
+	add	hl, de
+	ld	hl, (hl)
+	ld	de, 190
+	push	de
+	push	hl
+	call	_optix_WordWrap
+	ld	iyl, a
+	pop	hl
+	pop	hl
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	3, a
+	ld	l, 1
+	jq	z, BB12_6
+	ld	l, 0
+BB12_6:
+	ld	a, (ix + -4)
+	and	a, 1
+	ld	d, 1
+	xor	a, d
+	or	a, l
+	ld	l, a
+	push	af
+	ld	a, (ix + -7)
+	ld	iyh, a
+	pop	af
+	ld	e, iyh
+	dec	e
+	ld	a, iyh
+	or	a, a
+	ld	a, 0
+	jq	z, BB12_8
+	ld	a, e
+BB12_8:
+	bit	0, l
+	jq	nz, BB12_10
+	ld	iyh, a
+BB12_10:
+	bit	0, l
+	jq	nz, BB12_12
+	xor	a, a
+	ld	(ix + -4), a
+BB12_12:
+	ld	hl, -720866
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, (ix + -4)
+	and	a, 1
+	ld	e, a
+	ld	a, l
+	xor	a, d
+	bit	0, a
+	push	af
+	ld	a, iyl
+	ld	(ix + -11), a
+	pop	af
+	jq	nz, BB12_14
+	ld	a, e
+	xor	a, d
+	xor	a, d
+	bit	0, a
+	jq	nz, BB12_15
+BB12_14:
+	ld	de, 0
+	ld	e, iyl
+	jq	BB12_20
+BB12_15:
+	ld	de, 0
+	push	de
+	pop	hl
+	push	af
+	ld	a, iyh
+	ld	(ix + -7), a
+	pop	af
+	ex	de, hl
+	ld	e, iyh
+	ex	de, hl
+	ld	e, iyl
+	push	de
+	pop	iy
+	ld	bc, -6
+	add	iy, bc
+	lea	bc, iy + 0
+	ld	iyl, 1
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	ex	de, hl
+	ld	e, iyl
+	ex	de, hl
+	jq	m, BB12_17
+	ld	l, 0
+BB12_17:
+	ld	a, (ix + -11)
+	cp	a, 7
+	ld	a, iyl
+	jq	nc, BB12_19
+	ld	a, 0
+BB12_19:
+	and	a, l
+	and	a, 1
+	ld	l, a
+	ld	a, (ix + -7)
+	add	a, l
+	ld	iyh, a
+	xor	a, a
+	ld	(ix + -4), a
+BB12_20:
+	or	a, a
+	sbc	hl, hl
+	ex	de, hl
+	ld	e, iyh
+	ex	de, hl
+	ld	bc, 6
+	add	hl, bc
+	push	hl
+	pop	bc
+	ex	de, hl
+	or	a, a
+	sbc	hl, bc
+	ld	a, 0
+	ld	l, a
+	ld	(ix + -7), hl
+	jq	c, BB12_22
+	ex	de, hl
+	ld	e, iyh
+	ex	de, hl
+	ld	(ix + -7), hl
+BB12_22:
+	call	_kb_AnyKey
+	or	a, a
+	ld	a, 1
+	jq	z, BB12_24
+	ld	a, (ix + -4)
+BB12_24:
+	ld	(ix + -4), a
+	ld	e, (ix + -11)
+	ld	a, e
+	cp	a, 6
+	ld	a, 1
+	jq	nc, BB12_26
+	ld	a, 0
+BB12_26:
+	bit	0, a
+	ld	l, 6
+	jq	nz, BB12_28
+	ld	l, 0
+BB12_28:
+	ld	(ix + -12), a
+	ld	a, e
+	cp	a, 6
+	jq	c, BB12_30
+	ld	e, 0
+BB12_30:
+	ld	a, l
+	add	a, e
+	ld	l, a
+	push	hl
+	ld	hl, (ix + -7)
+	push	hl
+	ld	hl, 11
+	push	hl
+	ld	hl, 98
+	push	hl
+	ld	hl, 64
+	push	hl
+	ld	hl, 190
+	push	hl
+	call	_optix_PrintWordWrap
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, L_.str.78
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	c, 1
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	ld	de, 167
+	push	de
+	push	hl
+	ld	hl, L_.str.78
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + -3)
+	ld	l, a
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	ld	hl, -1
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 200
+	push	hl
+	ld	hl, 164
+	push	hl
+	ld	hl, 60
+	push	hl
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	iy, (ix + -10)
+	ld	a, (iy + 20)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	ld	hl, 8
+	push	hl
+	ld	hl, 202
+	push	hl
+	ld	hl, 2
+	push	hl
+	ld	l, a
+	push	hl
+	ld	hl, 87
+	push	hl
+	ld	hl, 59
+	push	hl
+	call	_optix_HorizScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+	ld	c, (ix + -12)
+	bit	0, c
+	ld	hl, (ix + -7)
+	jq	nz, BB12_32
+	xor	a, a
+	ld	l, a
+BB12_32:
+	ld	a, (ix + -11)
+	add	a, -6
+	ld	e, a
+	bit	0, c
+	jq	nz, BB12_34
+	xor	a, a
+	ld	e, a
+BB12_34:
+	ld	bc, 0
+	push	bc
+	ld	bc, 71
+	push	bc
+	ld	bc, 8
+	push	bc
+	push	de
+	push	hl
+	ld	hl, 94
+	push	hl
+	ld	hl, 253
+	push	hl
+	call	_optix_VertScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	hl, (ix + -7)
+	ld	a, l
+	ld	(ix + -7), a
+	ld	iy, -720868
+	jq	BB12_1
+BB12_35:
+	call	_optix_DeleteLastMenu
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_LockScreen
+_vysion_LockScreen:
+	ld	hl, -125
+	call	__frameset
+	ld	l, 0
+	ld	a, (_vysion_programdata+2038)
+	ld	e, 1
+	xor	a, e
+	bit	0, a
+	jq	z, BB13_6
+	lea	hl, ix + -57
+	ld	(ix + -113), hl
+	lea	hl, ix + -107
+	ld	(ix + -110), hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	ld	e, 1
+	pop	hl
+	ld	a, (_vysion_settings+4)
+	xor	a, e
+	bit	0, a
+	jq	z, BB13_9
+BB13_2:
+	ld	a, (_vysion_settings+5)
+	xor	a, e
+	bit	0, a
+	jq	nz, BB13_7
+	call	_optix_ResetStringInput
+BB13_4:
+	call	_kb_AnyKey
+	or	a, a
+	jq	z, BB13_32
+	call	_kb_Scan
+	jq	BB13_4
+BB13_6:
+	ld	a, l
+	ld	(_vysion_programdata+2038), a
+BB13_7:
+	ld	sp, ix
+	pop	ix
+	ret
+BB13_9:
+	call	_os_GetCSC
+	or	a, a
+	ld	e, 1
+	jq	nz, BB13_2
+	call	_kb_Scan
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB13_58
+	ld	a, (_optix_guicolors)
+	ld	l, a
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, (_vysion_programdata+2008)
+	ld	a, (_vysion_programdata+2007)
+	ld	c, a
+	ld	a, (_vysion_settings+8)
+	ld	e, a
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_15
+	ld	a, c
+	or	a, a
+	jq	z, BB13_15
+	ld	a, e
+	or	a, a
+	jq	z, BB13_15
+	ld	de, 2
+	push	de
+	push	de
+	ld	de, 0
+	push	de
+	push	de
+	push	hl
+	call	_gfx_ScaledSprite_NoClip
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB13_15:
+	pea	ix + -3
+	pea	ix + -4
+	pea	ix + -5
+	call	_boot_GetTime
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, -3145537
+	bit	2, (hl)
+	jq	nz, BB13_21
+	ld	a, (ix + -3)
+	or	a, a
+	jq	nz, BB13_18
+	ld	(ix + -3), 12
+BB13_18:
+	call	_boot_IsAfterNoon
+	ld	e, (ix + -4)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	iy
+	ld	iyl, e
+	ld	d, (ix + -3)
+	ld	l, d
+	ld	d, 1
+	xor	a, d
+	bit	0, a
+	jq	nz, BB13_23
+	ld	bc, -12
+	add	hl, bc
+	ld	a, e
+	cp	a, 10
+	jq	c, BB13_26
+	push	iy
+	push	hl
+	ld	hl, L_.str.2
+	jq	BB13_28
+BB13_21:
+	ld	a, (ix + -4)
+	ld	de, 0
+	push	de
+	pop	hl
+	ld	l, a
+	ld	c, (ix + -3)
+	ld	e, c
+	cp	a, 10
+	jq	c, BB13_25
+	push	hl
+	push	de
+	ld	hl, L_.str
+	jq	BB13_28
+BB13_23:
+	ld	a, e
+	cp	a, 10
+	jq	c, BB13_27
+	push	iy
+	push	hl
+	ld	hl, L_.str.4
+	jq	BB13_28
+BB13_25:
+	push	hl
+	push	de
+	ld	hl, L_.str.1
+	jq	BB13_28
+BB13_26:
+	push	iy
+	push	hl
+	ld	hl, L_.str.3
+	jq	BB13_28
+BB13_27:
+	push	iy
+	push	hl
+	ld	hl, L_.str.5
+BB13_28:
+	push	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_GetStringWidth
+	ld	(ix + -116), hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	pea	ix + -7
+	pea	ix + -2
+	pea	ix + -1
+	call	_boot_GetDate
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + -2)
+	ld	de, 0
+	push	de
+	pop	hl
+	ld	l, a
+	dec	hl
+	ld	bc, 3
+	call	__imulu
+	push	hl
+	pop	bc
+	ld	hl, L___const.vysion_LockScreen.text
+	add	hl, bc
+	ld	iy, (hl)
+	ld	a, (ix + -1)
+	ld	e, a
+	ld	c, (ix + -7)
+	ld	b, (ix + -6)
+	or	a, a
+	sbc	hl, hl
+	ld	l, c
+	ld	h, b
+	push	hl
+	push	de
+	push	iy
+	ld	hl, L_.str.98
+	push	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_sprintf
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, (ix + -116)
+	ld	bc, 65535
+	call	__iand
+	push	hl
+	pop	bc
+	or	a, a
+	sbc	hl, de
+	jq	nc, BB13_31
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	bc, 65535
+	call	__iand
+	push	hl
+	pop	bc
+BB13_31:
+	ld	(ix + -116), bc
+	ld	a, (_optix_guicolors+1)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	de, 10
+	ld	hl, (ix + -116)
+	add	hl, de
+	ld	(ix + -116), hl
+	ld	a, 1
+	ld	c, a
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	de
+	ld	(ix + -119), de
+	ld	hl, 40
+	push	hl
+	ld	hl, (ix + -116)
+	push	hl
+	ld	hl, 100
+	push	hl
+	push	de
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 40
+	push	hl
+	ld	hl, (ix + -116)
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, (ix + -119)
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	c, 1
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	ld	de, 105
+	push	de
+	push	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	c, 1
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	ld	de, 127
+	push	de
+	push	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	jq	BB13_9
+BB13_32:
+	xor	a, a
+	ld	(ix + -116), a
+BB13_33:
+	ld	hl, (_optix_stringinput+3)
+	ld	de, _vysion_settings+19
+	push	de
+	push	hl
+	call	_strcmp
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_7
+	call	_optix_ResetStringInput
+	ld	e, 1
+	ld	hl, -720868
+	ld	iy, _vysion_settings+19
+BB13_35:
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	xor	a, e
+	xor	a, e
+	bit	0, a
+	jq	nz, BB13_55
+	call	_kb_Scan
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	6, a
+	jq	nz, BB13_58
+	ld	hl, (_optix_stringinput)
+	ld	de, 20
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	a, 1
+	ld	l, a
+	jq	m, BB13_39
+	ld	a, 0
+	ld	l, a
+BB13_39:
+	push	hl
+	call	_optix_UpdateStringInput
+	pop	hl
+	ld	(ix + -107), 0
+	ld	de, (_optix_stringinput+3)
+	xor	a, a
+	ld	(ix + -125), de
+BB13_40:
+	or	a, a
+	sbc	hl, hl
+	ld	(ix + -122), a
+	ld	l, a
+	ld	(ix + -119), hl
+	push	de
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, (ix + -119)
+	or	a, a
+	sbc	hl, de
+	jq	nc, BB13_42
+	ld	hl, (ix + -110)
+	push	hl
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, (ix + -110)
+	add	hl, de
+	ld.sis	de, 42
+	ld	(hl), e
+	inc	hl
+	ld	(hl), d
+	ld	a, (ix + -122)
+	inc	a
+	ld	de, (ix + -125)
+	jq	BB13_40
+BB13_42:
+	ld	l, (ix + -116)
+	inc	l
+	ld	a, l
+	cp	a, 21
+	ld	a, 0
+	jq	nc, BB13_44
+	ld	a, l
+BB13_44:
+	ld	(ix + -119), a
+	cp	a, 10
+	jq	nc, BB13_46
+	ld	hl, (ix + -110)
+	push	hl
+	call	_strlen
+	push	hl
+	pop	de
+	pop	hl
+	ld	hl, (ix + -110)
+	add	hl, de
+	ld.sis	de, 95
+	ld	(hl), e
+	inc	hl
+	ld	(hl), d
+BB13_46:
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	a, (_optix_guicolors)
+	ld	l, a
+	push	hl
+	call	_gfx_FillScreen
+	pop	hl
+	ld	hl, (_vysion_programdata+2008)
+	ld	a, (_vysion_programdata+2007)
+	ld	c, a
+	ld	a, (_vysion_settings+8)
+	ld	e, a
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_50
+	ld	a, c
+	or	a, a
+	jq	z, BB13_50
+	ld	a, e
+	or	a, a
+	jq	z, BB13_50
+	ld	de, 2
+	push	de
+	push	de
+	ld	de, 0
+	push	de
+	push	de
+	push	hl
+	call	_gfx_ScaledSprite_NoClip
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+BB13_50:
+	ld	hl, 7
+	push	hl
+	ld	hl, L_.str.102
+	push	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_GetStringWidth
+	ld	(ix + -116), hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	a, (ix + -119)
+	cp	a, 10
+	ld	de, 8
+	jq	nc, BB13_52
+	ld	de, 0
+BB13_52:
+	ld	(ix + -122), de
+	add	hl, de
+	ex	de, hl
+	ld	hl, (ix + -116)
+	ld	bc, 65535
+	call	__iand
+	push	hl
+	pop	bc
+	or	a, a
+	sbc	hl, de
+	jq	nc, BB13_54
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	de, (ix + -122)
+	add	hl, de
+	ld	bc, 65535
+	call	__iand
+	push	hl
+	pop	bc
+BB13_54:
+	ld	(ix + -116), bc
+	ld	a, (_optix_guicolors+1)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	de, 10
+	ld	hl, (ix + -116)
+	add	hl, de
+	ld	(ix + -116), hl
+	ld	a, 1
+	ld	c, a
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	push	hl
+	pop	de
+	ld	(ix + -125), de
+	ld	hl, 40
+	push	hl
+	ld	hl, (ix + -116)
+	push	hl
+	ld	hl, 100
+	push	hl
+	push	de
+	call	_gfx_FillRectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	hl, 40
+	push	hl
+	ld	hl, (ix + -116)
+	push	hl
+	ld	hl, 100
+	push	hl
+	ld	hl, (ix + -125)
+	push	hl
+	call	_gfx_Rectangle
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 2
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	c, 1
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	ld	de, 105
+	push	de
+	push	hl
+	ld	hl, (ix + -113)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, 1
+	push	hl
+	push	hl
+	call	_gfx_SetTextScale
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_GetStringWidth
+	pop	de
+	ld	de, (ix + -122)
+	add	hl, de
+	ld	c, 1
+	call	__ishru
+	push	hl
+	pop	de
+	ld	hl, 160
+	or	a, a
+	sbc	hl, de
+	ld	de, 127
+	push	de
+	push	hl
+	ld	hl, (ix + -110)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_gfx_SwapDraw
+	ld	e, 1
+	ld	a, (ix + -119)
+	ld	(ix + -116), a
+	ld	hl, -720868
+	ld	iy, _vysion_settings+19
+	jq	BB13_35
+BB13_55:
+	ld	hl, (_optix_stringinput+3)
+	push	iy
+	push	hl
+	call	_strcmp
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB13_33
+	ld	hl, 4
+	push	hl
+	ld	hl, 160
+	push	hl
+	ld	hl, 12
+	push	hl
+	ld	hl, L_.str.104
+	push	hl
+	ld	hl, L_.str.103
+	push	hl
+	call	_optix_Message
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	jq	BB13_33
+BB13_58:
+	call	_gfx_End
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_exit
+	pop	hl
+	section	.text,"ax",@progbits
+
+	section	.text,"ax",@progbits
+	public	_vysion_Search
+_vysion_Search:
+	ld	hl, -25
+	call	__frameset
+	ld	iy, 1
+	or	a, a
+	sbc	hl, hl
+	ld	a, (_optix_guidata+18)
+	ld	c, a
+	ld	de, 0
+	ld	(ix + -6), bc
+	ld	e, c
+	ld	(ix + -3), de
+	ld	a, (_optix_cursor+4)
+	ld	(ix + -16), a
+	xor	a, a
+	ld	(_optix_cursor+4), a
+	push	hl
+	push	iy
+	dec	hl
+	push	hl
+	push	hl
+	call	_vysion_SetTempMenu
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	call	_vysion_GetTempMenuIcons
+	call	_vysion_GetTempMenuText
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ld	de, 200
+	push	de
+	push	hl
+	call	_optix_GetWindowXCentering
+	ld	(ix + -9), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ex	de, hl
+	ld	hl, 160
+	push	hl
+	push	de
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	a, l
+	add	a, 20
+	ld	e, a
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	bc, 15
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	ld	a, 96
+	ld	l, a
+	jq	p, BB14_2
+	ld	a, 100
+	ld	l, a
+BB14_2:
+	ld	bc, (_vysion_programdata+2011)
+	push	bc
+	ld	bc, _vysion_programdata
+	push	bc
+	ld	bc, 20
+	push	bc
+	push	hl
+	ld	hl, 7
+	push	hl
+	ld	hl, 2
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -9)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	de, 0
+	push	de
+	ld	hl, 2
+	push	hl
+	push	de
+	ld	hl, 22
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	de
+	push	hl
+	push	de
+	ld	hl, (ix + -6)
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	call	_optix_ResetStringInput
+	ld	hl, 1
+	push	hl
+	pea	ix + -3
+	call	_optix_SetActiveMenus
+	pop	hl
+	pop	hl
+	ld	iy, (_optix_menu)
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	c, 2
+	xor	a, a
+	ld	(ix + -12), a
+BB14_3:
+	ld	hl, (_vysion_file)
+	ld	(ix + -15), hl
+	ld	hl, (_vysion_tempfile)
+	ld	(ix + -9), hl
+	ld	(ix + -6), iy
+	ld	hl, (iy + 12)
+	call	__ishl
+	push	hl
+	pop	de
+	ld	iy, (ix + -9)
+	add	iy, de
+	ld	hl, (iy + 1)
+	ld	(ix + -9), hl
+	call	_kb_Scan
+	call	_optix_UpdateCurrMenu
+	ld	hl, (_optix_stringinput)
+	ld	de, 9
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	ld	a, 1
+	ld	l, a
+	jq	m, BB14_5
+	ld	a, 0
+	ld	l, a
+BB14_5:
+	push	hl
+	call	_optix_UpdateStringInput
+	pop	hl
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB14_17
+	call	_vysion_ClearTempMenu
+	ld	bc, 0
+	push	bc
+	pop	iy
+BB14_7:
+	ld	de, (_vysion_filesysteminfo+3)
+	push	bc
+	pop	hl
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	p, BB14_8
+	ld	(ix + -6), bc
+	ld	hl, (_vysion_file)
+	lea	de, iy + 0
+	add	hl, de
+	ld	de, (_optix_stringinput+3)
+	push	de
+	push	hl
+	ld	(ix + -19), iy
+	call	_strstr
+	pop	de
+	pop	de
+	add	hl, bc
+	or	a, a
+	sbc	hl, bc
+	jq	z, BB14_11
+	ld	hl, (ix + -6)
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_vysion_AddFileToTempMenu
+	pop	hl
+	pop	hl
+BB14_11:
+	ld	bc, (ix + -6)
+	inc	bc
+	ld	de, 28
+	ld	iy, (ix + -19)
+	add	iy, de
+	jq	BB14_7
+BB14_8:
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB14_13
+	call	_vysion_GetTempMenuText
+	call	_vysion_GetTempMenuIcons
+	jq	BB14_14
+BB14_13:
+	ld	hl, (_vysion_programdata+2011)
+	push	hl
+	call	_free
+	pop	hl
+	ld	hl, 0
+	ld	(_vysion_programdata+2011), hl
+	ld	hl, 13
+	push	hl
+	ld	hl, L_.str.7
+	push	hl
+	ld	hl, _vysion_programdata
+	push	hl
+	call	_memcpy
+	pop	hl
+	pop	hl
+	pop	hl
+BB14_14:
+	call	_optix_DeleteLastMenu
+	or	a, a
+	sbc	hl, hl
+	ex	de, hl
+	push	de
+	push	de
+	ld	hl, 200
+	push	hl
+	push	de
+	call	_optix_GetWindowXCentering
+	ld	(ix + -6), hl
+	pop	hl
+	pop	hl
+	pop	hl
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	ex	de, hl
+	ld	hl, 160
+	push	hl
+	push	de
+	call	_optix_GetWindowYCentering
+	pop	de
+	pop	de
+	pop	de
+	pop	de
+	ld	a, l
+	add	a, 20
+	ld	e, a
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	bc, 15
+	or	a, a
+	sbc	hl, bc
+	call	__setflag
+	ld	a, 96
+	ld	l, a
+	jq	p, BB14_16
+	ld	a, 100
+	ld	l, a
+BB14_16:
+	ld	bc, (_vysion_programdata+2011)
+	push	bc
+	ld	bc, _vysion_programdata
+	push	bc
+	ld	bc, 20
+	push	bc
+	push	hl
+	ld	hl, 7
+	push	hl
+	ld	hl, 2
+	push	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	push	hl
+	push	de
+	ld	hl, (ix + -6)
+	push	hl
+	call	_optix_AddMenu
+	ld	hl, 30
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (ix + -3)
+	ld	de, 0
+	push	de
+	ld	hl, 2
+	push	hl
+	push	de
+	ld	hl, 22
+	push	hl
+	ld	hl, 1
+	push	hl
+	push	de
+	push	hl
+	push	de
+	ld	l, a
+	push	hl
+	call	_optix_SetAdvancedMenuCentering
+	ld	hl, 27
+	add	hl, sp
+	ld	sp, hl
+	ld	a, (_optix_guidata+18)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	dec	hl
+	ld	(_optix_guidata+15), hl
+	ld	iy, (_optix_menu)
+	ld	bc, 35
+	call	__imulu
+	push	hl
+	pop	de
+	add	iy, de
+	ld	(ix + -6), iy
+BB14_17:
+	ld	iy, -720868
+	ld	l, (iy)
+	ld	h, (iy + 1)
+	ld	a, l
+	bit	6, a
+	jq	nz, BB14_31
+	ld	iy, (ix + -6)
+	ld	a, (iy + 19)
+	ld	l, 1
+	xor	a, l
+	bit	0, a
+	jq	nz, BB14_24
+	ld	hl, -720868
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld.sis	bc, 1
+	call	__sand
+	ld	a, l
+	ld	l, 1
+	xor	a, l
+	xor	a, l
+	bit	0, a
+	jq	nz, BB14_24
+	ld	hl, -720878
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	a, l
+	bit	5, a
+	jq	nz, BB14_24
+	ld	iy, (ix + -6)
+	ld	(iy + 19), 0
+	ld	hl, (_vysion_filesysteminfo+9)
+	ld	de, 1
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB14_24
+	ld	hl, (ix + -9)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -15)
+	add	iy, de
+	ld	a, (iy + 12)
+	cp	a, 6
+	jq	z, BB14_24
+	ld	hl, (ix + -9)
+	ld	bc, 28
+	call	__imulu
+	push	hl
+	pop	de
+	ld	iy, (ix + -15)
+	add	iy, de
+	ld	l, a
+	push	hl
+	push	iy
+	call	_vysion_RunProgram
+	pop	hl
+	pop	hl
+BB14_24:
+	ld	l, (ix + -12)
+	inc	l
+	ld	a, l
+	cp	a, 21
+	ld	a, 0
+	jq	nc, BB14_26
+	ld	a, l
+BB14_26:
+	ld	(ix + -9), a
+	ld	hl, -94
+	push	hl
+	ld	hl, 202
+	push	hl
+	ld	hl, L_.str.105
+	push	hl
+	call	_optix_RenderWindow
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (_optix_guidata+18)
+	ld	l, a
+	dec	l
+	push	hl
+	call	_optix_RenderMenu
+	pop	hl
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	call	_optix_CusText
+	pop	hl
+	ld	a, (_optix_guicolors+2)
+	ld	l, a
+	push	hl
+	call	_gfx_SetColor
+	pop	hl
+	ld	iy, (ix + -6)
+	ld	e, (iy)
+	ld	d, (iy + 1)
+	or	a, a
+	sbc	hl, hl
+	ld	l, e
+	ld	h, d
+	ld	a, (iy + 2)
+	ld	de, 0
+	ld	e, a
+	dec	de
+	ld	bc, 200
+	push	bc
+	push	de
+	push	hl
+	call	_gfx_HorizLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (_optix_stringinput+3)
+	ld	(ix + -12), hl
+	ld	hl, (ix + -6)
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	iy
+	ld	iyl, c
+	ld	iyh, b
+	ld	bc, 5
+	add	iy, bc
+	lea	de, iy + 0
+	ld	iy, (ix + -6)
+	ld	a, (iy + 2)
+	ld	l, a
+	ld	bc, -14
+	add	hl, bc
+	push	hl
+	push	de
+	ld	hl, (ix + -12)
+	push	hl
+	call	_gfx_PrintStringXY
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	a, (ix + -9)
+	cp	a, 10
+	jq	nc, BB14_28
+	ld	hl, (ix + -6)
+	ld	c, (hl)
+	inc	hl
+	ld	b, (hl)
+	ld	de, 0
+	ld	e, c
+	ld	d, b
+	ld	(ix + -12), de
+	ld	hl, (_optix_stringinput+3)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, 7
+	ld	hl, (ix + -12)
+	add	hl, bc
+	add	hl, de
+	push	hl
+	pop	bc
+	ld	iy, (ix + -6)
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	de, -16
+	add	hl, de
+	ld	de, 11
+	push	de
+	push	hl
+	push	bc
+	call	_gfx_VertLine
+	pop	hl
+	pop	hl
+	pop	hl
+	ld	hl, (ix + -6)
+	push	de
+	ld	e, (hl)
+	inc	hl
+	ld	d, (hl)
+	ld	l, e
+	ld	h, d
+	pop	de
+	ld	de, 0
+	ld	e, l
+	ld	d, h
+	ld	(ix + -12), de
+	ld	hl, (_optix_stringinput+3)
+	push	hl
+	call	_gfx_GetStringWidth
+	push	hl
+	pop	de
+	pop	hl
+	ld	bc, 8
+	ld	hl, (ix + -12)
+	add	hl, bc
+	add	hl, de
+	push	hl
+	pop	bc
+	ld	iy, (ix + -6)
+	ld	a, (iy + 2)
+	or	a, a
+	sbc	hl, hl
+	ld	l, a
+	ld	de, -16
+	add	hl, de
+	ld	de, 11
+	push	de
+	push	hl
+	push	bc
+	call	_gfx_VertLine
+	pop	hl
+	pop	hl
+	pop	hl
+BB14_28:
+	ld	iy, (ix + -6)
+	ld	bc, (iy + 16)
+	push	bc
+	pop	hl
+	ld	de, 15
+	or	a, a
+	sbc	hl, de
+	call	__setflag
+	jq	m, BB14_30
+	ld	iy, (ix + -6)
+	ld	(ix + -25), bc
+	ld	c, (iy)
+	ld	b, (iy + 1)
+	or	a, a
+	sbc	hl, hl
+	push	hl
+	pop	de
+	ld	e, c
+	ld	d, b
+	ld	a, (iy + 5)
+	push	hl
+	pop	bc
+	ld	c, a
+	ld	(ix + -12), bc
+	ld	c, (iy + 7)
+	ld	l, c
+	ld	bc, (ix + -12)
+	call	__imulu
+	add	hl, de
+	ld	(ix + -15), hl
+	ld	l, (iy + 2)
+	dec	l
+	ld	(ix + -19), l
+	ld	b, (iy + 20)
+	ld	c, a
+	call	__bdivu
+	ld	l, a
+	ld	(ix + -22), hl
+	ld	hl, (ix + -25)
+	ld	bc, (ix + -12)
+	call	__idivs
+	ld	e, (iy + 6)
+	ld	a, l
+	sub	a, e
+	ld	l, a
+	ld	d, (iy + 8)
+	mlt	de
+	ld	a, e
+	add	a, 2
+	ld	e, a
+	ld	bc, 0
+	push	bc
+	push	de
+	ld	de, 8
+	push	de
+	push	hl
+	ld	hl, (ix + -22)
+	push	hl
+	ld	a, (ix + -19)
+	ld	l, a
+	push	hl
+	ld	hl, (ix + -15)
+	push	hl
+	call	_optix_VertScrollbar
+	ld	hl, 21
+	add	hl, sp
+	ld	sp, hl
+BB14_30:
+	call	_gfx_SwapDraw
+	call	_optix_HandleGUI
+	ld	a, (ix + -9)
+	ld	(ix + -12), a
+	ld	c, 2
+	ld	iy, (ix + -6)
+	jq	BB14_3
+BB14_31:
+	call	_optix_DeleteLastMenu
+	ld	a, (ix + -16)
+	ld	(_optix_cursor+4), a
+	ld	sp, ix
+	pop	ix
+	ret
+	section	.text,"ax",@progbits
+
+	section	.data,"aw",@progbits
+	public	_vysion_alticon
+_vysion_alticon:
+	dl	_basic_data
+	dl	_basic_data
+	dl	_ices_data
+	dl	_ice_data
+	dl	_cprog_data
+	dl	_ez80_data
+	dl	_appvar_data
+	dl	_unknown_data
+
+	section	.rodata,"a",@progbits
+	private	L_.str
+L_.str:
+	db	"%d:%d",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.1
+L_.str.1:
+	db	"%d:0%d",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.2
+L_.str.2:
+	db	"%d:%d PM",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.3
+L_.str.3:
+	db	"%d:0%d PM",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.4
+L_.str.4:
+	db	"%d:%d AM",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.5
+L_.str.5:
+	db	"%d:0%d AM",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.6
+L_.str.6:
+	db	"< Back`Root`Desktop`Exit`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.7
+L_.str.7:
+	db	"No files...`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.8
+L_.str.8:
+	db	"No files...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.9
+L_.str.9:
+	db	"File explorer",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.10
+L_.str.10:
+	db	"Cut`Paste`Delete`New folder`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.11
+L_.str.11:
+	db	"Run`Cut`Paste`Edit`Delete`New folder`Properties`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.12
+L_.str.12:
+	db	"Run`Cut`Paste`Delete`New folder`Properties`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.13
+L_.str.13:
+	db	"Cut`Paste`Delete`New folder`Properties`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.14
+L_.str.14:
+	db	"Paste`New folder`",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_FileOperationsMenu.menutext
+L___const.vysion_FileOperationsMenu.menutext:
+	dl	L_.str.10
+	dl	L_.str.11
+	dl	L_.str.12
+	dl	L_.str.13
+	dl	L_.str.14
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_FileOperationsMenu.returnvalue
+L___const.vysion_FileOperationsMenu.returnvalue:
+	dl	1
+	dl	2
+	dl	4
+	dl	5
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	1
+	dl	2
+	dl	3
+	dl	4
+	dl	5
+	dl	6
+	dl	0
+	dl	1
+	dl	2
+	dl	4
+	dl	5
+	dl	6
+	dl	0
+	dl	1
+	dl	2
+	dl	4
+	dl	5
+	dl	6
+	dl	0
+	dl	0
+	dl	2
+	dl	5
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+	dl	0
+
+	section	.rodata,"a",@progbits
+	private	L_.str.15
+L_.str.15:
+	db	"Programs`Appvars`Files`Search`Settings`Refresh`About`Exit",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_StartMenu.spr
+L___const.vysion_StartMenu.spr:
+	dl	_startprogram_data
+	dl	_startappvar_data
+	dl	_startfile_data
+	dl	_startsearch_data
+	dl	_startsettings_data
+	dl	_startrefresh_data
+	dl	_startabout_data
+	dl	_startexit_data
+
+	section	.rodata,"a",@progbits
+	private	L_.str.18
+L_.str.18:
+	db	"Type: ",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.19
+L_.str.19:
+	db	"Size: ",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.20
+L_.str.20:
+	db	"Archived: ",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.21
+L_.str.21:
+	db	"Taskbar pinned: ",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.22
+L_.str.22:
+	db	"Location: ",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_PropertiesMenu.text
+L___const.vysion_PropertiesMenu.text:
+	dl	L_.str.18
+	dl	L_.str.19
+	dl	L_.str.20
+	dl	L_.str.21
+	dl	L_.str.22
+
+	section	.rodata,"a",@progbits
+	private	L_.str.23
+L_.str.23:
+	db	"TI-BASIC (P)",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.24
+L_.str.24:
+	db	"TI-BASIC",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.25
+L_.str.25:
+	db	"ICE source",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.26
+L_.str.26:
+	db	"ICE",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.27
+L_.str.27:
+	db	"C",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.28
+L_.str.28:
+	db	"ez80",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.29
+L_.str.29:
+	db	"appvar",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.30
+L_.str.30:
+	db	"unknown",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_PropertiesMenu.type
+L___const.vysion_PropertiesMenu.type:
+	dl	L_.str.23
+	dl	L_.str.24
+	dl	L_.str.25
+	dl	L_.str.26
+	dl	L_.str.27
+	dl	L_.str.28
+	dl	L_.str.29
+	dl	L_.str.30
+
+	section	.rodata,"a",@progbits
+	private	L_.str.31
+L_.str.31:
+	db	"Rename`Archived`Locked`Start pinned`Taskbar pinned`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.32
+L_.str.32:
+	db	"r",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.33
+L_.str.33:
+	db	"ERROR",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.34
+L_.str.34:
+	db	"Something went wrong...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.35
+L_.str.35:
+	db	"Rename",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.36
+L_.str.36:
+	db	"Name cannot be a blank string.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.37
+L_.str.37:
+	db	"%s properties",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.38
+L_.str.38:
+	db	"%s%d",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.40
+L_.str.40:
+	db	"System`Shell`Colors`Desktop`Taskbar`Reset`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.41
+L_.str.41:
+	db	"Hour`Minute`24-hour`Clock on`Brightness`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.42
+L_.str.42:
+	db	"Refresh files`Show lock screen`Require password`Use cursor`Set password`About`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.43
+L_.str.43:
+	db	"Background`Title text`Text`Selection`Window`Window border`Outline`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.44
+L_.str.44:
+	db	"Wallpaper`Show wallpaper`Show folders`Show files`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.45
+L_.str.45:
+	db	"Transparent`Centered`Color`Border color`Text color`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.46
+L_.str.46:
+	db	"Reset filesystem`Reset settings`Reset state`Uninstall`",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.subtext
+L___const.vysion_SettingsMenu.subtext:
+	dl	L_.str.41
+	dl	L_.str.42
+	dl	L_.str.43
+	dl	L_.str.44
+	dl	L_.str.45
+	dl	L_.str.46
+
+	section	.rodata,"a",@progbits
+	private	L_.str.47
+L_.str.47:
+	db	"None",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.48
+L_.str.48:
+	db	"New files",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.49
+L_.str.49:
+	db	"Deleted files",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.50
+L_.str.50:
+	db	"All",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.filedetection
+L___const.vysion_SettingsMenu.filedetection:
+	dl	L_.str.47
+	dl	L_.str.48
+	dl	L_.str.49
+	dl	L_.str.50
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.colors
+L___const.vysion_SettingsMenu.colors:
+	dl	_optix_guicolors
+	dl	_optix_guicolors+6
+	dl	_optix_guicolors+4
+	dl	_optix_guicolors+3
+	dl	_optix_guicolors+1
+	dl	_optix_guicolors+2
+	dl	_optix_guicolors+8
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.taskbarbool
+L___const.vysion_SettingsMenu.taskbarbool:
+	dl	_vysion_settings+36
+	dl	_vysion_settings+35
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.desktopbool
+L___const.vysion_SettingsMenu.desktopbool:
+	dl	_vysion_settings+8
+	dl	_vysion_settings+7
+	dl	_vysion_settings+6
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.startupbool
+L___const.vysion_SettingsMenu.startupbool:
+	dl	_vysion_settings+4
+	dl	_vysion_settings+5
+	dl	_vysion_settings+3
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.taskbarcolors
+L___const.vysion_SettingsMenu.taskbarcolors:
+	dl	_vysion_settings+37
+	dl	_vysion_settings+38
+	dl	_vysion_settings+39
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SettingsMenu.systembool
+L___const.vysion_SettingsMenu.systembool:
+	db	"",004o,"@"
+
+	section	.rodata,"a",@progbits
+	private	L_.str.53
+L_.str.53:
+	db	"VYSSTATE",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.54
+L_.str.54:
+	db	"None`New files`Deleted files`All`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.55
+L_.str.55:
+	db	"Password?",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.56
+L_.str.56:
+	db	"VERSION: %s %s %s `BUILT: %s",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.57
+L_.str.57:
+	db	"VYSION",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.58
+L_.str.58:
+	db	"Basic",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.59
+L_.str.59:
+	db	"0.5.0",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.60
+L_.str.60:
+	db	"Mon Dec 28 20:27:26 2020",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.61
+L_.str.61:
+	db	"About",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.62
+L_.str.62:
+	db	"Reset?",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.63
+L_.str.63:
+	db	"Yes`No`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.64
+L_.str.64:
+	db	"SUCCESS",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.65
+L_.str.65:
+	db	"Successfully reset. VYSION will now exit.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.66
+L_.str.66:
+	db	"Failed to reset...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.67
+L_.str.67:
+	db	"Uninstall?",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.68
+L_.str.68:
+	db	"Successfully uninstalled. Please post on the Cemetech forum for this project why you made this decision, so the program can be improved. Exiting now...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.69
+L_.str.69:
+	db	"Failed to uninstall...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.70
+L_.str.70:
+	db	"Settings",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.71
+L_.str.71:
+	db	"%d",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.72
+L_.str.72:
+	db	"Invalid",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.73
+L_.str.73:
+	db	"VYSION CE is the ultimate CE shell, aiming to become the best and most feature-rich shell for the TI-84 Plus CE and TI-83 Premium CE calculators. Containing a variety of features never seen before on this model, such as a Windows-like GUI, a working cursor, a full filesystem with folders, a password lock, the ability to pin programs to the taskbar or move them to the desktop, and the ability to set custom backgrounds and colors, VYSION brings your desktop computer experience to the palm of your hand. It also features all of the other features you'd expect from a shell of this caliber: running, (un)archiving, editing, (un)hiding, deleting, and (un)locking, programs and appvars, all within a responsive and easy-to-use GUI.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.74
+L_.str.74:
+	db	"VYSION's features include, but are not limited to, these listed: ` -running programs ` -editing programs ` -(un)archiving files ` -(un)hiding programs, ` -(un)locking programs",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.75
+L_.str.75:
+	db	"` -a working cursor ` -full filesystem with folders ` -password lock ` -pinning programs to the taskbar ` -cutting/pasting folders and files ` -custom backgrounds/color scheme` -password lock",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.76
+L_.str.76:
+	db	"The controls of VYSION are very user-friendly and intuitive: `Global: ` [arrows] move cursor ` [enter/2nd] select option`Desktop: ` [f1] open start menu ` [f2-f5] snap cursor to taskbar ` [arrows] move cursor ` [enter/2nd] select option`File explorer: ` [arrows] move cursor ` [enter/2nd] select option ` [alpha] alpha jump ` [mode] open file operations menu",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_About.description
+L___const.vysion_About.description:
+	dl	L_.str.73
+	dl	L_.str.74
+	dl	L_.str.75
+	dl	L_.str.76
+
+	section	.rodata,"a",@progbits
+	private	L_.str.77
+L_.str.77:
+	db	"Introduction`Features`Controls`Credits`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.78
+L_.str.78:
+	db	"[clear] : exit",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SelectWallpaper.search
+L___const.vysion_SelectWallpaper.search:
+	db	"V",000o,"YSWALFIX"
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_SelectWallpaper.appvarstring
+L___const.vysion_SelectWallpaper.appvarstring:
+	db	"VYSWALFIX",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.79
+L_.str.79:
+	db	"Loading...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.80
+L_.str.80:
+	db	"Finding wallpapers...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.82
+L_.str.82:
+	db	"NONE`",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.83
+L_.str.83:
+	db	"Wallpaper",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_CheckAlphaJump.text
+L___const.vysion_CheckAlphaJump.text:
+	db	"",000o,000o,000o,000o,000o,000o,000o,000o,000o,000o,000o,"WRMH",000o,000o,"?",000o,"VQLG",000o,000o,".ZUPKFC",000o," YTOJEB",000o,000o,"XSNIDA",000o,000o,000o,000o,000o,000o,000o,000o,000o,000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.84
+L_.str.84:
+	db	"Waiting...",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.85
+L_.str.85:
+	db	"Press a letter key to jump to that letter.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.86
+L_.str.86:
+	db	"January",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.87
+L_.str.87:
+	db	"February",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.88
+L_.str.88:
+	db	"March",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.89
+L_.str.89:
+	db	"April",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.90
+L_.str.90:
+	db	"May",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.91
+L_.str.91:
+	db	"June",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.92
+L_.str.92:
+	db	"July",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.93
+L_.str.93:
+	db	"August",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.94
+L_.str.94:
+	db	"September",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.95
+L_.str.95:
+	db	"October",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.96
+L_.str.96:
+	db	"November",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.97
+L_.str.97:
+	db	"December",000o
+
+	section	.rodata,"a",@progbits
+	private	L___const.vysion_LockScreen.text
+L___const.vysion_LockScreen.text:
+	dl	L_.str.86
+	dl	L_.str.87
+	dl	L_.str.88
+	dl	L_.str.89
+	dl	L_.str.90
+	dl	L_.str.91
+	dl	L_.str.92
+	dl	L_.str.93
+	dl	L_.str.94
+	dl	L_.str.95
+	dl	L_.str.96
+	dl	L_.str.97
+
+	section	.rodata,"a",@progbits
+	private	L_.str.98
+L_.str.98:
+	db	"%s %d, %d",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.102
+L_.str.102:
+	db	"LOCKED",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.103
+L_.str.103:
+	db	"INCORRECT",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.104
+L_.str.104:
+	db	"Incorrect password.",000o
+
+	section	.rodata,"a",@progbits
+	private	L_.str.105
+L_.str.105:
+	db	"Search",000o
+
+	section	.rodata,"a",@progbits
+	private	L_switch.table.vysion_FileExplorer
+L_switch.table.vysion_FileExplorer:
+	db	"",001o,001o,002o,002o,002o,002o,003o
+
+	ident	"clang version 12.0.0 (https://github.com/jacobly0/llvm-project a4fd568b012f0b193e341952bf10624f559064fd)"
+	extern	_gfx_SetTextTransparentColor
+	extern	__Unwind_SjLj_Register
+	extern	_vysion_RunProgram
+	extern	_malloc
+	extern	_vysion_programdata
+	extern	__lcmpzero
+	extern	_vysion_SetTempMenu
+	extern	_optix_UpdateCurrMenu
+	extern	_optix_SetAdvancedMenuCentering
+	extern	_gfx_ScaledSprite_NoClip
+	extern	_optix_Dialogue
+	extern	_ti_OpenVar
+	extern	_optix_guicolors
+	extern	_memcpy
+	extern	_optix_PrintWordWrap
+	extern	__idivs
+	extern	_gfx_Blit
+	extern	_boot_IsAfterNoon
+	extern	_optix_GetWindowXCentering
+	extern	_ti_Open
+	extern	_gfx_Sprite
+	extern	_ti_RenameVar
+	extern	_startexit_data
+	extern	_boot_GetBatteryStatus
+	extern	_startsearch_data
+	extern	_free
+	extern	_realloc
+	extern	_vysion_GetTempMenuIcons
+	extern	_startrefresh_data
+	extern	_startsettings_data
+	extern	__bdivu
+	extern	_vysion_settings
+	extern	_gfx_SetTransparentColor
+	extern	__lrems
+	extern	_sprintf
+	extern	_strcmp
+	extern	_optix_stringinput
+	extern	_vysion_SaveFilesystem
+	extern	_gfx_HorizLine
+	extern	_gfx_GetSprite
+	extern	_vysion_folder
+	extern	_optix_SaveActiveMenus
+	extern	__ishru
+	extern	_optix_Message
+	extern	_startfile_data
+	extern	_vysion_AddFileToTempMenu
+	extern	_gfx_FillScreen
+	extern	_ti_SetArchiveStatus
+	extern	_strcpy
+	extern	_vysion_GetFileType
+	extern	__imulu
+	extern	_gfx_Rectangle
+	extern	_vysion_tempfile
+	extern	_cprog_data
+	extern	_optix_GetWindowYCentering
+	extern	_appvar_data
+	extern	_optix_guisettings
+	extern	_gfx_End
+	extern	_ices_data
+	extern	_optix_SetActiveMenus
+	extern	_optix_HandleGUI
+	extern	_optix_HorizScrollbar
+	extern	_strncmp
+	extern	_ez80_data
+	extern	_startabout_data
+	extern	_optix_guidata
+	extern	_startappvar_data
+	extern	_gfx_SetTextFGColor
+	extern	_optix_cursor
+	extern	_strstr
+	extern	_optix_BoolSwitch
+	extern	_optix_UpdateStringInput
+	extern	_ti_DetectVar
+	extern	__sand
+	extern	__ishl
+	extern	_optix_SimpleMenu
+	extern	__ladd
+	extern	_vysion_HandleFileOperations
+	extern	_strlen
+	extern	__setflag
+	extern	_optix_DeleteLastMenu
+	extern	_exit
+	extern	__iand
+	extern	_optix_ResetStringInput
+	extern	_startprogram_data
+	extern	_gfx_FillRectangle
+	extern	_gfx_AllocSprite
+	extern	_vysion_filesysteminfo
+	extern	_zx7_Decompress
+	extern	_startmenuicon_data
+	extern	_optix_Menu
+	extern	_os_GetCSC
+	extern	_boot_GetTime
+	extern	_optix_menu
+	extern	_memset
+	extern	__frameset
+	extern	_vysion_GetTempMenuText
+	extern	_optix_Slider
+	extern	_gfx_SetTextBGColor
+	extern	_kb_AnyKey
+	extern	_taskbaricon_data
+	extern	_ti_Delete
+	extern	_kb_Scan
+	extern	_ti_DeleteVar
+	extern	_optix_GetStringInput
+	extern	_gfx_GetStringWidth
+	extern	_optix_RenderMenu
+	extern	_optix_VertScrollbar
+	extern	_basic_data
+	extern	_optix_WordWrap
+	extern	_gfx_SwapDraw
+	extern	_vysion_ClearTempMenu
+	extern	_optix_CusText
+	extern	_ice_data
+	extern	_ti_CloseAll
+	extern	_gfx_VertLine
+	extern	_unknown_data
+	extern	_ti_GetVATPtr
+	extern	__Unwind_SjLj_Unregister
+	extern	_vysion_file
+	extern	_gfx_SetColor
+	extern	_strcat
+	extern	_optix_ColorPicker
+	extern	_boot_GetDate
+	extern	_optix_RenderWindow
+	extern	_ti_GetDataPtr
+	extern	_optix_AddMenu
+	extern	_gfx_PrintStringXY
+	extern	_optix_RestoreActiveMenus
+	extern	_ti_IsArchived
+	extern	_gfx_TransparentSprite
+	extern	_boot_SetTime
+	extern	_vysion_SaveData
+	extern	_vysion_GetFolderByIndex
+	extern	_gfx_SetTextScale
+	extern	_memcmp

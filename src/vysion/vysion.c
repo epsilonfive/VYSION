@@ -1,11 +1,11 @@
 //#include "main.h"
-#include <capnhook.h>
+//#include <capnhook.h>
 
 //hooks
 //extern hook_t StartHook;
 //extern size_t StartHook_size;
-extern hook_t FixStopHook;
-extern size_t FixStopHook_size;
+//extern hook_t FixStopHook;
+//extern size_t FixStopHook_size;
 
 #include "vysion.h"
 #include "vysion_saving.h"

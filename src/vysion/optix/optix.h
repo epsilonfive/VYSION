@@ -3,7 +3,7 @@
 #include <keypadc.h>
 
 #define OPTIX_MENU_INVALID -1
-
+#define OPTIX_TICKS_SCROLL 7500
 
 // function declarations
 void optix_SetActiveMenus(int activemenus[], int nummenus);
@@ -97,6 +97,7 @@ struct optix_cursor_t {
     uint16_t x;
     uint8_t y;
     bool cursoractive;
+    bool trackpadactive;
     gfx_sprite_t *back;
 };
 extern struct optix_cursor_t optix_cursor;
@@ -164,7 +165,8 @@ struct optix_guidata_t {
     int numactivemenus;
     int *backactivemenus;
     int backnumactivemenus;
-
+    //for holding an arrow key down and having it scroll
+    int loopsarrowheld;
     int currmenu;
     uint8_t nummenus;
     bool keypress;

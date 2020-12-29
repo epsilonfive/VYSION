@@ -107,6 +107,7 @@ void vysion_SaveData(void) {
     ti_CloseAll();
     if (slot = ti_Open(VYSION_STATE_APPVAR, "w+")) {
         struct vysion_programdata_t *p = &vysion_programdata;
+        ti_Write(&p->returnedfromprogram, sizeof(p->returnedfromprogram), 1, slot);
         ti_Write(&p->startreturn, sizeof(p->startreturn), 1, slot);
         ti_Write(&p->startreturnvalue, sizeof(p->startreturnvalue), 1, slot);
         ti_Write(&p->desktopselection, sizeof(p->desktopselection), 1, slot);
@@ -135,6 +136,7 @@ void vysion_LoadData(void) {
     ti_CloseAll();
     if (slot = ti_Open(VYSION_STATE_APPVAR, "r")) {
         struct vysion_programdata_t *p = &vysion_programdata;
+        ti_Read(&p->returnedfromprogram, sizeof(p->returnedfromprogram), 1, slot);
         ti_Read(&p->startreturn, sizeof(p->startreturn), 1, slot);
         ti_Read(&p->startreturnvalue, sizeof(p->startreturnvalue), 1, slot);
         ti_Read(&p->desktopselection, sizeof(p->desktopselection), 1, slot);

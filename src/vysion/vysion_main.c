@@ -29,6 +29,7 @@ void vysion_InitializeShell(void) {
     vysion_programdata.batterystatus = boot_GetBatteryStatus();
     vysion_programdata.loops = 0;
     vysion_programdata.wallpaper = gfx_MallocSprite(160, 120);
+    vysion_programdata.returnedfromprogram = false;
     ClearFixStopHook();
     optix_cursor.x = 160;
     optix_cursor.y = 120;
@@ -49,14 +50,14 @@ void vysion_InitializeShell(void) {
     gfx_SwapDraw();
     vysion_DetectAllFiles(false);
     //make sure this still works
-    vysion_GetAsmIcons();
-    vysion_GetBasicIcons();
     vysion_SortFiles();
+    vysion_SortFolders();
     vysion_LockScreen();
-    //vysion_SortFolders();
     vysion_programdata.clipboard = -1;
     vysion_settings.version = VYSION_SETTINGS_VERSION;
     vysion_filesysteminfo.version = VYSION_FILESYSTEM_VERSION;
+    vysion_GetAsmIcons();
+    vysion_GetBasicIcons();
 }
 
 void vysion_End(void) {
@@ -89,7 +90,7 @@ void vysion_Desktop(void) {
     vysion_SetTempMenu(1, -1, vysion_settings.showdesktopfiles, vysion_settings.showdesktopfolders);
     vysion_GetTempMenuText();
     vysion_GetTempMenuIcons();
-    optix_AddMenu(0, 0, 0, 0, 4, 4, 80, 50, vysion_programdata.str1, vysion_programdata.icon);
+    optix_AddMenu(0, 0, 0, 0, 4, 4, 80 - 2 * (vysion_filesysteminfo.numtempfiles > (4 * 4)), 55, vysion_programdata.str1, vysion_programdata.icon);
     vysion_programdata.desktop = optix_guidata.nummenus - 1;
     optix_SetMenuSprScale(vysion_programdata.desktop, 2, 2);
     optix_guidata.currmenu = vysion_programdata.desktop;
@@ -108,6 +109,7 @@ void vysion_Desktop(void) {
         struct optix_menu_t *m = &optix_menu[optix_guidata.currmenu];
         currfile = &vysion_file[vysion_tempfile[m->currselection].index];
         kb_Scan();
+        optix_UpdateCurrMenu();
         //here you go KingDubDub
         if (kb_Data[4] & kb_Prgm) {
             vysion_programdata.startreturn = true;
@@ -134,14 +136,17 @@ void vysion_Desktop(void) {
             switch (vysion_programdata.startreturnvalue) {
                 //programs
                 case 0:
-                    vysion_FileExplorer(2);
+                    vysion_FileExplorer(VYSION_FOLDER_PROGRAMS);
                     break;
                 //appvars
                 case 1:
-                    vysion_FileExplorer(3);
+                    vysion_FileExplorer(VYSION_FOLDER_APPVARS);
                     break;
                 case 2:
                     vysion_FileExplorer(vysion_programdata.currfolder);
+                    break;
+                case 3:
+                    vysion_Search();
                     break;
                 case 4:
                     vysion_SettingsMenu();
@@ -151,6 +156,9 @@ void vysion_Desktop(void) {
                     optix_Dialogue("Loading...", "Detecting files and restoring filesystem...", 10, 100, 4);
                     gfx_SwapDraw();
                     vysion_DetectAllFiles(true);
+                    break;
+                case 6:
+                    vysion_About();
                     break;
                 case 7:
                     running = false;
@@ -169,7 +177,7 @@ void vysion_Desktop(void) {
             vysion_SetTempMenu(1, -1, vysion_settings.showdesktopfiles, vysion_settings.showdesktopfolders);
             vysion_GetTempMenuText();
             vysion_GetTempMenuIcons();
-            optix_AddMenu(0, 0, 0, 0, 4, 4, 80, 50, vysion_programdata.str1, vysion_programdata.icon);
+            optix_AddMenu(0, 0, 0, 0, 4, 4, 80 - 2 * (vysion_filesysteminfo.numtempfiles > (4 * 4)), 55, vysion_programdata.str1, vysion_programdata.icon);
             vysion_programdata.desktop = optix_guidata.nummenus - 1;
             optix_SetMenuSprScale(vysion_programdata.desktop, 2, 2);
             optix_guidata.currmenu = vysion_programdata.desktop;
@@ -196,25 +204,32 @@ void vysion_Desktop(void) {
                 gfx_FillRectangle(randInt(0, 320), randInt(0, 240), 2, 2);
             }
             gfx_SetDraw(1);
+            gfx_Blit(0);
             optix_Message("SUCCESS", "You found an Easter egg! See if you can find some more.", 12, 120, 4);
         }
-
-
         if ((optix_guidata.currmenu != OPTIX_MENU_INVALID && m->enterpressed && !(kb_Data[6] & kb_Enter))) {
             //if (optix_guidata.currmenu == vysion_programdata.taskbar) 
             //yeah this could cause some issues
-            if (vysion_tempfile[m->currselection].isfolder) vysion_FileExplorer(vysion_tempfile[m->currselection].index);
-            else if (optix_menu[optix_guidata.currmenu].numoptions > 0) {
+            if (vysion_tempfile[m->currselection].isfolder) {
+                //trigger the opening of it
+                vysion_programdata.startreturn = true;
+                vysion_programdata.currfolder = vysion_tempfile[m->currselection].index;
+                vysion_programdata.startreturnvalue = 2;
+            } else if (optix_menu[optix_guidata.currmenu].numoptions > 0) {
                 vysion_programdata.currmenu = optix_guidata.currmenu;
                 vysion_RunProgram(currfile->name, currfile->type);
             }
             m->enterpressed = false;
         }
-        optix_UpdateCurrMenu();
         vysion_programdata.desktopselection = optix_menu[vysion_programdata.desktop].currselection;
         vysion_programdata.taskbarselection = optix_menu[vysion_programdata.taskbar].currselection;
         vysion_RenderDesktop();
         optix_RenderMenu(vysion_programdata.desktop);
+        //because I don't want to write this out each time
+        m = &optix_menu[vysion_programdata.desktop];
+        //the scroll bar
+        if (optix_menu[vysion_programdata.desktop].numoptions > (4 * 4)) optix_VertScrollbar(312, 0, m->menumin / m->width, ((m->numoptions) / m->width - m->height + 1), 8, 221 - vysion_settings.transparenttaskbar, false);
+
         //gfx_SetTextXY(5, 5);
         //gfx_PrintUInt(32768 / timer_1_Counter, 3);
         //timer_1_Counter = 0;

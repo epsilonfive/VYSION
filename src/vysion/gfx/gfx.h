@@ -5,6 +5,7 @@
 extern "C" {
 #endif
 
+#define myimages_palette_offset 0
 #include "appvar.h"
 #include "basic.h"
 #include "cprog.h"
@@ -18,7 +19,7 @@ extern "C" {
 #include "startappvar.h"
 #include "startfile.h"
 #include "startexit.h"
-#include "startpower.h"
+#include "startabout.h"
 #include "startprogram.h"
 #include "startrefresh.h"
 #include "startsearch.h"

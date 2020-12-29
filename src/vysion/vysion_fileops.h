@@ -8,6 +8,7 @@ void vysion_DeleteFolder(int foldertodelete);
 void vysion_DeleteFile(int filetodelete);
 void vysion_AddFile(void);
 void vysion_AddFolder(char name[9], int location);
+int vysion_GetFolderByIndex(int index);
 void vysion_DetectAllFiles(bool fromstart);
 int vysion_CompareFolderNames(void *a, void *b);
 int vysion_CompareFileNames(void *a, void *b);
@@ -16,6 +17,8 @@ void vysion_SortFiles(void);
 uint8_t vysion_GetFileType(uint8_t type);
 void vysion_GetAsmIcons(void);
 void vysion_GetBasicIcons(void);
+bool vysion_HandleFileOperations(uint8_t filetype);
+bool vysion_DoFileOperation(uint8_t operation, int main);
 
 //tempfile stuff (for making menus, the file explorer, etc.)
 void vysion_AddFileToTempMenu(bool isfolder, int index);

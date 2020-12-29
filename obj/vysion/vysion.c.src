@@ -1,0 +1,52 @@
+	section	.text,"ax",@progbits
+	assume	adl = 1
+	section	.data,"aw",@progbits
+	public	_vysion_alticon
+_vysion_alticon:
+	dl	_basic_data
+	dl	_basic_data
+	dl	_ices_data
+	dl	_ice_data
+	dl	_cprog_data
+	dl	_ez80_data
+	dl	_appvar_data
+	dl	_unknown_data
+
+	section	.bss,"aw",@nobits
+	public	_vysion_file
+_vysion_file:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_vysion_folder
+_vysion_folder:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_vysion_filesysteminfo
+_vysion_filesysteminfo:
+	rb	12
+
+	section	.bss,"aw",@nobits
+	public	_vysion_programdata
+_vysion_programdata:
+	rb	2042
+
+	section	.bss,"aw",@nobits
+	public	_vysion_tempfile
+_vysion_tempfile:
+	rb	3
+
+	section	.bss,"aw",@nobits
+	public	_vysion_settings
+_vysion_settings:
+	rb	40
+
+	ident	"clang version 12.0.0 (https://github.com/jacobly0/llvm-project a4fd568b012f0b193e341952bf10624f559064fd)"
+	extern	_ez80_data
+	extern	_ice_data
+	extern	_unknown_data
+	extern	_appvar_data
+	extern	_cprog_data
+	extern	_basic_data
+	extern	_ices_data

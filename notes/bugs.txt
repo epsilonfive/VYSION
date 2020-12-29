@@ -1,0 +1,33 @@
+[VYSION BUGS]
+
+[0.0.1 (first private relase)]
+ [UNFIXED] edit and properties menu show up as options for all folders but can't edit or show properties for folders
+ [FIXED] pressing [alpha] when already in [alpha] menu makes file explorer flicker
+ [UNFIXED] folders of the same name can exist in the same directory
+ [FIXED] you can cut and paste folders inside themselves
+ [WORKING] desktop icons disappear when file explorer opens
+ [UNFIXED] left click doesn't work on desktop 
+ [WORKING] you can't paste something multiple times
+ [UNFIXED] battery icon is always at 3 bars
+ [FIXED] if you try to run a folder, it runs the last run app in VYSTEMP
+ [FIXED] the hour 12 shows up as zero on the clock
+ [FIXED] cut/paste clipboard clears when you close file explorer
+ [FIXED] index appvar is not archived
+ [FIXED] start menu doesn't work while in file explorer
+ [FIXED] you can edit or run appvars
+ [FIXED] right click increments on desktop, but left click doesn't decrement
+ [FIXED] holding enter on desktop lets you move in any direction once
+ [WORKING] opening a file on the desktop makes the select icon disappear
+ [FIXED] you can run VYSION from within itself
+ [FIXED] VYSION thought protected TI-BASIC programs were ASM
+ [FIXED] the "Stop" token breaks the shell when it is used in a run TI-BASIC program
+ [FIXED] Stop token fix hook cleared on rerun of shell
+[0.0.2 (second private release)]
+ [UNFIXED] file explorer stays on screen after completion
+ [UNFIXED] wallpaper picker stays on screen after completion
+ [FIXED] opening the file explorer, then exiting and pressing [enter] with no items on the desktop runs the first program
+         in the temp menu
+ [FIXED] [2nd] clicks repeatedly when held in many places throughout the shell
+ [UNFIXED] accessing the wallpaper picker with no wallpapers installed results in reading from raw memory
+ [UNFIXED] can't exit the rename dialogue without renaming
+ 
